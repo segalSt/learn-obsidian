@@ -44,7 +44,7 @@
 <p>Эти имена Obsidian знает сам; все три — списки.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
 <table>
   <tr><th>#</th><th>Свойство</th><th>Что делает</th></tr>
-  <tr><td>1</td><td><code>tags</code></td><td>теги заметки. В свойствах пишутся <strong>без</strong> <code>#</code>. Без пробелов (<code>sci-fi</code>, <code>snake_case</code>); не только цифры (<code>1984</code> — не тег, <code>y1984</code> — тег); <code>/</code> делает вложенный тег: <code>кино/советское</code>. Регистр не важен.<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
+  <tr><td>1</td><td><code>tags</code></td><td>теги заметки. В свойствах пишутся <strong>без</strong> <code>#</code>. Без пробелов <em>внутри</em> тега (<code>научная_фантастика</code>, <code>sci-fi</code>); пробел после <code>-</code> в начале строки — разметка списка, он не в счёт; не только цифры (<code>1984</code> — не тег, <code>y1984</code> — тег); <code>/</code> делает вложенный тег: <code>кино/советское</code>. Регистр не важен.<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
   <tr><td>2</td><td><code>aliases</code></td><td>другие имена заметки. Начинаешь писать ссылку <code>[[Tarkovsky</code> — в подсказках появится псевдоним со значком изогнутой стрелки; <kbd>Enter</kbd> создаст <code>[[Тарковский|Tarkovsky]]</code>.<span class="cite"><a href="https://obsidian.md/help/aliases">[псевдонимы]</a></span></td></tr>
   <tr><td>3</td><td><code>cssclasses</code></td><td>оформление заметки через CSS. Нам не нужно.</td></tr>
 </table>
@@ -100,7 +100,7 @@
   <li>Ссылки в свойствах — в кавычках: <code>"[[…]]"</code>.</li>
   <li>Даты — <code>YYYY-MM-DD</code>. Да/нет — <code>true</code> / <code>false</code>.</li>
   <li>Без вложенных свойств и без Markdown в значениях.</li>
-  <li><code>tags</code> и <code>aliases</code>, а не <code>tag</code> / <code>alias</code>; теги без <code>#</code> и без пробелов.</li>
+  <li><code>tags</code> и <code>aliases</code>, а не <code>tag</code> / <code>alias</code>; теги без <code>#</code> и без пробелов внутри тега.</li>
 </ol>
 <p>Именно по этим свойствам потом работают поиск (0004), граф (0005), Dataview (0006) и Bases (0007).</p>
 
@@ -144,9 +144,9 @@ LineTagger.mount(document.getElementById('errors'), {
     { text: 'added: 06.10.2026', cat: BAD, why: 'Date пишется только YYYY-MM-DD: 2026-10-06. В окне Obsidian покажет в формате Windows, но в файле — так.' },
     { text: 'watched: да', cat: BAD, why: 'Checkbox понимает только true / false (или пусто).' },
     { text: 'tags:\n  - #фантастика', cat: BAD, why: 'В свойствах теги пишутся без #. В YAML «#» после пробела начинает комментарий — значение потеряется.' },
-    { text: 'tags:\n  - научная фантастика', cat: BAD, why: 'В теге нельзя пробел. Можно научная_фантастика или научная-фантастика.' },
+    { text: 'tags:\n  - научная фантастика', cat: BAD, why: 'Пробел после «-» — это просто разметка списка, он не часть тега. А вот сам тег «научная фантастика» содержит пробел между словами — так нельзя. Можно научная_фантастика или научная-фантастика.' },
     { text: 'tags:\n  - 1984', cat: BAD, why: 'Тег не может состоять только из цифр. Можно y1984.' },
-    { text: 'tags:\n  - кино/советское', cat: OK, why: '/ делает вложенный тег: кино → советское.' },
+    { text: 'tags:\n  - кино/советское', cat: OK, why: 'Тег = «кино/советское»: пробела внутри нет (пробел после «-» — разметка списка). / делает вложенный тег: кино → советское.' },
     { text: 'alias:\n  - Solaris', cat: BAD, why: 'alias устарел с версии 1.9. Правильно: aliases.' },
     { text: 'aliases:\n  - Андрей Тарковский\n  - Tarkovsky', cat: OK, why: 'Список, правильное имя, пробел внутри псевдонима можно (это не тег).' },
     { text: 'director:\n  name: Тарковский\n  born: 1932', cat: BAD, why: 'Вложенные свойства не поддерживаются. Лучше ссылка на заметку Люди/Тарковский.' },
