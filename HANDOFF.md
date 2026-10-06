@@ -1,6 +1,6 @@
 # Handoff - learn-obsidian course (2026-10-06)
 
-Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: lesson 0003 "Links & backlinks" (0002 Properties is built).
+Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: lesson 0004 "Search" (0001-0003 and 0008 are built).
 
 ## Where things are
 - Repo (this folder): `C:\_repos\GitHub\segal.st\teach\learn-obsidian` -> https://github.com/segalSt/learn-obsidian (public, branch `main`).
@@ -20,8 +20,8 @@ Next session focus: **continue the Obsidian course from the CLI (Claude Code)**:
 |---|---|---|---|
 | 1 | 0001 Note anatomy | `lessons/0001-note-anatomy.html` | ready, user not done yet |
 | 2 | 0002 Properties | `lessons/0002-properties.html` | ready (built 2026-10-06), user not done yet |
-| 3 | 0003 Links & backlinks | - | **next to build** |
-| 4 | 0004 Search | - | planned |
+| 3 | 0003 Links & backlinks | `lessons/0003-links.html` | ready (2026-10-06); experiments pending: property links in backlinks, based_on on rename |
+| 4 | 0004 Search | - | **next to build** (include: tag: matches nested only from the root, `tag:советское` finds nothing for `кино/советское`) |
 | 5 | 0005 Graph filters | `lessons/0005-graph-filters.html` | done once, reworked after feedback |
 | 6 | 0006 Dataview / 0007 Bases | - | planned |
 | 7 | 0008 LLM-wiki (Karpathy pattern) + Obsidian | `lessons/0008-llm-wiki.html`, vault `practice-llm-wiki/` | ready (2026-10-06), overview, readable any time |

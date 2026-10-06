@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Ссылки</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>Ссылки и backlinks</h1>
+  <p class="lede">Внутри ссылки: <code>/</code> — папки, <code>#</code> — заголовок, <code>#^</code> — блок, <code>|</code> — текст, <code>!</code> — встроить.</p>
+</header>
+
+<h2>Синтаксис</h2>
+<pre>[[Сталкер (1979)]]                          ← заметка (.md можно не писать)
+[[Тарковский|Андрея Тарковского]]           ← заметка, другой текст
+[[Сталкер (1979)#Мой комментарий]]          ← заголовок
+[[#Связи]]                                  ← заголовок этой заметки
+[[calc-logic#Шаги#Шаг 10]]                  ← подзаголовок
+[[Пикник на обочине#^final-quote]]          ← блок
+![[Пикник на обочине#^final-quote]]         ← встроить блок
+[credit points](concepts/credit-points.md)  ← Markdown-формат; пробел = %20</pre>
+
+<h2>Метка блока</h2>
+<table>
+  <tr><th>#</th><th>Правило</th></tr>
+  <tr><td>1</td><td><code>^</code> + латиница, цифры, дефис: <code>^final-quote</code></td></tr>
+  <tr><td>2</td><td>абзац — пробел и метка в конце строки; пункт списка — в конце пункта</td></tr>
+  <tr><td>3</td><td>таблица, список, цитата — метка отдельной строкой, пустые строки до и после</td></tr>
+</table>
+
+<h2>Поиск при вставке</h2>
+<table>
+  <tr><th>#</th><th>Набираешь</th><th>Ищет</th></tr>
+  <tr><td>1</td><td><code>[[</code></td><td>заметки</td></tr>
+  <tr><td>2</td><td><code>[[#</code></td><td>заголовки этой заметки</td></tr>
+  <tr><td>3</td><td><code>[[## слово</code></td><td>заголовки во всём хранилище</td></tr>
+  <tr><td>4</td><td><code>[[^^слово</code></td><td>блоки во всём хранилище</td></tr>
+</table>
+
+<h2>Панели</h2>
+<table>
+  <tr><th>#</th><th>Панель → раздел</th><th>Показывает</th></tr>
+  <tr><td>1</td><td>Backlinks → Linked mentions</td><td>кто ссылается на открытую заметку</td></tr>
+  <tr><td>2</td><td>Backlinks → Unlinked mentions</td><td>где её имя написано без ссылки; кнопка Link превращает в ссылку</td></tr>
+  <tr><td>3</td><td>Outgoing links → Links</td><td>куда ссылается открытая заметка</td></tr>
+  <tr><td>4</td><td>Outgoing links → Unlinked mentions</td><td>текст в ней, совпадающий с именем / псевдонимом другой заметки</td></tr>
+</table>
+
+<h2>Нельзя / помни</h2>
+<table>
+  <tr><th>#</th><th>Правило</th></tr>
+  <tr><td>1</td><td>в именах заметок нет <code># | ^ : %% [[ ]]</code></td></tr>
+  <tr><td>2</td><td>переименовывать в Obsidian; Settings → Files and links → Automatically update internal links</td></tr>
+  <tr><td>3</td><td>ссылка на несуществующую заметку допустима; клик её создаёт</td></tr>
+  <tr><td>4</td><td>ссылки в свойствах в Backlinks — не описано в справке; проверить опытом (урок 0003, шаги 1 и 8)</td></tr>
+</table>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://obsidian.md/help/links">Internal links</a> <a href="https://obsidian.md/help/plugins/backlinks">Backlinks</a> <a href="https://obsidian.md/help/plugins/outgoing-links">Outgoing links</a> ·
+  <a href="../lessons/0003-links.html">Урок 0003</a> <a href="glossary.html">Глоссарий</a> <a href="../index.html">Все уроки</a>
+</footer>
+</main>
+</body>
+</html>

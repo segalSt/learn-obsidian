@@ -9,7 +9,9 @@
 - [Obsidian Help - Aliases](https://obsidian.md/help/aliases) - `aliases` list, linking via alias.
 - [Obsidian Help - Command palette](https://obsidian.md/help/plugins/command-palette) - `Ctrl+P`.
 - [Obsidian Help - Hotkeys](https://obsidian.md/help/hotkeys) - Settings → Hotkeys: view, search, change.
+- [Obsidian Help - Internal links](https://obsidian.md/help/links) - wikilink / Markdown, headings, blocks (^id Latin only), display text, embeds, unresolved, auto-update on rename. **Primary for lesson 0003.** Does NOT say whether property links count in backlinks.
 - [Obsidian Help - Backlinks](https://obsidian.md/help/plugins/backlinks) - linked / unlinked mentions, backlinks in document.
+- [Obsidian Help - Outgoing links](https://obsidian.md/help/plugins/outgoing-links) - links and unlinked mentions of the active note.
 - [Obsidian Help - Editing shortcuts](https://obsidian.md/help/editing-shortcuts) - default text editing keys. Graph view has no hotkey in Help (opened from the Ribbon).
 - [Obsidian Help - Bases](https://obsidian.md/help/bases) - core table views over properties.
 - [Dataview documentation](https://blacksmithgu.github.io/obsidian-dataview/) - query language (TABLE / LIST, FROM, WHERE, GROUP BY, FLATTEN).

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0003 · Ссылки и backlinks</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/line-tagger.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0003 · Основы · ~25 минут</div>
+  <h1>Ссылки и backlinks</h1>
+  <p class="lede">Ссылки превращают папку файлов в вики. Научишься читать и ставить любую ссылку — на заметку, заголовок, абзац — и с любой заметки видеть, кто на неё ссылается.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Открыть заметку диска <code>HDD-2TB-01</code> и за 10 секунд увидеть всё, что на нём лежит. Открыть <code>mdlGeneral.bas</code> в Kolnatun и увидеть все его функции. Без поиска — только по ссылкам.
+</div>
+
+<h2>1. Ссылка и её два формата</h2>
+<p><strong>Внутренняя ссылка</strong> — ссылка с одной заметки хранилища на другую. Obsidian понимает два формата:<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span></p>
+<table>
+  <tr><th>#</th><th>Формат</th><th>Как пишется</th><th>Где встретишь</th></tr>
+  <tr><td>1</td><td><strong>Wikilink</strong> (по умолчанию)</td><td><code>[[Сталкер (1979)]]</code> — имя заметки в двойных квадратных скобках; <code>.md</code> можно не писать</td><td>медиатека, страницы <code>shared/entities</code></td></tr>
+  <tr><td>2</td><td><strong>Markdown</strong></td><td><code>[Сталкер](Сталкер%20(1979).md)</code> — текст в <code>[]</code>, адрес в <code>()</code>. <strong>Пробел в адресе пишется как <code>%20</code></strong></td><td><code>shared/INDEX.md</code>: <code>[credit points](concepts/credit-points.md)</code></td></tr>
+</table>
+<p>Для Obsidian оба — обычные ссылки. Wikilink короче, его по умолчанию и вставляет Obsidian. В Kolnatun <code>INDEX.md</code> написан Markdown-ссылками — это тоже нормально. Формат новых ссылок: Settings → Files and links → <strong>Use [[Wikilinks]]</strong> (выключить = Markdown).<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span></p>
+<div class="box"><strong>Привычки Windows.</strong> Путь внутри ссылки — через <code>/</code>: <code>concepts/credit-points.md</code>, не <code>concepts\credit-points.md</code>. А <code>\</code> между заметкой и заголовком не работает вообще — там <code>#</code> (раздел 3).</div>
+
+<h2>2. Как поставить ссылку</h2>
+<table>
+  <tr><th>#</th><th>Способ</th><th>Что происходит</th></tr>
+  <tr><td>1</td><td>набрать <code>[[</code></td><td>появится список заметок; печатай имя, <kbd>Enter</kbd> — ссылка готова. Работает, даже если выбран Markdown-формат</td></tr>
+  <tr><td>2</td><td>выделить текст и набрать <code>[[</code></td><td>выделенный текст станет ссылкой</td></tr>
+  <tr><td>3</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Add internal link</code></td><td>то же через Command palette</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/links">Obsidian Help → Internal links</a>.</p>
+
+<h3>Другой текст ссылки: <code>|</code></h3>
+<p>После <code>|</code> пишешь, что показать вместо имени заметки: <code>[[Тарковский|Андрея Тарковского]]</code> — ведёт на <code>Тарковский</code>, а в тексте читается «Андрея Тарковского».<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span> Для русского это главное: имя заметки одно, а падежи разные. Псевдоним из урока 0002 (<code>aliases</code>) вставляет такую ссылку сам: <code>[[Тарковский|Tarkovsky]]</code>.</p>
+
+<h3>Ссылка на заметку, которой нет</h3>
+<p><code>[[Стругацкие]]</code> можно написать, даже если заметки <code>Стругацкие</code> ещё нет. Клик по такой ссылке создаёт эту заметку.<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span> Удобно для «страница нужна, напишу позже» — а в LLM-wiki это находка для lint (урок 0008).</p>
+
+<h3>Символы, которые ломают ссылку</h3>
+<p>В именах заметок не используй <code>#</code> <code>|</code> <code>^</code> <code>:</code> <code>%%</code> <code>[[</code> <code>]]</code> — у них в ссылках особый смысл.<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span> Поэтому «Сталкер: заметки» — плохое имя, «Сталкер (1979)» — хорошее.</p>
+
+<h2>3. Ссылка на часть заметки</h2>
+<table>
+  <tr><th>#</th><th>Куда</th><th>Как пишется</th><th>Пример</th></tr>
+  <tr><td>1</td><td><strong>заголовок</strong> другой заметки</td><td><code>[[Заметка#Заголовок]]</code></td><td><code>[[Сталкер (1979)#Мой комментарий]]</code></td></tr>
+  <tr><td>2</td><td>заголовок <strong>этой</strong> заметки</td><td><code>[[#Заголовок]]</code></td><td><code>[[#Связи]]</code></td></tr>
+  <tr><td>3</td><td>подзаголовок</td><td>по <code>#</code> на каждый уровень</td><td><code>[[calc-logic#Шаги#Шаг 10]]</code></td></tr>
+  <tr><td>4</td><td><strong>блок</strong> (абзац, пункт списка, таблица)</td><td><code>[[Заметка#^метка]]</code></td><td><code>[[Пикник на обочине#^final-quote]]</code></td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/links">Obsidian Help → Internal links</a>.</p>
+
+<p><strong>Блок</strong> — один абзац, пункт списка, цитата или таблица. Чтобы на него сослаться, у блока должна быть <strong>метка</strong> (block identifier): <code>^</code> и имя.<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span></p>
+<table>
+  <tr><th>#</th><th>Правило метки</th><th>Пример</th></tr>
+  <tr><td>1</td><td>только <strong>латинские</strong> буквы, цифры и дефис</td><td><code>^final-quote</code> — можно; <code>^цитата</code> — нельзя</td></tr>
+  <tr><td>2</td><td>обычный абзац: пробел и метка в конце строки</td><td><code>…пусть никто не уйдёт обиженный! ^final-quote</code></td></tr>
+  <tr><td>3</td><td>список, цитата, таблица: метка на отдельной строке, с пустой строкой до и после</td><td>строка <code>^usage-table</code> под таблицей</td></tr>
+  <tr><td>4</td><td>пункт списка: метка в конце этого пункта</td><td><code>- AcademicEnd ^ae</code></td></tr>
+</table>
+<p>Не помнишь заголовок или блок? Набери <code>[[## команд</code> — Obsidian ищет заголовки со словом «команд» по всему хранилищу; <code>[[^^Счастье</code> — то же для блоков.<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span></p>
+
+<h3>Встраивание: <code>!</code></h3>
+<p><code>!</code> перед ссылкой показывает содержимое прямо на месте: <code>![[Пикник на обочине#^final-quote]]</code> — цитата появится внутри твоей заметки.<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span> Это всё ещё ссылка, просто видна целиком.</p>
+
+<h2>4. Backlinks и Outgoing links</h2>
+<p>Ссылка идёт в одну сторону: <code>Сталкер</code> → <code>Тарковский</code>. Но Obsidian помнит и обратную сторону. Две панели в правой боковой панели:</p>
+<table>
+  <tr><th>#</th><th>Панель</th><th>Раздел</th><th>Что показывает</th></tr>
+  <tr><td>1</td><td rowspan="2"><strong>Backlinks</strong> — кто ссылается <em>на</em> открытую заметку</td><td>Linked mentions</td><td>заметки, в которых есть ссылка на эту</td></tr>
+  <tr><td>2</td><td>Unlinked mentions</td><td>заметки, где имя этой заметки написано просто текстом, без ссылки. Такое упоминание можно одним действием превратить в ссылку</td></tr>
+  <tr><td>3</td><td rowspan="2"><strong>Outgoing links</strong> — куда ссылается <em>сама</em> открытая заметка</td><td>Links</td><td>все ссылки этой заметки</td></tr>
+  <tr><td>4</td><td>Unlinked mentions</td><td>текст в этой заметке, совпадающий с именем или псевдонимом другой заметки</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источники: <a href="https://obsidian.md/help/plugins/backlinks">Backlinks</a>, <a href="https://obsidian.md/help/plugins/outgoing-links">Outgoing links</a>, <a href="https://obsidian.md/help/aliases">Aliases</a>.</p>
+<p>Не видишь Backlinks справа — <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Backlinks: Show backlinks</code>. Показать backlinks прямо внизу заметки — команда <code>Backlinks: Toggle backlinks in document</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/backlinks">[backlinks]</a></span></p>
+
+<h3>Переименование не ломает ссылки</h3>
+<p>Settings → Files and links → <strong>Automatically update internal links</strong>: если включено, при переименовании заметки Obsidian сам исправит ссылки на неё во всём хранилище.<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span> Поэтому переименовывай заметки в Obsidian, а не в проводнике Windows.</p>
+
+<h2>5. Заметка-узел: «что лежит на диске»</h2>
+<p>Ответ на твой вопрос про файл на двух облаках, диске и видеохостинге. Сделай у каждого места свою заметку — <code>Хранилища/HDD-2TB-01</code>, <code>Хранилища/YouTube</code> — и ставь на неё ссылку из каждого фильма. Тогда:</p>
+<table>
+  <tr><th>#</th><th>Открываешь</th><th>Backlinks показывает</th></tr>
+  <tr><td>1</td><td><code>HDD-2TB-01</code></td><td>всё, что лежит на этом диске. Диск умер — видно, что потеряно</td></tr>
+  <tr><td>2</td><td><code>mdlGeneral.bas</code> (Kolnatun)</td><td>все его функции: каждая страница-член ссылается на контейнер (<code>Контейнер: [[mdlGeneral.bas]]</code>)</td></tr>
+  <tr><td>3</td><td><code>Тарковский</code></td><td>все его фильмы в вике</td></tr>
+</table>
+<p>Сама заметка-узел может быть почти пустой — её ценность в обратных ссылках. В графе (урок 0005) такие заметки — <strong>хабы</strong>: точки со множеством линий.</p>
+
+<h3>А ссылки в свойствах?</h3>
+<p>Ссылку можно поставить и в свойстве: <code>director: "[[Тарковский]]"</code> (урок 0002). Попадают ли такие ссылки в Backlinks и обновляются ли при переименовании — справка Obsidian <strong>не говорит</strong>. Проверим опытом в практике (шаги 1 и 8). Пока не проверено — дублируй важную ссылку в тексте заметки, как в Kolnatun: <code>parent</code> в свойствах и «Контейнер: [[…]]» в тексте.</p>
+
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша / команда</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><code>[[</code></td><td>начать ссылку, список заметок<span class="cite"><a href="https://obsidian.md/help/links">[ссылки]</a></span></td></tr>
+  <tr><td>2</td><td><code>[[#</code> / <code>[[## </code> / <code>[[^^</code></td><td>заголовки этой заметки / заголовки всего хранилища / блоки всего хранилища</td></tr>
+  <tr><td>3</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Add internal link</code></td><td>вставить ссылку через Command palette</td></tr>
+  <tr><td>4</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Backlinks: Show backlinks</code></td><td>открыть панель Backlinks<span class="cite"><a href="https://obsidian.md/help/plugins/backlinks">[backlinks]</a></span></td></tr>
+  <tr><td>5</td><td><kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>чтение ⇄ редактирование: проверить, как ссылка выглядит</td></tr>
+</table>
+<p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
+
+<h2>6. Практика: куда ведёт ссылка?</h2>
+<div id="target"></div>
+
+<h2>7. Практика: работает или ошибка?</h2>
+<div id="errors"></div>
+
+<h2>8. Проверь себя</h2>
+<div id="quiz"></div>
+
+<h2>9. Теперь в настоящем Obsidian</h2>
+<p>Хранилище <code>practice-vault</code>. В нём появилась папка <code>Хранилища/</code> с заметками <code>HDD-2TB-01</code> и <code>Полка 2</code>, раздел «Где лежит» в <code>Солярис (1972)</code> и раздел «Цитата» в <code>Пикник на обочине</code>.</p>
+<ol class="steps">
+  <li><strong>Опыт 1: ссылки в свойствах.</strong> Открой <code>Люди/Тарковский</code>, панель Backlinks → Linked mentions. <code>Солярис (1972)</code> там будет, если в уроке 0002 ты вставил в него <code>[[Тарковский|Tarkovsky]]</code>. А <code>Сталкер (1979)</code> ссылается на Тарковского <em>только</em> свойством <code>director</code>. <strong>Есть Сталкер в списке — значит, ссылки в свойствах считаются.</strong> Запиши результат и скажи мне.</li>
+  <li><strong>Ссылка с другим текстом.</strong> В <code>Сталкер (1979)</code>, в разделе «Мой комментарий», допиши: <code>Режиссёр — </code>, набери <code>[[Тарк</code>, <kbd>Enter</kbd>, затем перед <code>]]</code> допиши <code>|Андрей Тарковский</code>. <kbd>Ctrl</kbd>+<kbd>E</kbd>. Ожидаемо: видно «Андрей Тарковский», клик открывает <code>Тарковский</code>. Теперь Сталкер в Linked mentions у Тарковского точно есть.</li>
+  <li><strong>Ссылка на заголовок.</strong> Там же, в разделе «Связи», допиши <code>[[Пикник на обочине#Цитата]]</code>. Клик. Ожидаемо: откроется <code>Пикник на обочине</code> на заголовке «Цитата».</li>
+  <li><strong>Блок и встраивание.</strong> Ниже набери <code>[[^^Счастье</code> и выбери подсказку. Ожидаемо: <code>[[Пикник на обочине#^final-quote]]</code>. Теперь поставь <code>!</code> перед <code>[[</code> — цитата Стругацких появится прямо в Сталкере.</li>
+  <li><strong>Заметка-узел.</strong> Открой <code>Хранилища/HDD-2TB-01</code>, Backlinks. Ожидаемо: Linked mentions — пусто; Unlinked mentions — <code>Солярис (1972)</code> (текст «HDD-2TB-01» в разделе «Где лежит»). Если в Unlinked mentions есть и <code>Сталкер</code> — значит, Obsidian видит имя и в тексте свойств: тоже скажи мне.</li>
+  <li><strong>Упоминание → ссылка.</strong> В Unlinked mentions у строки <code>Солярис</code> нажми <strong>Link</strong>. Ожидаемо: Солярис переехал в Linked mentions, а в Солярисе текст стал ссылкой <code>[[HDD-2TB-01]]</code>.</li>
+  <li><strong>Outgoing links.</strong> Открой <code>Сталкер (1979)</code>, в правой панели — вкладка Outgoing links (значок ссылки). Ожидаемо: в Links — <code>Тарковский</code> и <code>Пикник на обочине</code> (из текста; про свойства — как вышло в опыте 1).</li>
+  <li><strong>Опыт 2: переименование.</strong> Проверь, что включено Settings → Files and links → Automatically update internal links. Переименуй <code>Пикник на обочине</code> в <code>Пикник на обочине (1972)</code> (правый клик по файлу слева → Rename). Открой Сталкер. Ожидаемо: ссылки в тексте стали <code>[[Пикник на обочине (1972)#Цитата]]</code> и т. п. Посмотри свойство <code>based_on</code> — <strong>обновилось ли оно?</strong> Скажи мне. Потом переименуй обратно.</li>
+  <li><strong>Kolnatun.</strong> Открой <code>Kolnatun/mdlGeneral.bas</code>, Backlinks. Ожидаемо: <code>SetErrorObject</code> — функция ссылается на свой контейнер. В рабочем Kolnatun так же ты увидишь все отслеженные функции файла.</li>
+</ol>
+<p>Вернуть хранилище: <code>git checkout -- practice-vault</code>. Но там же и твои правки из урока 0002 (<code>rating</code>, <code>location</code>) — они тоже откатятся.</p>
+
+<h2>10. Что это значит для Kolnatun и LLM-wiki</h2>
+<table>
+  <tr><th>#</th><th>Правило для схемы (что сказать Claude)</th><th>Зачем</th></tr>
+  <tr><td>1</td><td>каждое упоминание другой страницы — ссылка, а не просто текст</td><td>Backlinks и граф показывают реальные связи; Unlinked mentions = пропущенные ссылки</td></tr>
+  <tr><td>2</td><td>у каждого «места» и «контейнера» своя страница, на которую ссылаются</td><td>узел собирает всё связанное в Backlinks</td></tr>
+  <tr><td>3</td><td>важная связь — ссылкой в тексте, даже если она есть в свойстве (пока опыт 1 не показал обратное)</td><td>гарантированно видна в Backlinks</td></tr>
+  <tr><td>4</td><td>ссылка на конкретное место — через <code>#Заголовок</code> или <code>#^метка</code> (латиницей)</td><td>доказательство ведёт прямо к нужной строке, а не к началу длинного <code>calc-logic.md</code></td></tr>
+  <tr><td>5</td><td>имена страниц без <code># | ^ :</code></td><td>ссылки не ломаются</td></tr>
+</table>
+
+<h2>Главный источник</h2>
+<p><a href="https://obsidian.md/help/links"><strong>Obsidian Help — Internal links</strong></a>: форматы, заголовки, блоки, текст ссылки. 7–10 минут. Потом — <a href="https://obsidian.md/help/plugins/backlinks">Backlinks</a> (2 минуты).</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. И пришли результаты опытов 1 и 2 и шага 5 — по ним я поправлю урок и шпаргалку.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="0002-properties.html">Назад: 0002</a>
+  <span>Дальше: 0004 Поиск (скоро)</span>
+  <a href="../reference/links.html">Шпаргалка: ссылки</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+const N = 'заметка', H = 'заголовок', B = 'блок', E = 'встраивание';
+LineTagger.mount(document.getElementById('target'), {
+  categories: [N, H, B, E],
+  lines: [
+    { text: '[[Сталкер (1979)]]', cat: N, why: 'Только имя заметки — ведёт на всю заметку.' },
+    { text: '[[Сталкер (1979)#Мой комментарий]]', cat: H, why: '# после имени — заголовок в этой заметке.' },
+    { text: '[[#Связи]]', cat: H, why: 'Имени нет, сразу # — заголовок этой же заметки.' },
+    { text: '[[Пикник на обочине#^final-quote]]', cat: B, why: '#^ — метка блока.' },
+    { text: '![[Пикник на обочине#^final-quote]]', cat: E, why: '! в начале — содержимое показывается на месте.' },
+    { text: '[[Тарковский|Андрея Тарковского]]', cat: N, why: 'После | только текст для показа; ведёт на заметку Тарковский.' },
+    { text: '[credit points](concepts/credit-points.md)', cat: N, why: 'Markdown-формат: текст в [], адрес заметки в ().' },
+    { text: '[[calc-logic#Шаги#Шаг 10]]', cat: H, why: 'Два # — подзаголовок «Шаг 10» внутри «Шаги».' },
+  ]
+});
+const OK = 'работает', BAD = 'ошибка';
+LineTagger.mount(document.getElementById('errors'), {
+  categories: [OK, BAD],
+  lines: [
+    { text: '[Сталкер](Сталкер (1979).md)', cat: BAD, why: 'В адресе Markdown-ссылки пробел пишется %20: Сталкер%20(1979).md.' },
+    { text: '[[Сталкер (1979)\\Мой комментарий]]', cat: BAD, why: '\\ — привычка Windows. Заголовок отделяется #: [[Сталкер (1979)#Мой комментарий]].' },
+    { text: '[credit points](concepts\\credit-points.md)', cat: BAD, why: 'Путь в ссылке — через /, не \\: concepts/credit-points.md.' },
+    { text: '[[Сталкер (1979).md]]', cat: OK, why: '.md можно писать, можно не писать.' },
+    { text: 'Счастье для всех… ^финал', cat: BAD, why: 'Метка блока — только латиница, цифры и дефис: ^final.' },
+    { text: 'Счастье для всех… ^final-quote', cat: OK, why: 'Латиница и дефис, через пробел в конце абзаца.' },
+    { text: '[[Стругацкие]]  (такой заметки ещё нет)', cat: OK, why: 'Ссылка на несуществующую заметку допустима; клик создаст её.' },
+    { text: 'имя заметки: Сталкер: мой разбор', cat: BAD, why: 'Двоеточие ломает ссылки на заметку. Лучше «Сталкер (1979) - мой разбор».' },
+    { text: '[[Тарковский|Андрея Тарковского]]', cat: OK, why: 'Ссылка на Тарковский с текстом в нужном падеже.' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Где увидеть все заметки, которые ссылаются на HDD-2TB-01?',
+    options: ['Backlinks → Linked mentions этой заметки',
+              'Outgoing links → Links этой заметки',
+              'All properties → правый клик по имени',
+              'Settings → Files and links → Wikilinks'],
+    answer: 0, why: 'Backlinks — кто ссылается НА заметку; Outgoing links — куда ссылается она сама.' },
+  { q: 'Что покажет [[Тарковский|Андрея Тарковского]] в режиме чтения?',
+    options: ['Текст «Андрея Тарковского», ведёт на Тарковский',
+              'Текст «Тарковский», ведёт на Андрея Тарковского',
+              'Две ссылки рядом: Тарковский и Андрея Тарковского',
+              'Ошибку: в ссылке нельзя писать символ |'],
+    answer: 0, why: 'До | — куда ведёт, после | — что показать.' },
+  { q: 'Как сослаться на заголовок «Цитата» в заметке «Пикник на обочине»?',
+    options: ['[[Пикник на обочине#Цитата]]',
+              '[[Пикник на обочине\\Цитата]]',
+              '[[Пикник на обочине/Цитата]]',
+              '[[Пикник на обочине^Цитата]]'],
+    answer: 0, why: 'Заголовок — через #. \\ и / — пути к папкам, ^ — метки блоков.' },
+  { q: 'Какая метка блока правильная?',
+    options: ['^usage-table', '^таблица', '^usage table', '^usage_table!'],
+    answer: 0, why: 'Только латинские буквы, цифры и дефис.' },
+  { q: 'Что делает ! перед ссылкой: ![[Пикник на обочине#^final-quote]]?',
+    options: ['Показывает этот блок прямо внутри заметки',
+              'Помечает ссылку как важную в графе',
+              'Запрещает переименовывать эту заметку',
+              'Делает ссылку внешней, на сайт'],
+    answer: 0, why: '! = встраивание: содержимое видно на месте ссылки.' },
+  { q: 'Как переименовать заметку, чтобы ссылки на неё не сломались?',
+    options: ['В Obsidian, с Automatically update internal links',
+              'В проводнике Windows, потом открыть Obsidian',
+              'Скопировать заметку под новым именем',
+              'Поменять заголовок # внутри заметки'],
+    answer: 0, why: 'Obsidian обновляет ссылки, когда переименовываешь в нём и эта настройка включена.' },
+]);
+</script>
+</body>
+</html>
