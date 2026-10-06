@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Свойства</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>Свойства</h1>
+  <p class="lede">Тип принадлежит имени свойства во всём хранилище. Ссылки — в кавычках. Даты — YYYY-MM-DD.</p>
+</header>
+
+<h2>Типы</h2>
+<pre>status: смотрел                    ← Text
+director: "[[Тарковский]]"         ← Text со ссылкой: кавычки обязательны
+cast:                              ← List: каждое значение через "- "
+  - Донатас Банионис
+  - Наталья Бондарчук
+year: 1972                         ← Number: всё значение — число
+watched: false                     ← Checkbox: true / false / пусто
+added: 2026-10-06                  ← Date: YYYY-MM-DD
+last_opened: 2026-10-06T21:30:00   ← Date &amp; time
+tags:                              ← Tags: только у tags, без #, без пробелов
+  - кино/советское</pre>
+
+<h2>Встроенные свойства</h2>
+<table>
+  <tr><th>#</th><th>Имя</th><th>Тип</th><th>Заметка</th></tr>
+  <tr><td>1</td><td><code>tags</code></td><td>Tags</td><td>без <code>#</code>, без пробелов, не только цифры, <code>/</code> = вложенный</td></tr>
+  <tr><td>2</td><td><code>aliases</code></td><td>List</td><td>другие имена для ссылок: <code>[[Тарковский|Tarkovsky]]</code></td></tr>
+  <tr><td>3</td><td><code>cssclasses</code></td><td>List</td><td>оформление CSS</td></tr>
+</table>
+<p>Устарели с 1.9: <code>tag</code>, <code>alias</code>, <code>cssclass</code>.</p>
+
+<h2>Нельзя</h2>
+<table>
+  <tr><th>#</th><th>Что</th><th>Вместо этого</th></tr>
+  <tr><td>1</td><td>Одно имя дважды в заметке</td><td>List</td></tr>
+  <tr><td>2</td><td>Вложенные свойства</td><td>несколько свойств или отдельная заметка</td></tr>
+  <tr><td>3</td><td>Markdown в значении</td><td>текст заметки</td></tr>
+  <tr><td>4</td><td>Несколько значений через запятую</td><td>List</td></tr>
+</table>
+
+<h2>Где что делать</h2>
+<table>
+  <tr><th>#</th><th>Действие</th><th>Как</th></tr>
+  <tr><td>1</td><td>Добавить свойство</td><td><kbd>Ctrl</kbd>+<kbd>;</kbd> или <code>---</code> в первой строке</td></tr>
+  <tr><td>2</td><td>Сменить тип</td><td>нажать иконку слева от имени</td></tr>
+  <tr><td>3</td><td>Все свойства хранилища</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>properties</code> → All properties; сортировка по имени / частоте</td></tr>
+  <tr><td>4</td><td>Переименовать везде</td><td>All properties → правый клик</td></tr>
+  <tr><td>5</td><td>Найти заметки со свойством</td><td>All properties → клик по свойству</td></tr>
+  <tr><td>6</td><td>Показ в заметке</td><td>Settings → Editor → Properties in document: Visible / Hidden / Source</td></tr>
+  <tr><td>7</td><td>Следующее / предыдущее свойство</td><td><kbd>↓</kbd> или <kbd>Tab</kbd> / <kbd>↑</kbd> или <kbd>Shift</kbd>+<kbd>Tab</kbd></td></tr>
+</table>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://obsidian.md/help/properties">Properties</a> <a href="https://obsidian.md/help/plugins/properties">Properties view</a> <a href="https://obsidian.md/help/tags">Tags</a> <a href="https://obsidian.md/help/aliases">Aliases</a> ·
+  <a href="../lessons/0002-properties.html">Урок 0002</a> <a href="glossary.html">Глоссарий</a> <a href="../index.html">Все уроки</a>
+</footer>
+</main>
+</body>
+</html>

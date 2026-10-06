@@ -3,7 +3,11 @@
 ## Knowledge (official, high trust)
 - [Obsidian Help - Search](https://obsidian.md/help/plugins/search) - every search operator (`path:`, `file:`, `[property:value]`, `-`, `OR`, regex). Graph filters use the same syntax. **Primary for lesson 0001.**
 - [Obsidian Help - Graph view](https://obsidian.md/help/plugins/graph) - filters, groups, display, forces, local graph.
-- [Obsidian Help - Properties](https://obsidian.md/help/properties) - frontmatter properties, types.
+- [Obsidian Help - Properties](https://obsidian.md/help/properties) - frontmatter properties, types. **Primary for lesson 0002.**
+- [Obsidian Help - Properties view](https://obsidian.md/help/plugins/properties) - All properties: sort by name / frequency, rename globally, click to search.
+- [Obsidian Help - Tags](https://obsidian.md/help/tags) - tag characters, no spaces, not numbers-only, nested `/`, case-insensitive.
+- [Obsidian Help - Aliases](https://obsidian.md/help/aliases) - `aliases` list, linking via alias.
+- [Obsidian Help - Command palette](https://obsidian.md/help/plugins/command-palette) - `Ctrl+P`.
 - [Obsidian Help - Bases](https://obsidian.md/help/bases) - core table views over properties.
 - [Dataview documentation](https://blacksmithgu.github.io/obsidian-dataview/) - query language (TABLE / LIST, FROM, WHERE, GROUP BY, FLATTEN).
 

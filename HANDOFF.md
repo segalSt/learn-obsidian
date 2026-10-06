@@ -1,11 +1,11 @@
 # Handoff - learn-obsidian course (2026-10-06)
 
-Next session focus: **continue the Obsidian course from the CLI (Claude Code)**, starting with lesson 0002 "Properties".
+Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: lesson 0003 "Links & backlinks" (0002 Properties is built).
 
 ## Where things are
 - Repo (this folder): `C:\_repos\GitHub\segal.st\teach\learn-obsidian` -> https://github.com/segalSt/learn-obsidian (public, branch `main`).
 - Commit identity is set in repo-local git config (`user.name SegalSt`); do not change it, do not use global config.
-- Push state at handoff: local is **ahead of origin by 4 commits** (up to and including this handoff). Run `git push` first (from the user's Windows shell; it has the GitHub login).
+- Push state: everything pushed after lesson 0002 (2026-10-06).
 
 ## Read first (do not duplicate here)
 - `MISSION.md` - why the user learns Obsidian (Kolnatun LLM-wiki + personal media wiki).
@@ -19,8 +19,8 @@ Next session focus: **continue the Obsidian course from the CLI (Claude Code)**,
 | # | Lesson | File | Status |
 |---|---|---|---|
 | 1 | 0001 Note anatomy | `lessons/0001-note-anatomy.html` | ready, user not done yet |
-| 2 | 0002 Properties | - | **next to build** |
-| 3 | 0003 Links & backlinks | - | planned |
+| 2 | 0002 Properties | `lessons/0002-properties.html` | ready (built 2026-10-06), user not done yet |
+| 3 | 0003 Links & backlinks | - | **next to build** |
 | 4 | 0004 Search | - | planned |
 | 5 | 0005 Graph filters | `lessons/0005-graph-filters.html` | done once, reworked after feedback |
 | 6 | 0006 Dataview / 0007 Bases | - | planned |

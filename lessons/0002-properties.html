@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0002 · Свойства</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/line-tagger.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0002 · Основы · ~20 минут</div>
+  <h1>Свойства</h1>
+  <p class="lede">Свойства — это данные о заметке: год, статус, где лежит, кто использует. Научишься узнавать тип свойства, писать его без ошибок и говорить Claude, какие свойства ставить.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Посмотреть на любую строку свойств и сказать: какой это тип и записано ли оно правильно. Например: <code>used_by</code> в Kolnatun — List, <code>line</code> — Number.
+</div>
+
+<h2>1. Свойство = имя + тип + значение</h2>
+<p>Из урока 0001: свойства стоят в начале файла между двумя <code>---</code>, каждая строка — <code>имя: значение</code>. Этот блок называют <strong>frontmatter</strong>, а формат записи — <strong>YAML</strong> (простой текстовый формат «ключ: значение»).<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
+<p>Имя — любое, но в одной заметке каждое имя только один раз.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> У каждого свойства есть ещё <strong>тип</strong> — какие значения в нём бывают. Тип виден иконкой слева от имени в таблице свойств.</p>
+
+<div class="box"><strong>Главное правило.</strong> Тип принадлежит <em>имени</em>, а не заметке. Если <code>year</code> — Number, то <code>year</code> — Number во <em>всех</em> заметках хранилища.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Поэтому одно имя — всегда одинаковые по смыслу значения.</div>
+
+<h2>2. Семь типов</h2>
+<table>
+  <tr><th>#</th><th>Тип</th><th>Как пишется</th><th>Пример из наших хранилищ</th></tr>
+  <tr><td>1</td><td><strong>Text</strong></td><td>одна строка текста. Ссылка <code>[[…]]</code> — только в кавычках</td><td><code>status: смотрел</code><br><code>director: "[[Тарковский]]"</code></td></tr>
+  <tr><td>2</td><td><strong>List</strong></td><td>имя, двоеточие, а ниже каждое значение с новой строки через <code>- </code> (дефис и пробел). Ссылки — в кавычках</td><td><code>cast:</code><br><code>&nbsp;&nbsp;- Донатас Банионис</code><br><code>used_by:</code><br><code>&nbsp;&nbsp;- AcademicEnd</code></td></tr>
+  <tr><td>3</td><td><strong>Number</strong></td><td>только число, целое или дробное</td><td><code>year: 1972</code>, <code>line: 234</code></td></tr>
+  <tr><td>4</td><td><strong>Checkbox</strong></td><td><code>true</code> / <code>false</code>; пусто = «не определено»</td><td><code>watched: false</code></td></tr>
+  <tr><td>5</td><td><strong>Date</strong></td><td>строго <code>YYYY-MM-DD</code> (год-месяц-день)</td><td><code>added: 2026-10-06</code></td></tr>
+  <tr><td>6</td><td><strong>Date &amp; time</strong></td><td>дата, буква <code>T</code>, время</td><td><code>last_opened: 2026-10-06T21:30:00</code></td></tr>
+  <tr><td>7</td><td><strong>Tags</strong></td><td>как List, но только у свойства <code>tags</code></td><td><code>tags:</code><br><code>&nbsp;&nbsp;- фантастика</code></td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Все примеры и правила — <a href="https://obsidian.md/help/properties">Obsidian Help → Properties</a>.</p>
+<p>Внимание: <code>where: HDD-2TB-01</code> — это Text, хотя там цифры. Number — только когда <em>всё</em> значение число. А дата на экране показывается в формате твоей Windows, но в файле всегда <code>2026-10-06</code>.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
+
+<h2>3. Три встроенных свойства</h2>
+<p>Эти имена Obsidian знает сам; все три — списки.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
+<table>
+  <tr><th>#</th><th>Свойство</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><code>tags</code></td><td>теги заметки. В свойствах пишутся <strong>без</strong> <code>#</code>. Без пробелов (<code>sci-fi</code>, <code>snake_case</code>); не только цифры (<code>1984</code> — не тег, <code>y1984</code> — тег); <code>/</code> делает вложенный тег: <code>кино/советское</code>. Регистр не важен.<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
+  <tr><td>2</td><td><code>aliases</code></td><td>другие имена заметки. Начинаешь писать ссылку <code>[[Tarkovsky</code> — в подсказках появится псевдоним со значком изогнутой стрелки; <kbd>Enter</kbd> создаст <code>[[Тарковский|Tarkovsky]]</code>.<span class="cite"><a href="https://obsidian.md/help/aliases">[псевдонимы]</a></span></td></tr>
+  <tr><td>3</td><td><code>cssclasses</code></td><td>оформление заметки через CSS. Нам не нужно.</td></tr>
+</table>
+<p>Старые имена <code>tag</code>, <code>alias</code>, <code>cssclass</code> устарели с версии 1.9 — пиши <code>tags</code>, <code>aliases</code>, <code>cssclasses</code>.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
+
+<h2>4. Чего в свойствах нет</h2>
+<table>
+  <tr><th>#</th><th>Не поддерживается</th><th>Пример, который не сработает</th></tr>
+  <tr><td>1</td><td>Вложенные свойства (свойство внутри свойства)</td><td><code>director:</code><br><code>&nbsp;&nbsp;name: Тарковский</code></td></tr>
+  <tr><td>2</td><td>Markdown внутри значения — <code>**жирный**</code> останется звёздочками</td><td><code>comment: **шедевр**</code></td></tr>
+</table>
+<p>Это сделано специально: одно свойство — один простой факт.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Нужна структура — заведи несколько свойств (<code>director</code>, <code>director_born</code>) или отдельную заметку (<code>Люди/Тарковский</code>).</p>
+
+<h2>5. Практика: какой это тип?</h2>
+<p>Строки из <code>Солярис (1972).md</code> и <code>SetErrorObject.md</code> учебного хранилища. Для каждой нажми тип.</p>
+<div id="types"></div>
+
+<h2>6. Практика: так можно или ошибка?</h2>
+<p>Так могла бы написать заметку LLM или ты сам. Найди ошибки — пояснение объяснит, почему.</p>
+<div id="errors"></div>
+
+<h2>7. Проверь себя</h2>
+<div id="quiz"></div>
+
+<h2>8. Теперь в настоящем Obsidian</h2>
+<p>Открой учебное хранилище <code>practice-vault</code> (как в уроке 0001). В нём появились две новые заметки: <code>Медиатека/Фильмы/Солярис (1972)</code> и <code>Люди/Тарковский</code>.</p>
+<ol class="steps">
+  <li><strong>Типы.</strong> Открой <code>Солярис (1972)</code>. Иконка слева от имени свойства показывает его тип. Сверь каждую с таблицей внизу заметки. Если тип другой (например, <code>added</code> не Date) — нажми на иконку и выбери нужный тип из списка.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></li>
+  <li><strong>Новое свойство.</strong> Поставь курсор в текст заметки, нажми <kbd>Ctrl</kbd>+<kbd>;</kbd>. Имя <code>rating</code>, значение <code>8</code>. Потом нажми иконку слева от <code>rating</code> и выбери <strong>Number</strong>. Ожидаемо: строка <code>rating</code> с иконкой числа.</li>
+  <li><strong>Тип общий.</strong> Открой <code>Сталкер (1979)</code>, снова <kbd>Ctrl</kbd>+<kbd>;</kbd>, имя <code>rating</code>, значение <code>9</code>. Ожидаемо: иконка уже числа — ты тип не выбирал, он пришёл из <code>Солярис</code>.</li>
+  <li><strong>Все свойства хранилища.</strong> <kbd>Ctrl</kbd>+<kbd>P</kbd> — это <strong>Command palette</strong>, список всех команд Obsidian.<span class="cite"><a href="https://obsidian.md/help/plugins/command-palette">[команды]</a></span> Набери <code>properties</code> и выбери команду, которая показывает все свойства (<strong>All properties</strong>). Ожидаемо: <strong>22</strong> свойства (21 было + твой <code>rating</code>). Отсортируй по частоте (frequency — сколько раз встречается): первым будет <code>type</code>, он есть в 6 заметках.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span></li>
+  <li><strong>Поиск по свойству.</strong> В All properties нажми на <code>director</code> — откроется поиск с уже набранным запросом. Ожидаемо: 2 заметки, <code>Сталкер (1979)</code> и <code>Солярис (1972)</code>. Синтаксис этого запроса разберём в уроке 0004.</li>
+  <li><strong>Переименование.</strong> Правый клик по <code>where</code> → переименуй в <code>location</code>. Открой <code>Пикник на обочине</code>: там теперь <code>location: Полка 2</code> — Obsidian поменял все 3 файла сразу.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span> Переименуй обратно в <code>where</code>.</li>
+  <li><strong>Псевдоним.</strong> В <code>Солярис (1972)</code>, в разделе «Мой комментарий», набери <code>[[Tarkovsky</code>. Ожидаемо: подсказка со значком изогнутой стрелки → <kbd>Enter</kbd> → <code>[[Тарковский|Tarkovsky]]</code>. Псевдонимы заданы в <code>Люди/Тарковский</code>.</li>
+  <li><strong>Как показывать свойства.</strong> Settings → Editor → <strong>Properties in document</strong>: Visible (таблица, по умолчанию), Hidden (скрыть), Source (показать как YAML-текст).<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Попробуй Source, потом верни Visible.</li>
+</ol>
+<p>Хранилище лежит в git-репозитории курса: твои правки будут видны в <code>git status</code>. Вернуть всё как было: <code>git checkout -- practice-vault</code>.</p>
+
+<h2>9. Что это значит для Kolnatun</h2>
+<p>Ты не пишешь свойства руками — их пишет Claude. Твоя задача — сказать, <em>какие</em>. Свойства <code>SetErrorObject.md</code> по типам:</p>
+<table>
+  <tr><th>#</th><th>Свойство</th><th>Тип</th><th>Зачем</th></tr>
+  <tr><td>1</td><td><code>type</code>, <code>kind</code>, <code>project</code></td><td>Text</td><td>слой и вид страницы: entity / function / BL</td></tr>
+  <tr><td>2</td><td><code>source</code></td><td>Text</td><td>путь к исходнику</td></tr>
+  <tr><td>3</td><td><code>line</code></td><td>Number</td><td>строка в исходнике</td></tr>
+  <tr><td>4</td><td><code>used_by</code></td><td>List</td><td>какие калькуляторы используют; один калькулятор — один пункт</td></tr>
+  <tr><td>5</td><td><code>parent</code></td><td>Text (ссылка)</td><td>страница-контейнер <code>"[[mdlGeneral.bas]]"</code></td></tr>
+</table>
+<p>Правила, которые стоит дать Claude для любой вики:</p>
+<ol>
+  <li>Одно имя — один тип во всех заметках (<code>line</code> всегда число).</li>
+  <li>Несколько значений — List, по одному на строку, а не <code>"AcademicEnd, SalaryCalc"</code> одной строкой.</li>
+  <li>Ссылки в свойствах — в кавычках: <code>"[[…]]"</code>.</li>
+  <li>Даты — <code>YYYY-MM-DD</code>. Да/нет — <code>true</code> / <code>false</code>.</li>
+  <li>Без вложенных свойств и без Markdown в значениях.</li>
+  <li><code>tags</code> и <code>aliases</code>, а не <code>tag</code> / <code>alias</code>; теги без <code>#</code> и без пробелов.</li>
+</ol>
+<p>Именно по этим свойствам потом работают поиск (0004), граф (0005), Dataview (0006) и Bases (0007).</p>
+
+<h2>Главный источник</h2>
+<p><a href="https://obsidian.md/help/properties"><strong>Obsidian Help — Properties</strong></a>: типы, встроенные свойства, что не поддерживается. 7–10 минут. Потом — <a href="https://obsidian.md/help/plugins/properties">Properties view</a> (2 минуты).</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. Можно прислать скриншот таблицы свойств или строку из Kolnatun, разберём тип вместе.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="0001-note-anatomy.html">Назад: 0001</a>
+  <span>Дальше: 0003 Ссылки и backlinks (скоро)</span>
+  <a href="../reference/properties.html">Шпаргалка: свойства</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+LineTagger.mount(document.getElementById('types'), {
+  categories: ['Text', 'List', 'Number', 'Checkbox', 'Date', 'Date & time', 'Tags'],
+  lines: [
+    { text: 'status: хочу пересмотреть', cat: 'Text', why: 'Одна строка текста.' },
+    { text: 'year: 1972', cat: 'Number', why: 'Всё значение — число.' },
+    { text: 'director: "[[Тарковский]]"', cat: 'Text', why: 'Одна ссылка — это Text; кавычки обязательны.' },
+    { text: 'watched: false', cat: 'Checkbox', why: 'true / false — флажок.' },
+    { text: 'added: 2026-10-06', cat: 'Date', why: 'YYYY-MM-DD без времени.' },
+    { text: 'last_opened: 2026-10-06T21:30:00', cat: 'Date & time', why: 'После даты идёт T и время.' },
+    { text: 'cast:\n  - Донатас Банионис\n  - Наталья Бондарчук', cat: 'List', why: 'Несколько значений, каждое через «- ».' },
+    { text: 'tags:\n  - фантастика', cat: 'Tags', why: 'Тип Tags бывает только у свойства tags.' },
+    { text: 'aliases:\n  - Solaris', cat: 'List', why: 'aliases — встроенное свойство-список, но не Tags: Tags только у tags.' },
+    { text: 'where: HDD-2TB-01', cat: 'Text', why: 'Цифры внутри не делают его числом: значение целиком не число.' },
+    { text: 'line: 234', cat: 'Number', why: 'Номер строки в исходнике — число.' },
+    { text: 'used_by:\n  - AcademicEnd', cat: 'List', why: 'Даже один элемент — это список: он записан через «- ».' },
+  ]
+});
+const OK = 'так можно', BAD = 'ошибка';
+LineTagger.mount(document.getElementById('errors'), {
+  categories: [OK, BAD],
+  lines: [
+    { text: 'director: [[Тарковский]]', cat: BAD, why: 'Ссылка в свойстве без кавычек. Нужно "[[Тарковский]]".' },
+    { text: 'based_on: "[[Пикник на обочине]]"', cat: OK, why: 'Ссылка в кавычках — правильно.' },
+    { text: 'added: 06.10.2026', cat: BAD, why: 'Date пишется только YYYY-MM-DD: 2026-10-06. В окне Obsidian покажет в формате Windows, но в файле — так.' },
+    { text: 'watched: да', cat: BAD, why: 'Checkbox понимает только true / false (или пусто).' },
+    { text: 'tags:\n  - #фантастика', cat: BAD, why: 'В свойствах теги пишутся без #. В YAML «#» после пробела начинает комментарий — значение потеряется.' },
+    { text: 'tags:\n  - научная фантастика', cat: BAD, why: 'В теге нельзя пробел. Можно научная_фантастика или научная-фантастика.' },
+    { text: 'tags:\n  - 1984', cat: BAD, why: 'Тег не может состоять только из цифр. Можно y1984.' },
+    { text: 'tags:\n  - кино/советское', cat: OK, why: '/ делает вложенный тег: кино → советское.' },
+    { text: 'alias:\n  - Solaris', cat: BAD, why: 'alias устарел с версии 1.9. Правильно: aliases.' },
+    { text: 'aliases:\n  - Андрей Тарковский\n  - Tarkovsky', cat: OK, why: 'Список, правильное имя, пробел внутри псевдонима можно (это не тег).' },
+    { text: 'director:\n  name: Тарковский\n  born: 1932', cat: BAD, why: 'Вложенные свойства не поддерживаются. Лучше ссылка на заметку Люди/Тарковский.' },
+    { text: 'comment: **шедевр**', cat: BAD, why: 'Markdown в свойствах не работает: звёздочки останутся. Комментарий — в тексте заметки.' },
+    { text: 'used_by: AcademicEnd, SalaryCalc', cat: BAD, why: 'Это одна строка Text, а не два значения. Нужен List: каждое с новой строки через «- ».' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'В заметке «Солярис» свойству year дали тип Number. Какой тип у year в «Сталкере»?',
+    options: ['Number — тип общий для всего хранилища',
+              'Text — у каждой заметки свой тип',
+              'Никакой — пока не выберешь вручную',
+              'Date — потому что год похож на дату'],
+    answer: 0, why: 'Тип привязан к имени свойства во всём хранилище.' },
+  { q: 'Какая клавиша добавляет новое свойство в заметку?',
+    options: ['Ctrl+;', 'Ctrl+E', 'Ctrl+P', 'Ctrl+G'],
+    answer: 0, why: 'Ctrl+; — добавить свойство. Ctrl+E — чтение/редактирование, Ctrl+P — Command palette, Ctrl+G — граф.' },
+  { q: 'Как правильно записать дату для типа Date?',
+    options: ['2026-10-06', '06.10.2026', '06/10/2026', '6 окт 2026'],
+    answer: 0, why: 'Только YYYY-MM-DD. На экране формат может быть другим — это настройки Windows.' },
+  { q: 'Как переименовать свойство where сразу во всех заметках?',
+    options: ['Правый клик по нему в All properties',
+              'Settings → Editor → Properties in document',
+              'Поменять имя в каждой заметке вручную',
+              'Переименовать файл заметки через F2'],
+    answer: 0, why: 'All properties: правый клик → rename, меняет все файлы сразу.' },
+  { q: 'Claude хочет записать два калькулятора в used_by. Как правильно?',
+    options: ['Списком: каждый с новой строки через «- »',
+              'Одной строкой через запятую в кавычках',
+              'Двумя свойствами used_by в одной заметке',
+              'Вложенным свойством used_by: calc: ...'],
+    answer: 0, why: 'Несколько значений = List. Два одинаковых имени в заметке нельзя, вложенные свойства не поддерживаются.' },
+  { q: 'Что даёт свойство aliases в заметке «Тарковский»?',
+    options: ['Ссылку можно найти по другому имени',
+              'Заметка появляется в двух папках сразу',
+              'Файл заметки переименуется в псевдоним',
+              'Заметка получает теги из псевдонимов'],
+    answer: 0, why: 'Псевдоним появляется в подсказках ссылки и создаёт [[Тарковский|Tarkovsky]].' },
+]);
+</script>
+</body>
+</html>
