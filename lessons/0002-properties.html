@@ -89,8 +89,20 @@
   <tr><th>#</th><th>Не поддерживается</th><th>Пример, который не сработает</th></tr>
   <tr><td>1</td><td>Вложенные свойства (свойство внутри свойства)</td><td><code>director:</code><br><code>&nbsp;&nbsp;name: Тарковский</code></td></tr>
   <tr><td>2</td><td>Markdown внутри значения — <code>**жирный**</code> останется звёздочками</td><td><code>comment: **шедевр**</code></td></tr>
+  <tr><td>3</td><td>Список через запятую в одной строке — это одна строка Text, а не два значения. Список — только через <code>- </code> с новой строки</td><td><code>used_by: AcademicEnd, SalaryCalc</code></td></tr>
 </table>
 <p>Это сделано специально: одно свойство — один простой факт.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Нужна структура — заведи несколько свойств (<code>director</code>, <code>director_born</code>) или отдельную заметку (<code>Люди/Тарковский</code>).</p>
+
+<h2>5. Все свойства хранилища: All properties</h2>
+<p><strong>All properties</strong> (он же Properties view) — панель со списком <em>всех</em> свойств хранилища и их типов.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span> Открыть: <kbd>Ctrl</kbd>+<kbd>P</kbd> (Command palette) → набери <code>properties</code> → команда, которая показывает все свойства.</p>
+<table>
+  <tr><th>#</th><th>Действие</th><th>Как</th><th>Зачем</th></tr>
+  <tr><td>1</td><td>Сортировать</td><td>по имени или по частоте (frequency — во скольких местах хранилища встречается)</td><td>увидеть самые частые и редкие свойства; редкое часто = опечатка (<code>use_by</code> рядом с <code>used_by</code>)</td></tr>
+  <tr><td>2</td><td><strong>Переименовать во всех заметках</strong></td><td><strong>правый клик</strong> по свойству → rename</td><td>одно действие меняет имя во всех файлах. Вручную по заметкам — долго и легко пропустить</td></tr>
+  <tr><td>3</td><td>Найти заметки со свойством</td><td>клик по свойству — откроется поиск с готовым запросом</td><td>синтаксис запроса — урок 0004</td></tr>
+  <tr><td>4</td><td>Сменить тип</td><td>через All properties или иконкой слева от имени в любой заметке</td><td>тип общий для имени, поэтому меняется сразу везде<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></td></tr>
+</table>
+<p>Пример: Claude назвал свойство <code>where</code>, а ты хочешь <code>location</code>. All properties → правый клик по <code>where</code> → <code>location</code>: все три заметки медиатеки обновятся. Дальше скажи Claude писать <code>location</code>.</p>
 
 <h2>Клавиши урока</h2>
 <table>
@@ -103,24 +115,24 @@
 </table>
 <p>Все клавиши хранилища — Settings → <strong>Hotkeys</strong> (там же их меняют).<span class="cite"><a href="https://obsidian.md/help/hotkeys">[hotkeys]</a></span> Клавиши курса — в шпаргалке <a href="../reference/hotkeys.html">Горячие клавиши</a>.</p>
 
-<h2>5. Практика: какой это тип?</h2>
+<h2>6. Практика: какой это тип?</h2>
 <p>Строки из <code>Солярис (1972).md</code> и <code>SetErrorObject.md</code> учебного хранилища. Для каждой нажми тип.</p>
 <div id="types"></div>
 
-<h2>6. Практика: так можно или ошибка?</h2>
+<h2>7. Практика: так можно или ошибка?</h2>
 <p>Так могла бы написать заметку LLM или ты сам. Найди ошибки — пояснение объяснит, почему.</p>
 <div id="errors"></div>
 
-<h2>7. Проверь себя</h2>
+<h2>8. Проверь себя</h2>
 <div id="quiz"></div>
 
-<h2>8. Теперь в настоящем Obsidian</h2>
+<h2>9. Теперь в настоящем Obsidian</h2>
 <p>Открой учебное хранилище <code>practice-vault</code> (как в уроке 0001). В нём появились две новые заметки: <code>Медиатека/Фильмы/Солярис (1972)</code> и <code>Люди/Тарковский</code>.</p>
 <ol class="steps">
   <li><strong>Типы.</strong> Открой <code>Солярис (1972)</code>. Иконка слева от имени свойства показывает его тип. Сверь каждую с таблицей внизу заметки. Если тип другой (например, <code>added</code> не Date) — нажми на иконку и выбери нужный тип из списка.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></li>
   <li><strong>Новое свойство.</strong> Поставь курсор в текст заметки, нажми <kbd>Ctrl</kbd>+<kbd>;</kbd>. Имя <code>rating</code>, значение <code>8</code>. Потом нажми иконку слева от <code>rating</code> и выбери <strong>Number</strong>. Ожидаемо: строка <code>rating</code> с иконкой числа.</li>
   <li><strong>Тип общий.</strong> Открой <code>Сталкер (1979)</code>, снова <kbd>Ctrl</kbd>+<kbd>;</kbd>, имя <code>rating</code>, значение <code>9</code>. Ожидаемо: иконка уже числа — ты тип не выбирал, он пришёл из <code>Солярис</code>.</li>
-  <li><strong>Все свойства хранилища.</strong> <kbd>Ctrl</kbd>+<kbd>P</kbd> — это <strong>Command palette</strong>, список всех команд Obsidian.<span class="cite"><a href="https://obsidian.md/help/plugins/command-palette">[команды]</a></span> Набери <code>properties</code> и выбери команду, которая показывает все свойства (<strong>All properties</strong>). Ожидаемо: <strong>22</strong> свойства (21 было + твой <code>rating</code>). Отсортируй по частоте (frequency — сколько раз встречается): первым будет <code>type</code>, он есть в 6 заметках.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span></li>
+  <li><strong>Все свойства хранилища.</strong> Открой <strong>All properties</strong> (раздел 5): <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>properties</code>. Ожидаемо: <strong>22</strong> свойства (21 было + твой <code>rating</code>). Отсортируй по частоте (frequency — сколько раз встречается): первым будет <code>type</code>, он есть в 6 заметках.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span></li>
   <li><strong>Поиск по свойству.</strong> В All properties нажми на <code>director</code> — откроется поиск с уже набранным запросом. Ожидаемо: 2 заметки, <code>Сталкер (1979)</code> и <code>Солярис (1972)</code>. Синтаксис этого запроса разберём в уроке 0004.</li>
   <li><strong>Переименование.</strong> Правый клик по <code>where</code> → переименуй в <code>location</code>. Открой <code>Пикник на обочине</code>: там теперь <code>location: Полка 2</code> — Obsidian поменял все 3 файла сразу.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span> Переименуй обратно в <code>where</code>.</li>
   <li><strong>Псевдоним.</strong> В <code>Солярис (1972)</code>, в разделе «Мой комментарий», набери <code>[[Tarkovsky</code>. Ожидаемо: подсказка со значком изогнутой стрелки → <kbd>Enter</kbd> → <code>[[Тарковский|Tarkovsky]]</code>. Псевдонимы заданы в <code>Люди/Тарковский</code>.</li>
@@ -129,7 +141,7 @@
 </ol>
 <p>Хранилище лежит в git-репозитории курса: твои правки будут видны в <code>git status</code>. Вернуть всё как было: <code>git checkout -- practice-vault</code>.</p>
 
-<h2>9. Что это значит для Kolnatun</h2>
+<h2>10. Что это значит для Kolnatun</h2>
 <p>Ты не пишешь свойства руками — их пишет Claude. Твоя задача — сказать, <em>какие</em>. Свойства <code>SetErrorObject.md</code> по типам:</p>
 <table>
   <tr><th>#</th><th>Свойство</th><th>Тип</th><th>Зачем</th></tr>
@@ -216,10 +228,10 @@ Quiz.mount(document.getElementById('quiz'), [
     answer: 0, why: 'Только YYYY-MM-DD. На экране формат может быть другим — это настройки Windows.' },
   { q: 'Как переименовать свойство where сразу во всех заметках?',
     options: ['Правый клик по нему в All properties',
-              'Settings → Editor → Properties in document',
+              'Нажать иконку типа слева от имени',
               'Поменять имя в каждой заметке вручную',
-              'Переименовать файл заметки через F2'],
-    answer: 0, why: 'All properties: правый клик → rename, меняет все файлы сразу.' },
+              'Переименовать файл заметки в проводнике'],
+    answer: 0, why: 'All properties: правый клик → rename меняет имя во всех файлах сразу (раздел 5). Иконка меняет тип, а не имя; вручную — долго и легко пропустить; имя файла — это не имя свойства.' },
   { q: 'Claude хочет записать два калькулятора в used_by. Как правильно?',
     options: ['Списком: каждый с новой строки через «- »',
               'Одной строкой через запятую в кавычках',

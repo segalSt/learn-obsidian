@@ -16,3 +16,7 @@ Added section 3.1 "Синтаксис тегов" (two ways to tag, character ru
 ## Follow-up: hotkeys
 The quiz asked about hotkeys (incl. Ctrl+G) with no list in the lesson. Ctrl+G is not in Obsidian Help at all (graph opens from the Ribbon) - it was an unverified fact.
 Added: "Клавиши урока" table in lesson 0002, `reference/hotkeys.html` (where to see all hotkeys: Settings → Hotkeys, Command palette; course keys; editing keys), quiz option Ctrl+G -> Ctrl+Z, Ctrl+G marked "check in Settings → Hotkeys" in glossary and lesson 0005.
+
+## Follow-up: quiz before practice
+Quiz question 4 (rename a property everywhere) was only covered in the hands-on section, which comes *after* the quiz. Rule: the quiz may only use what is explained above it, including distractors (F2, "Properties in document" were unexplained).
+Added section 5 "All properties" (open, sort, rename, search, change type) before the exercises; "comma list = one Text" row in section 4; quiz 4 distractors replaced with taught options.
