@@ -92,6 +92,17 @@
 </table>
 <p>Это сделано специально: одно свойство — один простой факт.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Нужна структура — заведи несколько свойств (<code>director</code>, <code>director_born</code>) или отдельную заметку (<code>Люди/Тарковский</code>).</p>
 
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>;</kbd></td><td>добавить свойство в открытую заметку<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></td></tr>
+  <tr><td>2</td><td><kbd>↓</kbd> или <kbd>Tab</kbd> / <kbd>↑</kbd> или <kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>следующее / предыдущее свойство<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></td></tr>
+  <tr><td>3</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Command palette: все команды Obsidian, у каждой видна её клавиша<span class="cite"><a href="https://obsidian.md/help/plugins/command-palette">[команды]</a></span></td></tr>
+  <tr><td>4</td><td><kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>чтение ⇄ редактирование (из урока 0001)</td></tr>
+  <tr><td>5</td><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>отменить последнее действие<span class="cite"><a href="https://obsidian.md/help/editing-shortcuts">[клавиши]</a></span></td></tr>
+</table>
+<p>Все клавиши хранилища — Settings → <strong>Hotkeys</strong> (там же их меняют).<span class="cite"><a href="https://obsidian.md/help/hotkeys">[hotkeys]</a></span> Клавиши курса — в шпаргалке <a href="../reference/hotkeys.html">Горячие клавиши</a>.</p>
+
 <h2>5. Практика: какой это тип?</h2>
 <p>Строки из <code>Солярис (1972).md</code> и <code>SetErrorObject.md</code> учебного хранилища. Для каждой нажми тип.</p>
 <div id="types"></div>
@@ -149,6 +160,7 @@
   <a href="0001-note-anatomy.html">Назад: 0001</a>
   <span>Дальше: 0003 Ссылки и backlinks (скоро)</span>
   <a href="../reference/properties.html">Шпаргалка: свойства</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
   <a href="../reference/glossary.html">Глоссарий</a>
 </footer>
 </main>
@@ -197,8 +209,8 @@ Quiz.mount(document.getElementById('quiz'), [
               'Date — потому что год похож на дату'],
     answer: 0, why: 'Тип привязан к имени свойства во всём хранилище.' },
   { q: 'Какая клавиша добавляет новое свойство в заметку?',
-    options: ['Ctrl+;', 'Ctrl+E', 'Ctrl+P', 'Ctrl+G'],
-    answer: 0, why: 'Ctrl+; — добавить свойство. Ctrl+E — чтение/редактирование, Ctrl+P — Command palette, Ctrl+G — граф.' },
+    options: ['Ctrl+;', 'Ctrl+E', 'Ctrl+P', 'Ctrl+Z'],
+    answer: 0, why: 'Ctrl+; — добавить свойство. Ctrl+E — чтение/редактирование, Ctrl+P — Command palette, Ctrl+Z — отменить. Все клавиши — в разделе «Клавиши урока».' },
   { q: 'Как правильно записать дату для типа Date?',
     options: ['2026-10-06', '06.10.2026', '06/10/2026', '6 окт 2026'],
     answer: 0, why: 'Только YYYY-MM-DD. На экране формат может быть другим — это настройки Windows.' },

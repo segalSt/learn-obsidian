@@ -8,6 +8,8 @@
 - [Obsidian Help - Tags](https://obsidian.md/help/tags) - tag characters, no spaces, not numbers-only, nested `/`, case-insensitive.
 - [Obsidian Help - Aliases](https://obsidian.md/help/aliases) - `aliases` list, linking via alias.
 - [Obsidian Help - Command palette](https://obsidian.md/help/plugins/command-palette) - `Ctrl+P`.
+- [Obsidian Help - Hotkeys](https://obsidian.md/help/hotkeys) - Settings → Hotkeys: view, search, change.
+- [Obsidian Help - Editing shortcuts](https://obsidian.md/help/editing-shortcuts) - default text editing keys. Graph view has no hotkey in Help (opened from the Ribbon).
 - [Obsidian Help - Bases](https://obsidian.md/help/bases) - core table views over properties.
 - [Dataview documentation](https://blacksmithgu.github.io/obsidian-dataview/) - query language (TABLE / LIST, FROM, WHERE, GROUP BY, FLATTEN).
 

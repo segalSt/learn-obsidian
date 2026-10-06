@@ -9,3 +9,4 @@
 - Course order (since 2026-10-06, user asked to start from basics): 0001 note anatomy, 0002 properties, 0003 links & backlinks, 0004 search, 0005 graph filters, 0006 Dataview, 0007 Bases. `index.html` is the course map; keep its status column current.
 - Hands-on steps use `practice-vault/` (separate vault), never the work Kolnatun vault.
 - User habits to pre-empt: Windows `\` in paths, `*` as wildcard. Define every setting / term on first use.
+- Every lesson has a "Клавиши урока" table; anything a quiz or exercise checks (keys, syntax) must be explained in the lesson first. Keys go to `reference/hotkeys.html`; unverified keys are marked "проверь в Settings → Hotkeys".
