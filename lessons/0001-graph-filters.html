@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · Фильтр графа</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/search-sim.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0001 · Граф · ~15 минут</div>
+  <h1>Фильтр графа — это поиск</h1>
+  <p class="lede">Граф показывает всё хранилище: результаты, исходники, промпты. Одна строка фильтра оставляет только нужный слой.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> За минуту оставить в графе Kolnatun только <em>результаты анализа</em> и <em>связанные части исходного кода</em>, без рабочих промптов.
+</div>
+
+<h2>1. Одна идея</h2>
+<p>В графе есть Filters → поле <strong>Search files</strong>. Туда пишется тот же язык, что в обычном поиске Obsidian.<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span> Выучил поиск — умеешь фильтровать граф.</p>
+
+<h2>2. Пять операторов, которых хватит</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Остаются файлы, у которых…</th></tr>
+  <tr><td>1</td><td><code>path:shared/entities</code></td><td>путь содержит эту строку</td></tr>
+  <tr><td>2</td><td><code>file:glossary</code></td><td>имя файла содержит эту строку</td></tr>
+  <tr><td>3</td><td><code>[layer:source]</code></td><td>свойство <code>layer</code> равно <code>source</code></td></tr>
+  <tr><td>4</td><td><code>-path:rules</code></td><td>минус = <em>убрать</em> то, что подходит</td></tr>
+  <tr><td>5</td><td><code>A OR B</code></td><td>подходит A или B (без OR — нужно оба)</td></tr>
+</table>
+<p>Пробел между условиями = «и». Скобки группируют: <code>(path:SalaryCalc -path:python) OR path:entities</code>. Источник всех операторов — справка Search.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+
+<h2>3. Слои твоего хранилища</h2>
+<table>
+  <tr><th>#</th><th>Слой</th><th>Где лежит</th><th>В графе</th></tr>
+  <tr><td>1</td><td>результаты анализа</td><td><code>calculators/&lt;Calc&gt;/</code>, <code>shared/concepts</code>, <code>shared/INDEX.md</code>, <code>architecture/</code></td><td>да</td></tr>
+  <tr><td>2</td><td>части исходного кода</td><td><code>shared/entities/</code></td><td>да</td></tr>
+  <tr><td>3</td><td>процесс, промпты</td><td><code>calculators/scaffold*</code>, <code>rules/</code>, <code>tasks/</code>, <code>START.md</code>, <code>shared/README.md</code></td><td>нет</td></tr>
+  <tr><td>4</td><td>Python-порт</td><td><code>python/</code>, <code>python-port-route.md</code></td><td>нет</td></tr>
+</table>
+<p>Свойство <code>layer</code> в песочнице ниже — <em>будущее</em>: в реальных файлах его ещё нет. Пока работаем путями.</p>
+
+<h2>4. Практика</h2>
+<p>Песочница — копия части твоего хранилища. Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Текст внутри заметок не ищет (настоящий Obsidian ищет). Сначала пробуй сам, подсказку — только если застрял.</p>
+<div id="sim"></div>
+
+<h2>5. Проверь себя</h2>
+<p>Без подглядывания в таблицу выше.</p>
+<div id="quiz"></div>
+
+<h2>6. Теперь в настоящем Obsidian</h2>
+<ol class="steps">
+  <li>Открой граф: <kbd>Ctrl</kbd>+<kbd>G</kbd>.</li>
+  <li>Шестерёнка справа вверху → <strong>Filters</strong> → в <strong>Search files</strong> вставь свой ответ на задачу 3.</li>
+  <li>Там же выключи <strong>Attachments</strong> — уйдут <code>.mmd</code>, <code>.html</code>.</li>
+  <li><strong>Groups</strong> → New group → <code>path:shared/entities</code>, выбери цвет. Так исходники видны сразу.</li>
+  <li>Не используй Settings → Files &amp; Links → Excluded files: такие файлы пропадут ещё и из поиска.<span class="cite"><a href="https://obsidian.md/help/settings">[настройки]</a></span></li>
+</ol>
+
+<h2>Главный источник</h2>
+<p><a href="https://obsidian.md/help/plugins/search"><strong>Obsidian Help — Search</strong></a>. Пять минут чтения; там ещё <code>line:</code>, <code>section:</code>, регулярные выражения — пригодятся позже.</p>
+
+<div class="box ask">Что-то непонятно или не работает в твоём графе — спроси меня в чате. Пришли скриншот или свой фильтр, разберём.</div>
+
+<footer class="lesson-foot">
+  <a href="../reference/search-cheatsheet.html">Шпаргалка: поиск и граф</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+
+<script>
+const F = (path, layer) => ({ path, props: { layer } });
+const files = [
+  F('START.md','process'),
+  F('rules/KolnatunRules.md','process'),
+  F('tasks/KolnatunActiveTasks.md','process'),
+  F('architecture/00_overview_and_stats.md','result'),
+  F('architecture/06_adapter_calc_merged.md','result'),
+  F('calculators/scaffold/BL-EXTRACTION-PROCESS-LOG.md','process'),
+  F('calculators/scaffold/NEW-CALCULATOR-START-PROMPT.md','process'),
+  F('calculators/scaffold/KNOWLEDGE-LINT-START-PROMPT.md','process'),
+  F('calculators/scaffold-Reverse/REVERSE-START-PROMPT.md','process'),
+  F('calculators/AcademicEnd/calc-logic.md','result'),
+  F('calculators/AcademicEnd/GetarrStudyPath.md','result'),
+  F('calculators/AcademicEnd/specification/glossary.md','result'),
+  F('calculators/AcademicEnd/python/README.md','port'),
+  F('calculators/SalaryCalc/calc-logic.md','result'),
+  F('calculators/SalaryCalc/CalcNek.md','result'),
+  F('calculators/SalaryCalc/specification/glossary.md','result'),
+  F('calculators/SalaryCalc/python-port-route.md','port'),
+  F('calculators/shared/README.md','process'),
+  F('calculators/shared/INDEX.md','result'),
+  F('calculators/shared/concepts/credit-points.md','result'),
+  F('calculators/shared/concepts/CalcType.md','result'),
+  F('calculators/shared/entities/BL/mdl/mdlGeneral.bas.md','source'),
+  F('calculators/shared/entities/BL/mdl/mdlGeneral.bas/SetErrorObject.md','source'),
+  F('calculators/shared/entities/adapter/cls/clsMainFunctions.cls/Calc.md','source'),
+  F('calculators/shared/entities/kolnatun/mdl/mdlGeneral.bas/AdapterInstance.md','source'),
+];
+const where = fn => files.filter(fn).map(f => f.path);
+const L = f => f.props.layer;
+SearchSim.mount(document.getElementById('sim'), { files, tasks: [
+  { prompt: 'Убери все рабочие промпты scaffold (обе папки: scaffold и scaffold-Reverse). Одним условием.',
+    expect: where(f => !f.path.startsWith('calculators/scaffold')),
+    hint: 'path: ищет часть пути. Какая часть общая у обеих папок?' },
+  { prompt: 'Оставь только страницы исходного кода (entities).',
+    expect: where(f => L(f) === 'source'),
+    hint: 'Без минуса: одно условие path:' },
+  { prompt: 'Цель урока: только результаты + исходники. Убери процесс и порт — путями и именами файлов, без свойства layer.',
+    expect: where(f => L(f) === 'result' || L(f) === 'source'),
+    hint: 'Несколько минусов подряд. Не забудь START.md и два README (один из них — порт, другой — процесс).' },
+  { prompt: 'То же самое, но через свойство layer. Сравни длину с задачей 3.',
+    expect: where(f => L(f) === 'result' || L(f) === 'source'),
+    hint: '[свойство:значение] OR [свойство:значение]' },
+  { prompt: 'Только SalaryCalc без порта, плюс все entities.',
+    expect: where(f => (f.path.startsWith('calculators/SalaryCalc') && L(f) !== 'port') || L(f) === 'source'),
+    hint: 'Скобки: (… -…) OR …' },
+]});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Что делает -path:rules в фильтре графа?',
+    options: ['Скрывает все файлы, путь которых содержит rules',
+              'Показывает только файлы, путь которых содержит rules',
+              'Скрывает только файл, имя которого равно rules',
+              'Скрывает файлы, внутри текста которых встречается rules'],
+    answer: 0, why: 'Минус убирает совпадения; path: проверяет часть пути, не имя и не текст.' },
+  { q: 'Чем file: отличается от path:?',
+    options: ['file: только имя, path: весь путь',
+              'file: весь путь, path: только имя',
+              'file: текст заметки, path: имя файла',
+              'оба смотрят одно и то же'],
+    answer: 0, why: 'file: — имя файла, path: — путь целиком (папки + имя).' },
+  { q: 'Что покажет [layer:source] OR path:concepts ?',
+    options: ['Файлы-исходники и все страницы из concepts',
+              'Только исходники, лежащие внутри папки concepts',
+              'Всё, кроме исходников и папки concepts',
+              'Только страницы concepts со свойством layer'],
+    answer: 0, why: 'OR объединяет два набора. Без OR (только пробел) было бы пересечение.' },
+  { q: 'Почему не Settings → Excluded files, чтобы спрятать scaffold?',
+    options: ['Excluded files прячет их и в поиске',
+              'Excluded files вообще не влияет на граф',
+              'Excluded files удаляет файлы с диска',
+              'Excluded files работает только для вложений'],
+    answer: 0, why: 'По справке Settings: исключённые файлы скрыты в поиске, графе и unlinked mentions. Промпты тебе в поиске нужны.' },
+]);
+</script>
+</body>
+</html>

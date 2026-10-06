@@ -1,0 +1,50 @@
+/* learn-obsidian - shared stylesheet. Every lesson and reference links this file. */
+:root {
+  --bg: #fbfaf7; --fg: #1f1f1f; --muted: #6b6b6b; --line: #e3e0d8;
+  --accent: #6b4fbb; --accent-soft: #efeaf9;
+  --ok: #1d7a46; --ok-soft: #e4f4ea; --bad: #b3261e; --bad-soft: #fbe9e7;
+  --code-bg: #f1efe9; --card: #ffffff;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "Cascadia Code", Consolas, "SFMono-Regular", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#1b1a19; --fg:#e8e6e1; --muted:#a19d95; --line:#3a3835;
+    --accent:#a38cf0; --accent-soft:#2c2640; --ok:#6fd39a; --ok-soft:#1c3326;
+    --bad:#f08a80; --bad-soft:#3b211e; --code-bg:#262523; --card:#222120; }
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--serif); line-height: 1.6; }
+main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+header.lesson-head { border-bottom: 1px solid var(--line); margin-bottom: 2rem; padding-bottom: 1rem; }
+.kicker { font-family: var(--sans); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: 2rem; line-height: 1.2; margin: .3rem 0 .5rem; font-weight: 600; }
+h2 { font-size: 1.3rem; margin: 2.4rem 0 .6rem; font-weight: 600; }
+h3 { font-size: 1.05rem; margin: 1.6rem 0 .4rem; font-family: var(--sans); }
+p, li { max-width: 40rem; }
+.lede { color: var(--muted); font-size: 1.05rem; }
+a { color: var(--accent); }
+code, kbd, pre { font-family: var(--mono); font-size: .88em; }
+code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+pre { background: var(--code-bg); padding: .8rem 1rem; border-radius: 6px; overflow-x: auto; }
+kbd { border: 1px solid var(--line); border-bottom-width: 2px; padding: 0 .35em; border-radius: 4px; font-size: .8em; }
+table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: .9rem; margin: 1rem 0; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+.box.goal { border-left: 4px solid var(--accent); }
+.box.ask { background: var(--accent-soft); border-color: transparent; font-family: var(--sans); font-size: .92rem; }
+.cite { font-family: var(--sans); font-size: .78rem; vertical-align: super; }
+.cite a { text-decoration: none; }
+.steps li { margin: .4rem 0; }
+footer.lesson-foot { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); font-family: var(--sans); font-size: .85rem; color: var(--muted); }
+footer.lesson-foot a { margin-right: 1rem; }
+button, input[type=text] { font-family: var(--sans); font-size: .95rem; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: .45rem .9rem; cursor: pointer; }
+button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+input[type=text] { width: 100%; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); font-family: var(--mono); }
+.feedback { font-family: var(--sans); font-size: .9rem; margin-top: .5rem; padding: .5rem .7rem; border-radius: 6px; display: none; }
+.feedback.ok { display: block; background: var(--ok-soft); color: var(--ok); }
+.feedback.bad { display: block; background: var(--bad-soft); color: var(--bad); }
+@media print { body { background: #fff; color: #000; } .no-print, button, input { display: none !important; } main { padding: 0; } a { color: #000; } }

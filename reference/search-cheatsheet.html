@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Поиск и граф</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>Поиск и фильтр графа</h1>
+  <p class="lede">Один язык для поиска (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>) и для Graph view → Filters → Search files.</p>
+</header>
+
+<h2>Операторы</h2>
+<table>
+  <tr><th>#</th><th>Оператор</th><th>Пример</th><th>Значит</th></tr>
+  <tr><td>1</td><td><code>path:</code></td><td><code>path:shared/entities</code></td><td>путь содержит строку</td></tr>
+  <tr><td>2</td><td><code>file:</code></td><td><code>file:glossary</code></td><td>имя файла содержит строку</td></tr>
+  <tr><td>3</td><td><code>content:</code></td><td><code>content:"nek_zikui"</code></td><td>только текст заметки</td></tr>
+  <tr><td>4</td><td><code>tag:</code></td><td><code>tag:#todo</code></td><td>есть тег</td></tr>
+  <tr><td>5</td><td><code>[prop]</code></td><td><code>[used_by]</code></td><td>свойство есть</td></tr>
+  <tr><td>6</td><td><code>[prop:value]</code></td><td><code>[kind:method]</code></td><td>свойство равно значению</td></tr>
+  <tr><td>7</td><td><code>[prop:null]</code></td><td><code>[used_by:null]</code></td><td>свойство пустое</td></tr>
+  <tr><td>8</td><td><code>line:( )</code></td><td><code>line:(CalcNek mone)</code></td><td>слова в одной строке</td></tr>
+  <tr><td>9</td><td><code>section:( )</code></td><td><code>section:(Relation MasHazmai)</code></td><td>слова в одном разделе</td></tr>
+  <tr><td>10</td><td><code>/regex/</code></td><td><code>/R-AcademicEnd-0\d\d/</code></td><td>регулярное выражение</td></tr>
+</table>
+
+<h2>Логика</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Значит</th></tr>
+  <tr><td>1</td><td><code>a b</code></td><td>a <strong>и</strong> b</td></tr>
+  <tr><td>2</td><td><code>a OR b</code></td><td>a <strong>или</strong> b</td></tr>
+  <tr><td>3</td><td><code>-a</code></td><td>убрать a</td></tr>
+  <tr><td>4</td><td><code>(a OR b) -c</code></td><td>скобки группируют</td></tr>
+  <tr><td>5</td><td><code>"два слова"</code></td><td>точная фраза</td></tr>
+</table>
+
+<h2>Готовые фильтры для Kolnatun</h2>
+<table>
+  <tr><th>#</th><th>Задача</th><th>Фильтр</th></tr>
+  <tr><td>1</td><td>результаты + исходники</td><td><code>-path:calculators/scaffold -path:rules -path:tasks -file:START -path:python -file:README</code></td></tr>
+  <tr><td>2</td><td>то же через свойство (когда появится)</td><td><code>[layer:result] OR [layer:source]</code></td></tr>
+  <tr><td>3</td><td>только исходники</td><td><code>path:shared/entities</code></td></tr>
+  <tr><td>4</td><td>один калькулятор + исходники</td><td><code>(path:calculators/SalaryCalc -path:python) OR path:shared/entities</code></td></tr>
+</table>
+
+<h2>Граф: где что</h2>
+<table>
+  <tr><th>#</th><th>Место</th><th>Зачем</th></tr>
+  <tr><td>1</td><td>Filters → Search files</td><td>фильтр (язык выше)</td></tr>
+  <tr><td>2</td><td>Filters → Attachments</td><td>off = без <code>.mmd</code>, <code>.html</code>, картинок</td></tr>
+  <tr><td>3</td><td>Filters → Orphans</td><td>off = без файлов без связей</td></tr>
+  <tr><td>4</td><td>Groups</td><td>запрос + цвет</td></tr>
+  <tr><td>5</td><td>Local graph</td><td>только соседи открытой заметки, своя глубина и свой фильтр</td></tr>
+  <tr><td>6</td><td>Excluded files (Settings)</td><td>не для графа: прячет и из поиска</td></tr>
+</table>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://obsidian.md/help/plugins/search">Search</a> <a href="https://obsidian.md/help/plugins/graph">Graph view</a> <a href="https://obsidian.md/help/settings">Settings</a> ·
+  <a href="../lessons/0001-graph-filters.html">Урок 0001</a> <a href="glossary.html">Глоссарий</a>
+</footer>
+</main>
+</body>
+</html>
