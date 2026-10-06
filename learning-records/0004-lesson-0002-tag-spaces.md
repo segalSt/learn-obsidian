@@ -8,3 +8,7 @@ YAML list syntax (`- ` before each value) is not yet automatic: the space after 
 
 ## Changes made
 - Feedback for items 6 and 8, the tags row in section 3, rule 6 in section 9 and the cheat sheet: "no spaces *inside* the tag; the space after `-` is list markup".
+
+## Follow-up: "/" in tags
+The exercise asked about `кино/советское` but the lesson only said "/ makes a nested tag" in passing. Rule: anything an exercise or quiz checks must be explained in the lesson first, with an example.
+Added section 3.1 "Синтаксис тегов" (two ways to tag, character rules, nested tags with search / Tags view results), a hands-on Tags view step (`кино/советское` added to Сталкер and Солярис in practice-vault), a quiz question, cheat sheet and glossary rows.

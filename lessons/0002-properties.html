@@ -44,11 +44,45 @@
 <p>Эти имена Obsidian знает сам; все три — списки.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
 <table>
   <tr><th>#</th><th>Свойство</th><th>Что делает</th></tr>
-  <tr><td>1</td><td><code>tags</code></td><td>теги заметки. В свойствах пишутся <strong>без</strong> <code>#</code>. Без пробелов <em>внутри</em> тега (<code>научная_фантастика</code>, <code>sci-fi</code>); пробел после <code>-</code> в начале строки — разметка списка, он не в счёт; не только цифры (<code>1984</code> — не тег, <code>y1984</code> — тег); <code>/</code> делает вложенный тег: <code>кино/советское</code>. Регистр не важен.<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
+  <tr><td>1</td><td><code>tags</code></td><td>теги заметки — короткие метки для поиска и группировки. Синтаксис — ниже, в 3.1.</td></tr>
   <tr><td>2</td><td><code>aliases</code></td><td>другие имена заметки. Начинаешь писать ссылку <code>[[Tarkovsky</code> — в подсказках появится псевдоним со значком изогнутой стрелки; <kbd>Enter</kbd> создаст <code>[[Тарковский|Tarkovsky]]</code>.<span class="cite"><a href="https://obsidian.md/help/aliases">[псевдонимы]</a></span></td></tr>
   <tr><td>3</td><td><code>cssclasses</code></td><td>оформление заметки через CSS. Нам не нужно.</td></tr>
 </table>
 <p>Старые имена <code>tag</code>, <code>alias</code>, <code>cssclass</code> устарели с версии 1.9 — пиши <code>tags</code>, <code>aliases</code>, <code>cssclasses</code>.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></p>
+
+<h3>3.1. Синтаксис тегов</h3>
+<p><strong>Тег</strong> — метка вида <code>#фантастика</code>. По тегу потом ищут (<code>tag:фантастика</code>, урок 0004) и смотрят все теги хранилища списком (Tags view).<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span> Поставить тег можно двумя способами — результат одинаковый:</p>
+<table>
+  <tr><th>#</th><th>Где</th><th>Как пишется</th><th><code>#</code></th></tr>
+  <tr><td>1</td><td>в тексте заметки</td><td><code>Пересмотреть зимой #пересмотреть</code></td><td>нужен: <code>#</code> и сразу слово</td></tr>
+  <tr><td>2</td><td>в свойстве <code>tags</code></td><td><code>tags:</code><br><code>&nbsp;&nbsp;- пересмотреть</code></td><td><strong>не</strong> пишется</td></tr>
+</table>
+<p>В вики, которые пишет Claude, теги ставим только в свойстве <code>tags</code>: их видно сразу, в одном месте.</p>
+
+<p><strong>Из чего состоит тег</strong> (строка <code>  - кино/советское</code>: «<code>- </code>» — разметка списка, тег — <code>кино/советское</code>):<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></p>
+<table>
+  <tr><th>#</th><th>Правило</th><th>Можно</th><th>Нельзя</th></tr>
+  <tr><td>1</td><td>буквы (любой язык), цифры, <code>_</code>, <code>-</code>, <code>/</code>, эмодзи</td><td><code>фантастика</code>, <code>sci-fi</code>, <code>кино/советское</code></td><td>—</td></tr>
+  <tr><td>2</td><td>без пробела внутри — слова склеивают через <code>_</code> или <code>-</code></td><td><code>научная_фантастика</code></td><td><code>научная фантастика</code></td></tr>
+  <tr><td>3</td><td>хотя бы одна не-цифра</td><td><code>y1984</code></td><td><code>1984</code></td></tr>
+  <tr><td>4</td><td>регистр не важен: <code>Кино</code> и <code>кино</code> — один тег</td><td colspan="2">в списке тегов показан так, как написан впервые</td></tr>
+</table>
+
+<p><strong>Что делает <code>/</code> — вложенный тег.</strong> <code>/</code> делит тег на уровни: <code>кино/советское</code> = тег <code>советское</code> внутри тега <code>кино</code>. Как папки, только для меток.<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></p>
+<p>Пример: три заметки, у каждой одна строка в <code>tags</code>.</p>
+<table>
+  <tr><th>#</th><th>Заметка</th><th>Свойство</th></tr>
+  <tr><td>1</td><td>Сталкер (1979)</td><td><code>tags:</code><br><code>&nbsp;&nbsp;- кино/советское</code></td></tr>
+  <tr><td>2</td><td>Солярис (1972)</td><td><code>tags:</code><br><code>&nbsp;&nbsp;- кино/советское</code></td></tr>
+  <tr><td>3</td><td>Матрица (1999)</td><td><code>tags:</code><br><code>&nbsp;&nbsp;- кино/зарубежное</code></td></tr>
+</table>
+<table>
+  <tr><th>#</th><th>Где</th><th>Что получится</th></tr>
+  <tr><td>1</td><td>поиск <code>tag:кино</code></td><td>все три: родитель находит <code>кино</code> и всё, что под ним<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
+  <tr><td>2</td><td>поиск <code>tag:кино/советское</code></td><td>только Сталкер и Солярис</td></tr>
+  <tr><td>3</td><td>Tags view</td><td>деревом: <code>кино</code> → <code>советское</code>, <code>зарубежное</code><span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
+</table>
+<p>Для Kolnatun то же самое: <code>calc/AcademicEnd</code>, <code>calc/SalaryCalc</code> → <code>tag:calc</code> найдёт оба калькулятора.</p>
 
 <h2>4. Чего в свойствах нет</h2>
 <table>
@@ -79,6 +113,7 @@
   <li><strong>Поиск по свойству.</strong> В All properties нажми на <code>director</code> — откроется поиск с уже набранным запросом. Ожидаемо: 2 заметки, <code>Сталкер (1979)</code> и <code>Солярис (1972)</code>. Синтаксис этого запроса разберём в уроке 0004.</li>
   <li><strong>Переименование.</strong> Правый клик по <code>where</code> → переименуй в <code>location</code>. Открой <code>Пикник на обочине</code>: там теперь <code>location: Полка 2</code> — Obsidian поменял все 3 файла сразу.<span class="cite"><a href="https://obsidian.md/help/plugins/properties">[All properties]</a></span> Переименуй обратно в <code>where</code>.</li>
   <li><strong>Псевдоним.</strong> В <code>Солярис (1972)</code>, в разделе «Мой комментарий», набери <code>[[Tarkovsky</code>. Ожидаемо: подсказка со значком изогнутой стрелки → <kbd>Enter</kbd> → <code>[[Тарковский|Tarkovsky]]</code>. Псевдонимы заданы в <code>Люди/Тарковский</code>.</li>
+  <li><strong>Вложенный тег.</strong> <kbd>Ctrl</kbd>+<kbd>P</kbd> → набери <code>tags</code> → открой <strong>Tags view</strong> (список всех тегов хранилища). Ожидаемо: тег <code>кино</code>, а под ним <code>советское</code> — он стоит у <code>Сталкер</code> и <code>Солярис</code>. Рядом без вложения: <code>фантастика</code>, <code>пересмотреть</code>.<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></li>
   <li><strong>Как показывать свойства.</strong> Settings → Editor → <strong>Properties in document</strong>: Visible (таблица, по умолчанию), Hidden (скрыть), Source (показать как YAML-текст).<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Попробуй Source, потом верни Visible.</li>
 </ol>
 <p>Хранилище лежит в git-репозитории курса: твои правки будут видны в <code>git status</code>. Вернуть всё как было: <code>git checkout -- practice-vault</code>.</p>
@@ -146,7 +181,7 @@ LineTagger.mount(document.getElementById('errors'), {
     { text: 'tags:\n  - #фантастика', cat: BAD, why: 'В свойствах теги пишутся без #. В YAML «#» после пробела начинает комментарий — значение потеряется.' },
     { text: 'tags:\n  - научная фантастика', cat: BAD, why: 'Пробел после «-» — это просто разметка списка, он не часть тега. А вот сам тег «научная фантастика» содержит пробел между словами — так нельзя. Можно научная_фантастика или научная-фантастика.' },
     { text: 'tags:\n  - 1984', cat: BAD, why: 'Тег не может состоять только из цифр. Можно y1984.' },
-    { text: 'tags:\n  - кино/советское', cat: OK, why: 'Тег = «кино/советское»: пробела внутри нет (пробел после «-» — разметка списка). / делает вложенный тег: кино → советское.' },
+    { text: 'tags:\n  - кино/советское', cat: OK, why: 'Тег = «кино/советское»: пробела внутри нет (пробел после «-» — разметка списка). / делает вложенный тег: советское внутри кино (см. 3.1).' },
     { text: 'alias:\n  - Solaris', cat: BAD, why: 'alias устарел с версии 1.9. Правильно: aliases.' },
     { text: 'aliases:\n  - Андрей Тарковский\n  - Tarkovsky', cat: OK, why: 'Список, правильное имя, пробел внутри псевдонима можно (это не тег).' },
     { text: 'director:\n  name: Тарковский\n  born: 1932', cat: BAD, why: 'Вложенные свойства не поддерживаются. Лучше ссылка на заметку Люди/Тарковский.' },
@@ -179,6 +214,12 @@ Quiz.mount(document.getElementById('quiz'), [
               'Двумя свойствами used_by в одной заметке',
               'Вложенным свойством used_by: calc: ...'],
     answer: 0, why: 'Несколько значений = List. Два одинаковых имени в заметке нельзя, вложенные свойства не поддерживаются.' },
+  { q: 'У Сталкера тег кино/советское, у Матрицы — кино/зарубежное. Что найдёт поиск tag:кино?',
+    options: ['Обе заметки: родитель находит вложенные теги',
+              'Ничего: тега кино отдельно нигде нет',
+              'Только заметки, где написано ровно кино',
+              'Только Сталкер: он стоит первым в списке'],
+    answer: 0, why: '/ делает вложенный тег; tag:кино находит кино и всё, что под ним.' },
   { q: 'Что даёт свойство aliases в заметке «Тарковский»?',
     options: ['Ссылку можно найти по другому имени',
               'Заметка появляется в двух папках сразу',

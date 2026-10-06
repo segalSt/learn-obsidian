@@ -34,6 +34,15 @@ tags:                              ← Tags: только у tags, без #, б�
   <tr><td>2</td><td><code>aliases</code></td><td>List</td><td>другие имена для ссылок: <code>[[Тарковский|Tarkovsky]]</code></td></tr>
   <tr><td>3</td><td><code>cssclasses</code></td><td>List</td><td>оформление CSS</td></tr>
 </table>
+<h2>Теги</h2>
+<table>
+  <tr><th>#</th><th>Правило</th><th>Пример</th></tr>
+  <tr><td>1</td><td>в тексте — с <code>#</code>; в свойстве <code>tags</code> — без</td><td><code>#пересмотреть</code> / <code>- пересмотреть</code></td></tr>
+  <tr><td>2</td><td>буквы, цифры, <code>_</code>, <code>-</code>, <code>/</code>; без пробела внутри</td><td><code>научная_фантастика</code></td></tr>
+  <tr><td>3</td><td>не только цифры</td><td><code>y1984</code>, не <code>1984</code></td></tr>
+  <tr><td>4</td><td>регистр не важен</td><td><code>Кино</code> = <code>кино</code></td></tr>
+  <tr><td>5</td><td><code>/</code> = вложенный тег; <code>tag:кино</code> находит и <code>кино/советское</code></td><td><code>кино/советское</code>, <code>calc/AcademicEnd</code></td></tr>
+</table>
 <p>Устарели с 1.9: <code>tag</code>, <code>alias</code>, <code>cssclass</code>.</p>
 
 <h2>Нельзя</h2>
