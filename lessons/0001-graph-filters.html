@@ -46,6 +46,10 @@
 
 <h2>4. Практика</h2>
 <p>Песочница — копия части твоего хранилища. Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Текст внутри заметок не ищет (настоящий Obsidian ищет). Сначала пробуй сам, подсказку — только если застрял.</p>
+<div class="box">
+  <strong>Как читать проверку.</strong> Песочница показывает, сколько файлов осталось и сколько нужно, и два списка: «должны исчезнуть, но остались» и «должны остаться, но исчезли». Если какое-то условие не нашло ни одного файла, она скажет об этом отдельно (частые причины: <code>\</code> вместо <code>/</code>, опечатка, <code>*</code>).<br><br>
+  <strong>Разобранный пример.</strong> Убрать правила и задачи: <code>-path:rules -path:tasks</code> — два условия через пробел, у каждого свой минус. Пути — через <code>/</code>, как в Obsidian, звёздочки не нужны.
+</div>
 <div id="sim"></div>
 
 <h2>5. Проверь себя</h2>
@@ -58,7 +62,7 @@
   <li>Шестерёнка справа вверху → <strong>Filters</strong> → в <strong>Search files</strong> вставь свой ответ на задачу 3.</li>
   <li>Там же выключи <strong>Attachments</strong> — уйдут <code>.mmd</code>, <code>.html</code>.</li>
   <li><strong>Groups</strong> → New group → <code>path:shared/entities</code>, выбери цвет. Так исходники видны сразу.</li>
-  <li>Не используй Settings → Files &amp; Links → Excluded files: такие файлы пропадут ещё и из поиска.<span class="cite"><a href="https://obsidian.md/help/settings">[настройки]</a></span></li>
+  <li><strong>Не прячь промпты через Excluded files.</strong> Это другая настройка: Settings → Files &amp; Links → <em>Excluded files</em> — список папок, которые Obsidian делает «невидимыми» во <em>всём</em> хранилище: они пропадают из поиска, графа и unlinked mentions, хуже видны в Quick switcher и подсказках ссылок.<span class="cite"><a href="https://obsidian.md/help/settings">[настройки]</a></span> Файлы остаются на диске и открываются из списка файлов, но искать по промптам ты уже не сможешь. Фильтр графа действует только на граф — поэтому он.</li>
 </ol>
 
 <h2>Главный источник</h2>
@@ -104,21 +108,26 @@ const files = [
 const where = fn => files.filter(fn).map(f => f.path);
 const L = f => f.props.layer;
 SearchSim.mount(document.getElementById('sim'), { files, tasks: [
-  { prompt: 'Убери все рабочие промпты scaffold (обе папки: scaffold и scaffold-Reverse). Одним условием.',
+  { prompt: 'Убери рабочие промпты: обе папки calculators/scaffold и calculators/scaffold-Reverse. Одним условием.',
+    explain: 'Должно остаться 21 из 25.',
     expect: where(f => !f.path.startsWith('calculators/scaffold')),
-    hint: 'path: ищет часть пути. Какая часть общая у обеих папок?' },
-  { prompt: 'Оставь только страницы исходного кода (entities).',
+    hint: 'path: ищет кусок пути, звёздочка не нужна. Какой кусок есть в начале обеих папок? Подставь его после -path:' },
+  { prompt: 'Оставь только страницы исходного кода — всё, что лежит в calculators/shared/entities.',
+    explain: 'Должно остаться 4. Без минуса: условие говорит, что ОСТАВИТЬ.',
     expect: where(f => L(f) === 'source'),
-    hint: 'Без минуса: одно условие path:' },
-  { prompt: 'Цель урока: только результаты + исходники. Убери процесс и порт — путями и именами файлов, без свойства layer.',
+    hint: 'path: + кусок пути entities. Слеши — прямые /.' },
+  { prompt: 'Цель урока: оставь только результаты анализа и исходники. Для этого убери 6 вещей.',
+    explain: 'Убрать:\n  1) папки scaffold и scaffold-Reverse (как в задаче 1)\n  2) папку rules\n  3) папку tasks\n  4) файл START.md\n  5) Python-порт: папку python и файл python-port-route.md\n  6) файл calculators/shared/README.md\nПиши несколько условий с минусом через пробел. Должно остаться 15.',
     expect: where(f => L(f) === 'result' || L(f) === 'source'),
-    hint: 'Несколько минусов подряд. Не забудь START.md и два README (один из них — порт, другой — процесс).' },
-  { prompt: 'То же самое, но через свойство layer. Сравни длину с задачей 3.',
+    hint: 'Начни с ответа задачи 1 и добавляй по одному: -path:rules -path:tasks … Для 4 и 6 удобен file: (часть имени файла). Для 5 одно слово python покрывает оба.' },
+  { prompt: 'То же, что задача 3, но через свойство layer.',
+    explain: 'У каждого файла в списке выше есть фиолетовая метка layer:… — это свойство файла.\nЗначения: result (результат), source (исходник), process (промпты), port (Python-порт).\nСинтаксис свойства: [имя:значение], например [layer:port]. Два условия через OR = «или».\nДолжно остаться 15 — те же файлы, что в задаче 3, но фильтр короче.',
     expect: where(f => L(f) === 'result' || L(f) === 'source'),
-    hint: '[свойство:значение] OR [свойство:значение]' },
-  { prompt: 'Только SalaryCalc без порта, плюс все entities.',
+    hint: '[layer:result] OR [layer:…]' },
+  { prompt: 'Только SalaryCalc без Python-порта, плюс все entities.',
+    explain: 'Должно остаться 7: 3 файла SalaryCalc + 4 entities.',
     expect: where(f => (f.path.startsWith('calculators/SalaryCalc') && L(f) !== 'port') || L(f) === 'source'),
-    hint: 'Скобки: (… -…) OR …' },
+    hint: 'Две части через OR. Первая в скобках: (path:… -path:…). Вторая — ответ задачи 2.' },
 ]});
 Quiz.mount(document.getElementById('quiz'), [
   { q: 'Что делает -path:rules в фильтре графа?',

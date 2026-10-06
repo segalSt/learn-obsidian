@@ -111,9 +111,31 @@
     root.append(playLabel, play, count, list);
     show('');
 
+    function diagnose(q) {
+      const notes = [];
+      tokenize(q).forEach(tok => {
+        if (!tok || typeof tok !== 'object') return;
+        const s = tok.term, shown = (tok.neg ? '-' : '') + s;
+        if (s.includes('\\')) notes.push(`«${shown}»: в Obsidian части пути разделяются через / (прямой слеш), не через \\.`);
+        if (s.includes('*')) notes.push(`«${shown}»: звёздочка здесь не шаблон, она ищется как обычный символ. path: и так ищет любую часть пути — просто убери *.`);
+        const hits = files.filter(termFn(s)).length;
+        if (hits === 0) notes.push(`«${shown}»: под «${s.replace(/^-/, '')}» не подходит ни один файл — проверь опечатку или слеши.` + (tok.neg ? ' С минусом такое условие ничего не убирает.' : ' Без минуса такое условие убирает всё.'));
+      });
+      return notes;
+    }
+    function listLine(title, arr) {
+      if (!arr.length) return null;
+      const d = el('div'); d.style.marginTop = '.3rem';
+      d.appendChild(el('strong', {}, `${title} (${arr.length}):`));
+      const ul = el('ul'); ul.style.margin = '.2rem 0 0 1rem'; ul.style.padding = '0';
+      arr.forEach(x => ul.appendChild(el('li', {}, x)));
+      d.appendChild(ul); return d;
+    }
+
     (cfg.tasks || []).forEach((t, n) => {
       const box = el('div', { className: 'task' });
       box.appendChild(el('div', {}, `${n + 1}. ${t.prompt}`));
+      if (t.explain) { const ex = el('div', { className: 'hint' }, t.explain); ex.style.whiteSpace = 'pre-line'; box.appendChild(ex); }
       const row = el('div', { className: 'row' });
       const inp = el('input', { type: 'text', placeholder: 'твой фильтр' });
       const btn = el('button', {}, 'Проверить');
@@ -125,12 +147,13 @@
         const want = new Set(t.expect);
         const extra = files.filter((f, i) => res[i] && !want.has(f.path)).map(f => f.path);
         const miss = files.filter((f, i) => !res[i] && want.has(f.path)).map(f => f.path);
-        if (!extra.length && !miss.length) { fb.className = 'feedback ok'; fb.textContent = 'Верно. Ровно нужные файлы.'; }
-        else {
-          fb.className = 'feedback bad';
-          fb.textContent = (extra.length ? `Лишние (${extra.length}): ${extra.slice(0, 3).join(', ')}${extra.length > 3 ? '…' : ''}. ` : '') +
-            (miss.length ? `Пропали нужные (${miss.length}): ${miss.slice(0, 3).join(', ')}${miss.length > 3 ? '…' : ''}.` : '');
-        }
+        fb.textContent = '';
+        if (!extra.length && !miss.length) { fb.className = 'feedback ok'; fb.textContent = `Верно. Осталось ровно ${want.size} нужных файлов.`; return; }
+        fb.className = 'feedback bad';
+        fb.appendChild(el('div', {}, `Осталось ${res.filter(Boolean).length} файлов, нужно ${want.size}.`));
+        const why = diagnose(inp.value);
+        if (why.length) { const w = el('div'); w.style.marginTop = '.3rem'; why.forEach(x => w.appendChild(el('div', {}, '⚠ ' + x))); fb.appendChild(w); }
+        [listLine('Должны исчезнуть, но остались', extra), listLine('Должны остаться, но исчезли', miss)].forEach(x => x && fb.appendChild(x));
       }
       btn.onclick = check; inp.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
       root.appendChild(box);
