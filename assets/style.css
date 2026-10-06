@@ -16,13 +16,13 @@
 * { box-sizing: border-box; }
 html { font-size: 17px; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--serif); line-height: 1.6; }
-main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+main { width: 80%; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+@media (max-width: 40rem) { main { width: auto; } }
 header.lesson-head { border-bottom: 1px solid var(--line); margin-bottom: 2rem; padding-bottom: 1rem; }
 .kicker { font-family: var(--sans); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
 h1 { font-size: 2rem; line-height: 1.2; margin: .3rem 0 .5rem; font-weight: 600; }
 h2 { font-size: 1.3rem; margin: 2.4rem 0 .6rem; font-weight: 600; }
 h3 { font-size: 1.05rem; margin: 1.6rem 0 .4rem; font-family: var(--sans); }
-p, li { max-width: 40rem; }
 .lede { color: var(--muted); font-size: 1.05rem; }
 a { color: var(--accent); }
 code, kbd, pre { font-family: var(--mono); font-size: .88em; }
