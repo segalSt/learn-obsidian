@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · Анатомия заметки</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/line-tagger.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0001 · Основы · ~15 минут</div>
+  <h1>Анатомия заметки</h1>
+  <p class="lede">Каждая заметка — обычный текстовый файл из трёх частей. Научишься видеть эти части и переключать вид заметки.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Открыть любую заметку — из медиатеки или из Kolnatun — и за 10 секунд показать: где свойства, где заголовки, где текст.
+</div>
+
+<h2>1. Хранилище и заметка</h2>
+<p><strong>Vault (хранилище)</strong> — обычная папка на диске. <strong>Заметка</strong> — обычный файл <code>.md</code> (Markdown, простой текст) в этой папке или её подпапках.<span class="cite"><a href="https://obsidian.md/help/data-storage">[хранение]</a></span> Никакой базы данных: открой файл в Блокноте — увидишь то же самое, только без оформления.</p>
+<p>В корне хранилища Obsidian создаёт скрытую папку <code>.obsidian</code> — там настройки этого хранилища: горячие клавиши, тема, плагины.<span class="cite"><a href="https://obsidian.md/help/data-storage">[хранение]</a></span> Заметки там не лежат.</p>
+
+<h2>2. Три части заметки</h2>
+<table>
+  <tr><th>#</th><th>Часть</th><th>Как выглядит в файле</th><th>Зачем</th></tr>
+  <tr><td>1</td><td><strong>Свойства</strong> (properties)</td><td>в самом начале, между двумя строками <code>---</code>; каждая строка <code>имя: значение</code></td><td>данные о заметке: год, статус, где лежит, кто использует. По ним работают поиск, Bases, Dataview.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span></td></tr>
+  <tr><td>2</td><td><strong>Заголовки</strong></td><td>строка с <code>#</code> в начале: <code>#</code> — уровень 1, <code>##</code> — уровень 2, … до 6<span class="cite"><a href="https://obsidian.md/help/syntax">[синтаксис]</a></span></td><td>скелет заметки; на заголовок можно сослаться</td></tr>
+  <tr><td>3</td><td><strong>Текст</strong> (body)</td><td>всё остальное: абзацы, списки, таблицы, ссылки <code>[[…]]</code></td><td>содержание</td></tr>
+</table>
+<p>Внутри текста есть ещё мелочь, которую стоит узнавать: <code>%% … %%</code> — комментарий, виден только при редактировании.<span class="cite"><a href="https://obsidian.md/help/syntax">[синтаксис]</a></span></p>
+
+<h2>3. Три вида одной заметки</h2>
+<table>
+  <tr><th>#</th><th>Вид</th><th>Что видишь</th></tr>
+  <tr><td>1</td><td><strong>Reading view</strong> (чтение)</td><td>готовый текст без значков Markdown</td></tr>
+  <tr><td>2</td><td><strong>Live Preview</strong> (редактирование)</td><td>оформленный текст, значки видны только в строке, где курсор</td></tr>
+  <tr><td>3</td><td><strong>Source mode</strong> (редактирование)</td><td>файл как есть, все <code>#</code>, <code>**</code>, <code>---</code></td></tr>
+</table>
+<p><kbd>Ctrl</kbd>+<kbd>E</kbd> переключает <em>чтение ⇄ редактирование</em>. Какой режим редактирования (Live Preview или Source) — задаётся в Settings → Editor → Default editing mode.<span class="cite"><a href="https://obsidian.md/help/edit-and-read">[виды]</a></span> Для изучения анатомии удобнее Source mode: видно всё.</p>
+
+<h2>4. Практика: что это за строка?</h2>
+<p>Это заметка <code>Сталкер (1979).md</code> из учебного хранилища — так, как она лежит в файле (Source mode). Для каждой строки нажми, к какой части она относится. Ответ виден сразу.</p>
+<div id="tagger"></div>
+
+<p>Теперь та же анатомия в твоём Kolnatun: страница <code>SetErrorObject.md</code> — свойства <code>type</code>, <code>kind</code>, <code>source</code>, <code>line</code>, <code>used_by</code> между <code>---</code>, потом заголовок <code># SetErrorObject</code>, потом текст и таблица. Устроено одинаково.</p>
+
+<h2>5. Проверь себя</h2>
+<p>По памяти, не листая вверх.</p>
+<div id="quiz"></div>
+
+<h2>6. Теперь в настоящем Obsidian</h2>
+<ol class="steps">
+  <li>Открой учебное хранилище: в Obsidian — значок хранилищ слева внизу → <strong>Open folder as vault</strong> → <code>C:\_repos\GitHub\segal.st\teach\learn-obsidian\practice-vault</code>. Рабочий Kolnatun не трогаем.</li>
+  <li>Открой <code>Медиатека/Фильмы/Сталкер (1979)</code>. Свойства показаны таблицей сверху — это Live Preview.</li>
+  <li>Нажми <kbd>Ctrl</kbd>+<kbd>E</kbd> — Reading view. Ещё раз — обратно. Найди, куда пропал комментарий <code>%% … %%</code>.</li>
+  <li>Settings → Editor → Default editing mode → <strong>Source mode</strong>. Открой заметку заново: теперь видно <code>---</code> и все строки свойств как в упражнении. Потом верни Live Preview, если так удобнее.</li>
+  <li>Открой <code>Kolnatun/SetErrorObject</code> и назови вслух три части.</li>
+</ol>
+
+<h2>Главный источник</h2>
+<p><a href="https://obsidian.md/help/syntax"><strong>Obsidian Help — Basic formatting syntax</strong></a>: заголовки, списки, жирный, комментарии. 5–7 минут. Потом — <a href="https://obsidian.md/help/edit-and-read">Views and editing mode</a>.</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. Можно прислать скриншот заметки, разберём её части вместе.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <span>Дальше: 0002 Свойства (скоро)</span>
+  <a href="../reference/note-anatomy.html">Шпаргалка: заметка</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+const P = 'граница свойств', S = 'свойство', H = 'заголовок', T = 'текст';
+LineTagger.mount(document.getElementById('tagger'), {
+  categories: [P, S, H, T],
+  lines: [
+    { text: '---', cat: P, why: 'Первая строка файла: дальше идут свойства.' },
+    { text: 'type: film', cat: S, why: 'имя: значение, между двумя ---.' },
+    { text: 'year: 1979', cat: S, why: 'Число — тоже свойство.' },
+    { text: 'director: "[[Тарковский]]"', cat: S, why: 'Ссылка внутри свойства, поэтому в кавычках.' },
+    { text: 'tags:', cat: S, why: 'Свойство-список: значения идут ниже, каждое с «-».' },
+    { text: '  - фантастика', cat: S, why: 'Элемент списка tags — всё ещё внутри свойств.' },
+    { text: '---', cat: P, why: 'Вторая --- закрывает свойства.' },
+    { text: '# Сталкер (1979)', cat: H, why: 'Один # = заголовок уровня 1.' },
+    { text: '## Мой комментарий', cat: H, why: 'Два # = уровень 2.' },
+    { text: 'Медленный, но держит. Пересмотреть зимой.', cat: T, why: 'Обычный абзац.' },
+    { text: 'Снят по книге [[Пикник на обочине]].', cat: T, why: 'Ссылка внутри текста — всё равно текст.' },
+    { text: '%% найти версию с хорошими субтитрами %%', cat: T, why: 'Комментарий — часть текста, виден только при редактировании.' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Что такое заметка в Obsidian?',
+    options: ['Обычный .md файл в папке хранилища',
+              'Запись в базе данных внутри Obsidian',
+              'Файл в облаке Obsidian, вне диска',
+              'Скрытый файл в папке .obsidian хранилища'],
+    answer: 0, why: 'Заметки — Markdown-файлы в папке хранилища; .obsidian хранит только настройки.' },
+  { q: 'Где в файле пишутся свойства?',
+    options: ['В начале заметки, между двумя ---',
+              'В конце заметки, после всех заголовков',
+              'В отдельном файле рядом с заметкой',
+              'В любом месте, после символа #'],
+    answer: 0, why: 'Свойства — блок в самом начале файла между двумя строками ---.' },
+  { q: 'Что переключает Ctrl+E?',
+    options: ['Режим чтения и режим редактирования заметки',
+              'Live Preview и Source mode редактора',
+              'Открытую заметку и граф всего хранилища',
+              'Свойства заметки и её основной текст'],
+    answer: 0, why: 'Ctrl+E: Reading ⇄ Editing. Live Preview / Source mode выбирается в Settings → Editor.' },
+  { q: 'Какая запись ссылки в свойстве правильная?',
+    options: ['director: "[[Тарковский]]"',
+              'director: [[Тарковский]]',
+              'director: (Тарковский)',
+              'director: #Тарковский'],
+    answer: 0, why: 'По справке Properties ссылки в текстовых свойствах берутся в кавычки.' },
+]);
+</script>
+</body>
+</html>

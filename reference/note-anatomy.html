@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Заметка</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>Заметка: части и синтаксис</h1>
+  <p class="lede">Заметка = файл <code>.md</code> в папке хранилища. Три части: свойства, заголовки, текст.</p>
+</header>
+
+<h2>Скелет файла</h2>
+<pre>---
+type: film                    ← свойство: имя: значение
+year: 1979                    ← число
+director: "[[Тарковский]]"    ← ссылка в свойстве — в кавычках
+tags:                         ← список
+  - фантастика
+---
+# Сталкер (1979)              ← заголовок 1
+## Мой комментарий            ← заголовок 2
+Текст, **жирный**, *курсив*, [[ссылка]].
+%% комментарий: виден только при редактировании %%</pre>
+
+<h2>Синтаксис текста</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Получаешь</th></tr>
+  <tr><td>1</td><td><code># … ######</code></td><td>заголовок уровня 1–6</td></tr>
+  <tr><td>2</td><td><code>**жирный**</code> / <code>*курсив*</code></td><td>выделение</td></tr>
+  <tr><td>3</td><td><code>- пункт</code> / <code>1. пункт</code></td><td>список</td></tr>
+  <tr><td>4</td><td><code>- [ ] задача</code> / <code>- [x] готово</code></td><td>чекбокс</td></tr>
+  <tr><td>5</td><td><code>&gt; текст</code></td><td>цитата</td></tr>
+  <tr><td>6</td><td><code>`код`</code>, блок из <code>```</code></td><td>код</td></tr>
+  <tr><td>7</td><td><code>[[Заметка]]</code></td><td>ссылка на заметку</td></tr>
+  <tr><td>8</td><td><code>%% … %%</code></td><td>комментарий</td></tr>
+</table>
+
+<h2>Виды</h2>
+<table>
+  <tr><th>#</th><th>Вид</th><th>Как попасть</th></tr>
+  <tr><td>1</td><td>Reading view</td><td><kbd>Ctrl</kbd>+<kbd>E</kbd> из редактирования</td></tr>
+  <tr><td>2</td><td>Live Preview</td><td>Settings → Editor → Default editing mode</td></tr>
+  <tr><td>3</td><td>Source mode</td><td>там же</td></tr>
+</table>
+
+<h2>Свойства: быстрые факты</h2>
+<table>
+  <tr><th>#</th><th>Факт</th></tr>
+  <tr><td>1</td><td>Добавить свойство: <kbd>Ctrl</kbd>+<kbd>;</kbd> или набрать <code>---</code> в первой строке</td></tr>
+  <tr><td>2</td><td>Типы: Text, List, Number, Checkbox, Date, Date &amp; time, Tags</td></tr>
+  <tr><td>3</td><td>Встроенные: <code>tags</code>, <code>aliases</code>, <code>cssclasses</code></td></tr>
+  <tr><td>4</td><td>Имя свойства в заметке — одно (нельзя два <code>tags</code>)</td></tr>
+  <tr><td>5</td><td>Вложенные свойства не поддерживаются в таблице свойств — смотри в Source mode</td></tr>
+</table>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://obsidian.md/help/data-storage">Data storage</a> <a href="https://obsidian.md/help/syntax">Syntax</a> <a href="https://obsidian.md/help/properties">Properties</a> <a href="https://obsidian.md/help/edit-and-read">Views</a> ·
+  <a href="../lessons/0001-note-anatomy.html">Урок 0001</a> <a href="glossary.html">Глоссарий</a> <a href="../index.html">Все уроки</a>
+</footer>
+</main>
+</body>
+</html>
