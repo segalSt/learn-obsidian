@@ -24,9 +24,11 @@ Next session focus: **continue the Obsidian course from the CLI (Claude Code)**:
 | 4 | 0004 Search | - | planned |
 | 5 | 0005 Graph filters | `lessons/0005-graph-filters.html` | done once, reworked after feedback |
 | 6 | 0006 Dataview / 0007 Bases | - | planned |
+| 7 | 0008 LLM-wiki (Karpathy pattern) + Obsidian | `lessons/0008-llm-wiki.html`, vault `practice-llm-wiki/` | ready (2026-10-06), overview, readable any time |
 
 Components in `assets/` (reuse, don't inline): `style.css`, `quiz.js` (equal-length options, shuffled), `search-sim.js` (Obsidian search simulator with diagnostic feedback), `line-tagger.js` ("what is this line" exercise).
 `practice-vault/` = separate vault for hands-on steps; extend it per lesson (e.g. notes with all property types for 0002).
+`practice-llm-wiki/` = second practice vault (mini LLM-wiki with `CLAUDE.md` schema, raw / wiki / index / log) for lesson 0008; user runs Claude Code there. Keep it separate so practice-vault counts in 0002 stay valid.
 
 ## How each lesson is made (the user's rules)
 1. Lessons in Russian; Obsidian terms / code / paths in English. Short, concrete, examples from Kolnatun + media wiki.

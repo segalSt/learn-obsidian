@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0008 · LLM-wiki и Obsidian</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/line-tagger.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0008 · Паттерн · ~30 минут · можно читать в любой момент курса</div>
+  <h1>LLM-wiki: паттерн Карпати и Obsidian</h1>
+  <p class="lede">Зачем вообще весь курс: Claude пишет вики, ты её читаешь и проверяешь в Obsidian. Разберём паттерн по исходному тексту Андрея Карпати и разложим по нему твой Kolnatun и медиатеку.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Для любого файла Kolnatun сказать, к какому слою он относится (raw / wiki / schema), для любой просьбы к Claude — какая это операция (ingest / query / lint), и знать, каким инструментом Obsidian это проверить.
+</div>
+
+<p>Источник всего урока — один файл: <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f"><strong>Karpathy, «LLM Wiki»</strong></a> (gist). Ссылки <span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span> ведут туда. Сам Карпати пишет, что текст намеренно абстрактный: структуру папок, схему и формат страниц ты подбираешь под себя вместе с агентом.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></p>
+
+<h2>1. Проблема: каждый раз с нуля</h2>
+<p>Обычная работа LLM с документами — <strong>RAG</strong> (retrieval-augmented generation): загружаешь файлы, на каждый вопрос модель ищет подходящие куски и собирает ответ. Работает, но знание <em>не накапливается</em>: сложный вопрос по пяти документам — и модель снова ищет и склеивает те же куски.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></p>
+<p>Идея LLM-wiki: модель <strong>постепенно строит и поддерживает постоянную вики</strong> — набор связанных Markdown-файлов между тобой и источниками. Новый источник она не просто индексирует, а встраивает: обновляет страницы сущностей, пересматривает сводки, отмечает, где новые данные противоречат старым. Знание «компилируется» один раз и потом <em>поддерживается в актуальном виде</em>.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></p>
+<table>
+  <tr><th>#</th><th></th><th>RAG</th><th>LLM-wiki</th></tr>
+  <tr><td>1</td><td>Когда модель «понимает» источники</td><td>на каждом вопросе заново</td><td>один раз, при добавлении источника</td></tr>
+  <tr><td>2</td><td>Перекрёстные ссылки, противоречия</td><td>ищутся каждый раз</td><td>уже записаны в страницах</td></tr>
+  <tr><td>3</td><td>Что остаётся после вопроса</td><td>ответ в истории чата</td><td>хороший ответ можно сохранить новой страницей</td></tr>
+</table>
+
+<h2>2. Роли: кто что делает</h2>
+<table>
+  <tr><th>#</th><th>Кто</th><th>Делает</th></tr>
+  <tr><td>1</td><td><strong>Ты</strong></td><td>подбираешь источники, направляешь анализ, задаёшь вопросы, решаешь, что всё это значит. Вики сам не пишешь (или почти не пишешь).</td></tr>
+  <tr><td>2</td><td><strong>LLM</strong> (у нас — Claude Code)</td><td>всё остальное: сводки, перекрёстные ссылки, раскладка по страницам, учёт.</td></tr>
+  <tr><td>3</td><td><strong>Obsidian</strong></td><td>место, где ты читаешь результат: идёшь по ссылкам, смотришь граф, читаешь обновлённые страницы.</td></tr>
+</table>
+<p>Формула Карпати: <strong>«Obsidian — это IDE, LLM — программист, вики — кодовая база».</strong> Он держит агента открытым с одной стороны экрана, Obsidian — с другой, и смотрит правки в реальном времени.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></p>
+<p>Почему это работает: скучная часть вики — не чтение и не мысли, а <em>учёт</em> (обновить ссылки, поддержать сводки, заметить противоречие). Люди бросают вики, потому что учёт растёт быстрее пользы. LLM не устаёт и может поправить 15 файлов за проход.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></p>
+
+<h2>3. Три слоя</h2>
+<table>
+  <tr><th>#</th><th>Слой</th><th>Что это</th><th>Кто пишет</th></tr>
+  <tr><td>1</td><td><strong>Raw sources</strong> (источники)</td><td>твоя подборка исходных документов: статьи, картинки, данные. <strong>Неизменяемые</strong>: LLM их читает, но никогда не правит. Это источник истины.</td><td>ты</td></tr>
+  <tr><td>2</td><td><strong>Wiki</strong></td><td>папка Markdown-страниц: сводки, сущности, понятия, сравнения, обзор.</td><td>только LLM; ты читаешь</td></tr>
+  <tr><td>3</td><td><strong>Schema</strong> (схема)</td><td>документ с правилами: как устроена вики, какие соглашения, что делать при ingest / query / lint. Для Claude Code — <code>CLAUDE.md</code>. Самый важный файл: он делает из чат-бота дисциплинированного ведущего вики.</td><td>ты и LLM вместе, постепенно</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Описание слоёв — <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Карпати, раздел Architecture</a>.</p>
+
+<h3>Слои в твоих хранилищах</h3>
+<table>
+  <tr><th>#</th><th>Слой</th><th>Kolnatun</th><th>Медиатека</th></tr>
+  <tr><td>1</td><td>Raw</td><td>исходники VB6 в <code>Main\Dev</code> — Claude их никогда не правит. Лежат <em>вне</em> хранилища</td><td>твои заметки после просмотра, статьи и рецензии</td></tr>
+  <tr><td>2</td><td>Wiki</td><td><code>calculators/shared/entities</code>, <code>shared/concepts</code>, документы калькуляторов (<code>calc-logic.md</code> …)</td><td>страницы фильмов, книг, людей, тем</td></tr>
+  <tr><td>3</td><td>Schema</td><td><code>shared/README.md</code> (папки, свойства, кто пишет) + <code>scaffold/</code> (правила процесса)</td><td><code>CLAUDE.md</code> — образец в <code>practice-llm-wiki</code></td></tr>
+</table>
+<p>Твой <code>shared/README.md</code> сам говорит об этом: «Pattern: LLM wiki (sources = VB6 source in <code>Main\Dev</code>, never edited; pages = this folder…; schema = this file + <code>scaffold/</code>)».</p>
+
+<h2>4. Три операции</h2>
+<table>
+  <tr><th>#</th><th>Операция</th><th>Что происходит</th><th>Kolnatun</th></tr>
+  <tr><td>1</td><td><strong>Ingest</strong> (загрузить)</td><td>кладёшь новый источник в raw и просишь обработать. LLM читает, обсуждает с тобой главное, пишет страницу-сводку, обновляет index, страницы сущностей и понятий, дописывает log. Один источник может задеть 10–15 страниц. Карпати предпочитает по одному источнику и следить.</td><td>извлечение калькулятора, шаг 10 (запланирован в <code>shared/README.md</code>): для каждого внешнего вызова найти или создать страницу в <code>shared/entities</code> и добавить строку калькулятора</td></tr>
+  <tr><td>2</td><td><strong>Query</strong> (спросить)</td><td>задаёшь вопрос. LLM ищет страницы (сначала по index), читает, отвечает со ссылками. Главное: <strong>хороший ответ сохраняют обратно в вики новой страницей</strong>, чтобы он не пропал в истории чата.</td><td>«что общего у AcademicEnd и SalaryCalc?» → ответ стоит сохранить в <code>shared/concepts</code></td></tr>
+  <tr><td>3</td><td><strong>Lint</strong> (проверить)</td><td>периодическая проверка здоровья: противоречия между страницами, устаревшие утверждения, страницы-сироты без входящих ссылок, понятия без своей страницы, недостающие ссылки, пробелы в данных.</td><td><code>scaffold/KNOWLEDGE-LINT-START-PROMPT.md</code> → отчёт <code>shared/lint-report.md</code>; только отчёт, никаких правок</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Операции — <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Карпати, раздел Operations</a>. Kolnatun — из <code>shared/README.md</code> и <code>scaffold/</code>.</p>
+
+<h2>5. Два служебных файла: index и log</h2>
+<table>
+  <tr><th>#</th><th>Файл</th><th>Что внутри</th><th>Зачем</th></tr>
+  <tr><td>1</td><td><code>index.md</code></td><td>каталог: каждая страница — ссылка + одна строка описания, по категориям (сущности, понятия, источники). Обновляется при каждом ingest.</td><td>отвечая на вопрос, LLM сначала читает index, потом нужные страницы. Карпати: хватает примерно до ~100 источников и сотен страниц — без отдельной поисковой системы.</td></tr>
+  <tr><td>2</td><td><code>log.md</code></td><td>журнал по времени, только дописывается: ingest, query, lint. Заголовок каждой записи в одном формате: <code>## [2026-10-06] ingest | Название</code></td><td>история вики; LLM видит, что делали недавно. Последние 5 записей: <code>grep "^## \[" log.md | tail -5</code></td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Раздел <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Indexing and logging</a>.</p>
+<p>В Kolnatun роль index играет <code>shared/INDEX.md</code> — там ещё и живые таблицы Dataview. А <code>scaffold/extraction-log.md</code> — журнал <em>решений процесса</em>, не журнал ingest. Журнала «что и когда загружено в shared» у тебя пока нет — кандидат в схему.</p>
+
+<h2>6. Где здесь Obsidian</h2>
+<p>Obsidian в паттерне — только для чтения и проверки. Что из него нужно и в каком уроке курса:</p>
+<table>
+  <tr><th>#</th><th>Задача читателя вики</th><th>Инструмент Obsidian</th><th>Урок</th></tr>
+  <tr><td>1</td><td>понять, что за страница, и отфильтровать по слою</td><td>свойства (properties), All properties</td><td>0002</td></tr>
+  <tr><td>2</td><td>пройти по перекрёстным ссылкам; увидеть, кто ссылается на страницу</td><td>ссылки <code>[[…]]</code> и <strong>Backlinks</strong> — панель справа: <em>Linked mentions</em> (кто ссылается) и <em>Unlinked mentions</em> (где имя заметки написано текстом без ссылки)<span class="cite"><a href="https://obsidian.md/help/plugins/backlinks">[backlinks]</a></span></td><td>0003</td></tr>
+  <tr><td>3</td><td>найти страницы по тексту, пути, свойству</td><td>Search</td><td>0004</td></tr>
+  <tr><td>4</td><td>увидеть форму вики: хабы (много связей) и сироты</td><td><strong>Graph view</strong>. Карпати называет его лучшим способом увидеть форму вики.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span> Filters → <strong>Orphans</strong> — показывать ли заметки без единой ссылки. <strong>Local graph</strong> — только связи открытой заметки (команда Open local graph).<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span></td><td>0005</td></tr>
+  <tr><td>5</td><td>таблицы по свойствам: «что общее», «что не покрыто»</td><td>Dataview (плагин: запросы по frontmatter)<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span>, Bases</td><td>0006, 0007</td></tr>
+  <tr><td>6</td><td>быстро положить статью из браузера в raw</td><td>Obsidian Web Clipper — расширение браузера, превращает статью в Markdown<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></td><td>—</td></tr>
+  <tr><td>7</td><td>история правок Claude</td><td>не Obsidian, а git: вики — обычный репозиторий Markdown-файлов<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></td><td>—</td></tr>
+</table>
+<p>Отсюда порядок курса: свойства и ссылки — это то, что <em>пишет</em> Claude; поиск, граф, Dataview — то, чем ты это <em>читаешь</em>.</p>
+
+<h2>7. Что писать в схему, чтобы вики хорошо читалась в Obsidian</h2>
+<p>Схема — главный рычаг: Claude делает то, что там написано. Пункты, которые прямо влияют на то, что ты увидишь в Obsidian:</p>
+<table>
+  <tr><th>#</th><th>Пункт схемы</th><th>Что даёт в Obsidian</th></tr>
+  <tr><td>1</td><td>таблица свойств: имя, тип, на каких страницах, значения (как <code>PropertiesTable</code> в <code>shared/README.md</code>)</td><td>фильтры поиска и графа, Dataview работают одинаково на всех страницах</td></tr>
+  <tr><td>2</td><td>правила свойств из урока 0002: одно имя = один тип, списки через <code>- </code>, ссылки в кавычках, без вложенных</td><td>All properties без мусора; свойства не ломаются</td></tr>
+  <tr><td>3</td><td>каждое упоминание другой страницы — ссылка <code>[[…]]</code></td><td>backlinks и граф показывают реальные связи</td></tr>
+  <tr><td>4</td><td>каждый факт со ссылкой на источник (у тебя — <code>no-assumptions-rule.md</code>)</td><td>от страницы можно дойти до источника и проверить</td></tr>
+  <tr><td>5</td><td>папки = виды страниц (<code>entities/</code>, <code>concepts/</code>)</td><td>фильтр <code>path:</code> и группы графа по папкам</td></tr>
+  <tr><td>6</td><td>формат index и log</td><td>ты и Claude быстро находите страницы и последние изменения</td></tr>
+</table>
+<p>Образец такой схемы для медиатеки — <code>practice-llm-wiki/CLAUDE.md</code>. Её стоит развивать вместе с Claude по мере работы — так советует и Карпати.<span class="cite"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">[Карпати]</a></span></p>
+
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша / команда</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Command palette: команды по имени<span class="cite"><a href="https://obsidian.md/help/plugins/command-palette">[команды]</a></span></td></tr>
+  <tr><td>2</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open local graph</code></td><td>граф связей открытой заметки<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span></td></tr>
+  <tr><td>3</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Backlinks: Show backlinks</code></td><td>панель backlinks, если её не видно справа<span class="cite"><a href="https://obsidian.md/help/plugins/backlinks">[backlinks]</a></span></td></tr>
+</table>
+<p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
+
+<h2>8. Практика: какой это слой?</h2>
+<p>Файлы и папки из Kolnatun и учебной вики. «Служебный» — index или log.</p>
+<div id="layers"></div>
+
+<h2>9. Практика: какая это операция?</h2>
+<p>Просьбы к Claude. Определи операцию.</p>
+<div id="ops"></div>
+
+<h2>10. Проверь себя</h2>
+<div id="quiz"></div>
+
+<h2>11. Теперь в Obsidian и Claude Code</h2>
+<p>Для этого урока есть отдельное хранилище — маленькая готовая LLM-wiki медиатеки: <code>practice-llm-wiki</code> (рядом с <code>practice-vault</code>). В ней уже сделаны два ingest (Сталкер, Солярис), третий источник ждёт тебя.</p>
+<ol class="steps">
+  <li><strong>Открой.</strong> Obsidian → Open folder as vault → <code>C:\_repos\GitHub\segal.st\teach\learn-obsidian\practice-llm-wiki</code>.</li>
+  <li><strong>Найди слои.</strong> <code>raw/</code> — 3 заметки, <code>wiki/</code> — 6 страниц, <code>CLAUDE.md</code> — схема, плюс <code>index.md</code> и <code>log.md</code>. Прочитай <code>CLAUDE.md</code> — это то, что Claude прочтёт первым.</li>
+  <li><strong>Связи.</strong> Открой <code>wiki/Люди/Тарковский</code>, посмотри панель Backlinks. Ожидаемо: в Linked mentions — страницы, где есть <code>[[Тарковский]]</code> (фильмы, <code>index</code>); в Unlinked mentions — места, где «Тарковский» написан просто текстом (raw-заметки, <code>log</code>). Raw — не вики, ссылки там и не нужны.</li>
+  <li><strong>Сироты.</strong> Открой граф, в Filters выключи <strong>Orphans</strong>. Ожидаемо: пропадут 5 заметок без единой ссылки — <code>CLAUDE.md</code>, <code>log.md</code>, <code>README.md</code> (служебные, это нормально), <code>2026-10-05 Пикник на обочине</code> (ещё не загружен) и <code>Донатас Банионис</code> — <strong>это находка lint</strong>: страница вики, на которую никто не ссылается.</li>
+  <li><strong>Lint глазами.</strong> Сверь с правилами <code>CLAUDE.md</code>. Ожидаемо найдёшь: (а) <code>Донатас Банионис</code> — сирота, нет в <code>index.md</code>, нет <code>sources</code>; (б) ссылка <code>[[Стругацкие]]</code> ведёт на страницу, которой нет: файла <code>Стругацкие.md</code> в хранилище нет.</li>
+  <li><strong>Lint руками Claude.</strong> В терминале: <code>cd C:/_repos/GitHub/segal.st/teach/learn-obsidian/practice-llm-wiki</code> (прямые <code>/</code> работают и в Windows), запусти <code>claude</code> и напиши: <code>lint</code>. Ожидаемо: отчёт с теми же находками (а) и (б), без правок файлов — так велит схема.</li>
+  <li><strong>Ingest.</strong> Там же: <code>ingest raw/заметки/2026-10-05 Пикник на обочине.md</code>. Держи Obsidian открытым рядом. Ожидаемо: Claude коротко обсудит источник, создаст <code>wiki/Книги/Пикник на обочине</code> и, скорее всего, <code>wiki/Люди/Стругацкие</code> (ссылка из (б) начнёт вести на страницу), обновит <code>Сталкер</code>, <code>Экранизация</code>, <code>index.md</code> и добавит запись в <code>log.md</code>. Точный набор страниц решит Claude — сверь его с правилами схемы.</li>
+  <li><strong>Query с сохранением.</strong> Спроси: <code>какие фильмы в вики сняты по книгам и чем они отличаются от книг? сохрани ответ как страницу</code>. Ожидаемо: ответ со ссылками и новая страница в <code>wiki/Понятия/</code>.</li>
+  <li><strong>Что изменилось.</strong> <code>git status practice-llm-wiki</code> и <code>git diff practice-llm-wiki</code> — все правки Claude по файлам. Вернуть исходное состояние: <code>git checkout -- practice-llm-wiki</code> и <code>git clean -fd practice-llm-wiki</code> (удалит новые файлы).</li>
+</ol>
+
+<h2>12. Что из этого взять в Kolnatun</h2>
+<table>
+  <tr><th>#</th><th>Что</th><th>Почему</th></tr>
+  <tr><td>1</td><td>журнал ingest в формате <code>## [дата] ingest | калькулятор</code></td><td>сейчас есть только журнал решений процесса; не видно, когда какой калькулятор попал в <code>shared/</code></td></tr>
+  <tr><td>2</td><td>сохранять ответы на вопросы как страницы <code>shared/concepts</code></td><td>ответы «что общее / что дублируется» не теряются в чате</td></tr>
+  <tr><td>3</td><td>в lint-отчёт — сироты и ссылки на несуществующие страницы</td><td>это ровно то, что граф Obsidian показывает за секунду; можно сверять</td></tr>
+</table>
+<p>Это предложения, не правки: изменения в Kolnatun делаются по его <code>authorization-rules.md</code>.</p>
+
+<h2>Главный источник</h2>
+<p><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f"><strong>Karpathy — LLM Wiki</strong></a> (английский, ~10 минут). Его можно целиком отдать агенту: Карпати так и задумал — «поделись этим с агентом и вместе соберите версию под себя».</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. Можно прислать отчёт lint от Claude из шага 6, разберём находки вместе.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="../reference/llm-wiki.html">Шпаргалка: LLM-wiki</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+const R = 'raw', W = 'wiki', S = 'schema', X = 'служебный';
+LineTagger.mount(document.getElementById('layers'), {
+  categories: [R, W, S, X],
+  lines: [
+    { text: 'Main\\Dev\\BL\\mdl\\mdlGeneral.bas', cat: R, why: 'Исходник VB6: Claude читает, но никогда не правит.' },
+    { text: 'calculators/shared/entities/BL/mdl/mdlGeneral.bas/SetErrorObject.md', cat: W, why: 'Страница-сущность: её пишет и поддерживает Claude.' },
+    { text: 'calculators/shared/README.md', cat: S, why: 'Правила: папки, свойства, кто пишет. Сам файл так и называется: «schema».' },
+    { text: 'calculators/scaffold/no-assumptions-rule.md', cat: S, why: 'Правило процесса для агента — часть схемы.' },
+    { text: 'calculators/shared/INDEX.md', cat: X, why: 'Каталог всех страниц — это index.' },
+    { text: 'calculators/shared/concepts/credit-points.md', cat: W, why: 'Страница-понятие, общая для 2+ калькуляторов.' },
+    { text: 'practice-llm-wiki/raw/заметки/2026-10-03 Солярис.md', cat: R, why: 'Твоя заметка после просмотра — источник. Claude её не меняет.' },
+    { text: 'practice-llm-wiki/CLAUDE.md', cat: S, why: 'Для Claude Code схема — это CLAUDE.md.' },
+    { text: 'practice-llm-wiki/log.md', cat: X, why: 'Журнал по времени, только дописывается.' },
+    { text: 'practice-llm-wiki/wiki/Понятия/Экранизация.md', cat: W, why: 'Страница вики, написана агентом по двум источникам.' },
+  ]
+});
+const I = 'ingest', Q = 'query', L = 'lint';
+LineTagger.mount(document.getElementById('ops'), {
+  categories: [I, Q, L],
+  lines: [
+    { text: 'Вот заметка о просмотре «Зеркала», обработай её по схеме.', cat: I, why: 'Новый источник → встроить в вики.' },
+    { text: 'Какие функции shared использует только SalaryCalc?', cat: Q, why: 'Вопрос к вики; ответ строится по страницам.' },
+    { text: 'Проверь, есть ли страницы без входящих ссылок и ссылки на несуществующие страницы.', cat: L, why: 'Проверка здоровья вики: сироты и битые ссылки.' },
+    { text: 'Извлечён новый калькулятор — добавь его вызовы в shared/entities.', cat: I, why: 'Новые данные из источника встраиваются в страницы — это ingest (шаг 10 извлечения).' },
+    { text: 'Сравни AcademicEnd и SalaryCalc по общим понятиям и сохрани сравнение страницей.', cat: Q, why: 'Вопрос, а хороший ответ сохраняется обратно в вики.' },
+    { text: 'Найди, где страницы противоречат друг другу, но ничего не исправляй.', cat: L, why: 'Поиск противоречий, только отчёт — это lint.' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Чем LLM-wiki отличается от обычного RAG?',
+    options: ['Знание копится в страницах, а не ищется заново',
+              'Модель читает все файлы на каждом вопросе',
+              'Источники хранятся в базе данных, а не в .md',
+              'Вики пишет человек, а модель её только ищет'],
+    answer: 0, why: 'В RAG модель каждый раз собирает ответ из кусков; в LLM-wiki знание один раз встроено в страницы и поддерживается.' },
+  { q: 'Кто может менять файлы в слое raw?',
+    options: ['Только человек; LLM их только читает',
+              'Только LLM; человек их только читает',
+              'Оба: LLM дополняет их при каждом ingest',
+              'Никто: raw создаётся один раз при старте'],
+    answer: 0, why: 'Raw — неизменяемые источники и источник истины. LLM читает, но не правит.' },
+  { q: 'Где хранятся правила, по которым Claude ведёт вики?',
+    options: ['В схеме, например в CLAUDE.md',
+              'В index.md рядом со списком страниц',
+              'В log.md, в последней записи журнала',
+              'В свойствах каждой страницы вики'],
+    answer: 0, why: 'Schema (CLAUDE.md, у тебя — shared/README.md + scaffold/) задаёт структуру, соглашения и операции.' },
+  { q: 'Claude дал хороший ответ на вопрос. Что советует паттерн?',
+    options: ['Сохранить ответ в вики новой страницей',
+              'Оставить ответ в истории чата как есть',
+              'Положить ответ в raw как новый источник',
+              'Записать ответ целиком в файл log.md'],
+    answer: 0, why: 'Хорошие ответы сохраняются обратно в вики — так исследования тоже накапливаются.' },
+  { q: 'Чем index.md отличается от log.md?',
+    options: ['index — каталог страниц, log — журнал по времени',
+              'index — журнал по времени, log — каталог страниц',
+              'index пишет человек, log пишет только LLM',
+              'Ничем: это два названия одного файла'],
+    answer: 0, why: 'index — по содержанию (страница + строка описания), log — хронология ingest / query / lint, только дописывается.' },
+  { q: 'Как в Obsidian быстрее всего найти страницы-сироты?',
+    options: ['Граф: выключить фильтр Orphans и сравнить',
+              'All properties: отсортировать по частоте',
+              'Command palette: команда Open vault',
+              'Settings → Hotkeys: найти команду lint'],
+    answer: 0, why: 'Orphans в фильтрах графа управляет показом заметок без единой ссылки.' },
+]);
+</script>
+</body>
+</html>

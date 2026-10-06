@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · LLM-wiki</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>LLM-wiki (паттерн Карпати)</h1>
+  <p class="lede">LLM пишет и поддерживает вики, человек подбирает источники, спрашивает и читает в Obsidian. «Obsidian — IDE, LLM — программист, вики — кодовая база».</p>
+</header>
+
+<h2>Слои</h2>
+<table>
+  <tr><th>#</th><th>Слой</th><th>Кто пишет</th><th>Kolnatun</th><th>Медиатека</th></tr>
+  <tr><td>1</td><td>raw — источники, неизменяемые</td><td>человек</td><td><code>Main\Dev</code> (VB6)</td><td>заметки после просмотра, статьи</td></tr>
+  <tr><td>2</td><td>wiki — страницы</td><td>LLM</td><td><code>shared/entities</code>, <code>shared/concepts</code>, документы калькуляторов</td><td>фильмы, книги, люди, понятия</td></tr>
+  <tr><td>3</td><td>schema — правила</td><td>вместе</td><td><code>shared/README.md</code> + <code>scaffold/</code></td><td><code>CLAUDE.md</code></td></tr>
+</table>
+
+<h2>Операции</h2>
+<table>
+  <tr><th>#</th><th>Операция</th><th>Просьба к Claude</th><th>Результат</th></tr>
+  <tr><td>1</td><td>ingest</td><td>«ingest raw/…»</td><td>новые / обновлённые страницы + строка в index + запись в log</td></tr>
+  <tr><td>2</td><td>query</td><td>вопрос</td><td>ответ со ссылками; хороший — сохранить страницей</td></tr>
+  <tr><td>3</td><td>lint</td><td>«lint»</td><td>отчёт: противоречия, устаревшее, сироты, понятия без страниц, недостающие ссылки</td></tr>
+</table>
+
+<h2>Служебные файлы</h2>
+<table>
+  <tr><th>#</th><th>Файл</th><th>Суть</th></tr>
+  <tr><td>1</td><td><code>index.md</code></td><td>каталог: ссылка + строка описания, по категориям; LLM читает его первым</td></tr>
+  <tr><td>2</td><td><code>log.md</code></td><td>только дописывается; <code>## [YYYY-MM-DD] операция | что</code>; последние: <code>grep "^## \[" log.md | tail -5</code></td></tr>
+</table>
+
+<h2>Проверка в Obsidian</h2>
+<table>
+  <tr><th>#</th><th>Что проверить</th><th>Где</th></tr>
+  <tr><td>1</td><td>кто ссылается на страницу</td><td>Backlinks → Linked mentions</td></tr>
+  <tr><td>2</td><td>где имя упомянуто без ссылки</td><td>Backlinks → Unlinked mentions</td></tr>
+  <tr><td>3</td><td>сироты</td><td>Graph view → Filters → Orphans (выключить и сравнить)</td></tr>
+  <tr><td>4</td><td>связи одной страницы</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → Open local graph</td></tr>
+  <tr><td>5</td><td>свойства не по схеме</td><td>All properties (урок 0002)</td></tr>
+  <tr><td>6</td><td>что поменял Claude</td><td><code>git diff</code></td></tr>
+</table>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy — LLM Wiki</a> <a href="https://obsidian.md/help/plugins/graph">Graph view</a> <a href="https://obsidian.md/help/plugins/backlinks">Backlinks</a> ·
+  <a href="../lessons/0008-llm-wiki.html">Урок 0008</a> <a href="glossary.html">Глоссарий</a> <a href="../index.html">Все уроки</a>
+</footer>
+</main>
+</body>
+</html>

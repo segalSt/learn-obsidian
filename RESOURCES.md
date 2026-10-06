@@ -9,12 +9,13 @@
 - [Obsidian Help - Aliases](https://obsidian.md/help/aliases) - `aliases` list, linking via alias.
 - [Obsidian Help - Command palette](https://obsidian.md/help/plugins/command-palette) - `Ctrl+P`.
 - [Obsidian Help - Hotkeys](https://obsidian.md/help/hotkeys) - Settings → Hotkeys: view, search, change.
+- [Obsidian Help - Backlinks](https://obsidian.md/help/plugins/backlinks) - linked / unlinked mentions, backlinks in document.
 - [Obsidian Help - Editing shortcuts](https://obsidian.md/help/editing-shortcuts) - default text editing keys. Graph view has no hotkey in Help (opened from the Ribbon).
 - [Obsidian Help - Bases](https://obsidian.md/help/bases) - core table views over properties.
 - [Dataview documentation](https://blacksmithgu.github.io/obsidian-dataview/) - query language (TABLE / LIST, FROM, WHERE, GROUP BY, FLATTEN).
 
 ## Pattern (LLM wiki)
-- [Karpathy's gists](https://gist.github.com/karpathy) - origin of the LLM-wiki idea (raw / wiki / schema; ingest / query / lint).
+- [Karpathy - LLM Wiki (gist)](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) - the original idea file: raw / wiki / schema; ingest / query / lint; index.md and log.md; Obsidian tips. **Primary for lesson 0008.**
 - [Karpathy's LLM wiki: what it is and how to set one up (DEV)](https://dev.to/forrestzhang/karpathys-llm-wiki-what-it-is-and-how-to-set-one-up-56ck) - short summary of the structure.
 - [julianoczkowski/karpathy-llm-wiki](https://github.com/julianoczkowski/karpathy-llm-wiki) - step-by-step build with Claude Code + Obsidian.
 - [Build an LLM Wiki for Your AI Stack (The Orchestrators)](https://theorchestrators.ai/blog/build-an-llm-wiki-for-your-ai-stack) - manifest + wiki + dashboard idea.

@@ -19,18 +19,17 @@
   <tr><td>2</td><td>Note (заметка)</td><td>Один <code>.md</code> файл.</td></tr>
   <tr><td>3</td><td>Properties (свойства)</td><td>Поля в начале заметки между <code>---</code>, напр. <code>used_by: [AcademicEnd]</code>. <a href="https://obsidian.md/help/properties">[справка]</a></td></tr>
   <tr><td>4</td><td>Graph view</td><td>Карта заметок (точки) и ссылок (линии). Кнопка Open graph view на левой панели; клавиша (обычно <kbd>Ctrl</kbd>+<kbd>G</kbd>) — проверь в Settings → Hotkeys.</td></tr>
-  <tr><td>34</td><td>Hotkeys</td><td>Settings → Hotkeys: все горячие клавиши, поиск, смена. <a href="hotkeys.html">[шпаргалка]</a></td></tr>
   <tr><td>5</td><td>Local graph</td><td>Граф вокруг одной заметки.</td></tr>
   <tr><td>6</td><td>Filter (граф)</td><td>Строка поиска в Graph view → Filters; оставляет только совпавшие заметки.</td></tr>
   <tr><td>7</td><td>Group (граф)</td><td>Запрос + цвет: красит совпавшие точки.</td></tr>
-  <tr><td>8</td><td>Backlinks</td><td>Кто ссылается на эту заметку.</td></tr>
+  <tr><td>8</td><td>Backlinks</td><td>Кто ссылается на эту заметку. Панель справа: Linked mentions (ссылки) и Unlinked mentions (имя без ссылки). <a href="https://obsidian.md/help/plugins/backlinks">[справка]</a></td></tr>
   <tr><td>9</td><td>Attachment</td><td>Не-<code>.md</code> файл в хранилище (<code>.mmd</code>, <code>.html</code>, картинки).</td></tr>
   <tr><td>10</td><td>Dataview</td><td>Плагин: запросы-таблицы по свойствам (<code>TABLE … FROM … WHERE</code>). <a href="https://blacksmithgu.github.io/obsidian-dataview/">[docs]</a></td></tr>
   <tr><td>11</td><td>Bases</td><td>Встроенные таблицы по свойствам, без кода. <a href="https://obsidian.md/help/bases">[справка]</a></td></tr>
   <tr><td>12</td><td>Layer (слой)</td><td>Наш термин: результат / исходник / процесс / порт. Сейчас — по папкам; позже — свойство <code>layer</code>.</td></tr>
   <tr><td>13</td><td>Entity (сущность)</td><td>Наш термин: страница части исходного кода в <code>shared/entities</code>. Контейнер (файл) &gt; член (метод/функция).</td></tr>
   <tr><td>14</td><td>Concept (понятие)</td><td>Наш термин: термин, общий для 2+ калькуляторов, в <code>shared/concepts</code>.</td></tr>
-  <tr><td>15</td><td>LLM wiki</td><td>Паттерн: агент пишет и поддерживает страницы, человек читает в Obsidian. Операции: ingest, query, lint.</td></tr>
+  <tr><td>15</td><td>LLM wiki</td><td>Паттерн: агент пишет и поддерживает страницы, человек читает в Obsidian. Слои: raw, wiki, schema; операции: ingest, query, lint. <a href="../lessons/0008-llm-wiki.html">[урок 0008]</a></td></tr>
   <tr><td>16</td><td>Frontmatter</td><td>Блок свойств в начале файла между двумя строками <code>---</code> (формат YAML).</td></tr>
   <tr><td>17</td><td>Reading view</td><td>Вид для чтения: текст без значков Markdown. <kbd>Ctrl</kbd>+<kbd>E</kbd>.</td></tr>
   <tr><td>18</td><td>Live Preview</td><td>Режим редактирования: оформленный текст, значки видны только в строке с курсором.</td></tr>
@@ -49,6 +48,17 @@
   <tr><td>31</td><td>Nested property (вложенное свойство)</td><td>Свойство внутри свойства. Obsidian не поддерживает.</td></tr>
   <tr><td>32</td><td>Nested tag (вложенный тег)</td><td>Тег с уровнями через <code>/</code>: <code>кино/советское</code>. Поиск <code>tag:кино</code> находит и вложенные. <a href="https://obsidian.md/help/tags">[справка]</a></td></tr>
   <tr><td>33</td><td>Tags view</td><td>Список всех тегов хранилища; вложенные показаны под родителем. <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>tags</code>.</td></tr>
+  <tr><td>34</td><td>Hotkeys</td><td>Settings → Hotkeys: все горячие клавиши, поиск, смена. <a href="hotkeys.html">[шпаргалка]</a></td></tr>
+  <tr><td>35</td><td>RAG</td><td>Retrieval-augmented generation: на каждый вопрос модель ищет куски документов и собирает ответ заново. Противоположность LLM-wiki.</td></tr>
+  <tr><td>36</td><td>Raw sources (raw)</td><td>Слой LLM-wiki: исходные документы. Неизменяемые, LLM их только читает. В Kolnatun — VB6 в <code>Main\Dev</code>.</td></tr>
+  <tr><td>37</td><td>Schema (схема)</td><td>Слой LLM-wiki: правила для агента (структура, соглашения, операции). Для Claude Code — <code>CLAUDE.md</code>; в Kolnatun — <code>shared/README.md</code> + <code>scaffold/</code>.</td></tr>
+  <tr><td>38</td><td>Ingest</td><td>Операция LLM-wiki: встроить новый источник в страницы, обновить index и log.</td></tr>
+  <tr><td>39</td><td>Query</td><td>Операция LLM-wiki: вопрос к вики; хороший ответ сохраняют новой страницей.</td></tr>
+  <tr><td>40</td><td>Lint</td><td>Операция LLM-wiki: проверка здоровья — противоречия, устаревшее, сироты, недостающие страницы и ссылки. Только отчёт.</td></tr>
+  <tr><td>41</td><td>index.md / log.md</td><td>Служебные файлы LLM-wiki: каталог страниц / журнал операций по времени.</td></tr>
+  <tr><td>42</td><td>Orphan (сирота)</td><td>Заметка без единой ссылки. В графе: Filters → Orphans. <a href="https://obsidian.md/help/plugins/graph">[справка]</a></td></tr>
+  <tr><td>43</td><td>Unlinked mentions</td><td>В Backlinks: где имя заметки написано текстом, без ссылки. <a href="https://obsidian.md/help/plugins/backlinks">[справка]</a></td></tr>
+  <tr><td>44</td><td>Obsidian Web Clipper</td><td>Расширение браузера: сохраняет статью как Markdown — удобно класть в raw.</td></tr>
 </table>
 <footer class="lesson-foot"><a href="../index.html">Все уроки</a> <a href="note-anatomy.html">Шпаргалка: заметка</a> <a href="properties.html">Шпаргалка: свойства</a> <a href="search-cheatsheet.html">Шпаргалка: поиск и граф</a> <a href="../lessons/0005-graph-filters.html">Урок 0005</a></footer>
 </main>
