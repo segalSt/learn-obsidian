@@ -20,14 +20,20 @@
   <tr><td>1</td><td><code>path:</code></td><td><code>path:shared/entities</code></td><td>путь содержит строку</td></tr>
   <tr><td>2</td><td><code>file:</code></td><td><code>file:glossary</code></td><td>имя файла содержит строку</td></tr>
   <tr><td>3</td><td><code>content:</code></td><td><code>content:"nek_zikui"</code></td><td>только текст заметки</td></tr>
-  <tr><td>4</td><td><code>tag:</code></td><td><code>tag:#todo</code></td><td>есть тег</td></tr>
+  <tr><td>4</td><td><code>tag:</code></td><td><code>tag:кино</code></td><td>есть тег. Вложенные — только от корня: <code>tag:кино</code> находит <code>кино/советское</code>, <code>tag:советское</code> — нет</td></tr>
   <tr><td>5</td><td><code>[prop]</code></td><td><code>[used_by]</code></td><td>свойство есть</td></tr>
-  <tr><td>6</td><td><code>[prop:value]</code></td><td><code>[kind:method]</code></td><td>свойство равно значению</td></tr>
-  <tr><td>7</td><td><code>[prop:null]</code></td><td><code>[used_by:null]</code></td><td>свойство пустое</td></tr>
-  <tr><td>8</td><td><code>line:( )</code></td><td><code>line:(CalcNek mone)</code></td><td>слова в одной строке</td></tr>
-  <tr><td>9</td><td><code>section:( )</code></td><td><code>section:(Relation MasHazmai)</code></td><td>слова в одном разделе</td></tr>
-  <tr><td>10</td><td><code>/regex/</code></td><td><code>/R-AcademicEnd-0\d\d/</code></td><td>регулярное выражение</td></tr>
+  <tr><td>6</td><td><code>[prop:value]</code></td><td><code>[kind:method]</code></td><td>свойство с этим значением; у списка — один из элементов</td></tr>
+  <tr><td>7</td><td><code>[prop:null]</code></td><td><code>[used_by:null]</code></td><td>свойство есть, но пустое</td></tr>
+  <tr><td>8</td><td><code>[prop:a OR b]</code></td><td><code>[status:смотрел OR "хочу пересмотреть"]</code></td><td>одно из значений</td></tr>
+  <tr><td>9</td><td><code>[prop:&lt;n]</code> / <code>[prop:&gt;n]</code></td><td><code>[year:&lt;1975]</code></td><td>сравнение чисел</td></tr>
+  <tr><td>10</td><td><code>line:( )</code></td><td><code>line:(CalcNek mone)</code></td><td>слова в одной строке</td></tr>
+  <tr><td>11</td><td><code>section:( )</code></td><td><code>section:(Relation MasHazmai)</code></td><td>слова в одном разделе (между заголовками)</td></tr>
+  <tr><td>12</td><td><code>block:( )</code></td><td><code>block:(Счастье даром)</code></td><td>слова в одном блоке</td></tr>
+  <tr><td>13</td><td><code>task-todo:</code></td><td><code>task-todo:пересмотреть</code></td><td>в незакрытых задачах; <code>task:</code> — в любых, <code>task-done:</code> — в закрытых</td></tr>
+  <tr><td>14</td><td><code>match-case:</code></td><td><code>match-case:BL</code></td><td>с учётом регистра (по умолчанию регистр не важен)</td></tr>
+  <tr><td>15</td><td><code>/regex/</code></td><td><code>file:/^Стал/</code>, <code>/R-AcademicEnd-0\d\d/</code></td><td>регулярное выражение: <code>^</code> начало, <code>$</code> конец, <code>\d</code> цифра</td></tr>
 </table>
+<p>Текст ищется только в заметках и холстах; <code>file:</code> и <code>path:</code> находят любые файлы. Встроить результаты в заметку — блок <code>```query</code>. Как Obsidian понял запрос — Explain search term в настройках поиска.</p>
 
 <div class="box"><strong>Два правила.</strong> Пути — через <code>/</code>, не <code>\</code>. Звёздочка <code>*</code> не шаблон: <code>path:</code> и <code>file:</code> уже ищут <em>часть</em> строки.</div>
 

@@ -1,7 +1,9 @@
 /* search-sim.js - tiny simulator of Obsidian search / graph-filter syntax.
-   Supports: path:x  file:x  [prop]  [prop:value]  -term  OR  (groups)  "quoted text"
-   Bare words match file name or path (real Obsidian also searches note content - not simulated).
-   Usage: SearchSim.mount(element, { files:[{path, props}], tasks:[{prompt, expect:[paths]}] }) */
+   Supports: path:x  file:x  tag:x  content:x  [prop]  [prop:value]  -term  OR  (groups)  "quoted text"
+   tag:x matches the tag x and its nested tags (x/...), never a nested part alone (Help: tag:#work does not find #myjob/work).
+   Tags come from file.props.tags. content: and bare words search file.text (note body, no properties);
+   without file.text, bare words match the path (old behaviour, used by lesson 0005).
+   Usage: SearchSim.mount(element, { files:[{path, props, text}], tasks:[{prompt, expect:[paths]}], showProps:['type','tags'] }) */
 (function () {
   function tokenize(q) {
     const out = []; let i = 0;
@@ -24,6 +26,7 @@
     }
     return out;
   }
+  function tagsOf(file) { const t = (file.props || {}).tags; return (Array.isArray(t) ? t : t ? [t] : []).map(x => String(x).toLowerCase().replace(/^#/, '')); }
   function termFn(t) {
     const low = t.toLowerCase();
     let f;
@@ -39,7 +42,9 @@
       };
     } else if (low.startsWith('path:')) { const v = low.slice(5); f = file => file.path.toLowerCase().includes(v); }
     else if (low.startsWith('file:')) { const v = low.slice(5); f = file => file.path.split('/').pop().toLowerCase().includes(v); }
-    else { f = file => file.path.toLowerCase().includes(low); }
+    else if (low.startsWith('tag:')) { const v = low.slice(4).replace(/^#/, ''); f = file => tagsOf(file).some(x => x === v || x.startsWith(v + '/')); }
+    else if (low.startsWith('content:')) { const v = low.slice(8); f = file => (file.text || '').toLowerCase().includes(v); }
+    else { f = file => (file.text !== undefined ? file.text : file.path).toLowerCase().includes(low); }
     return f;
   }
   function parse(tokens) {
@@ -92,13 +97,14 @@
       @media (max-width:600px){.ssim .files{columns:1}}`;
     root.appendChild(style);
 
-    const playLabel = el('div', { className: 'count' }, 'Песочница: вводи фильтр, подсвечиваются файлы, которые останутся в графе.');
-    const play = el('input', { type: 'text', placeholder: 'например: -path:calculators/scaffold' });
+    const playLabel = el('div', { className: 'count' }, cfg.label || 'Песочница: вводи фильтр, подсвечиваются файлы, которые останутся в графе.');
+    const play = el('input', { type: 'text', placeholder: cfg.placeholder || 'например: -path:calculators/scaffold' });
     const count = el('div', { className: 'count' });
     const list = el('ul', { className: 'files' });
     const items = files.map(f => {
       const li = el('li', {}, f.path);
       if (f.props && f.props.layer) li.appendChild(el('span', { className: 'pr' }, 'layer:' + f.props.layer));
+      (cfg.showProps || []).forEach(k => { const v = (f.props || {})[k]; if (v !== undefined) li.appendChild(el('span', { className: 'pr' }, k + ':' + (Array.isArray(v) ? v.join(', ') : v))); });
       list.appendChild(li); return li;
     });
     function show(q) {
@@ -119,6 +125,11 @@
         if (s.includes('\\')) notes.push(`«${shown}»: в Obsidian части пути разделяются через / (прямой слеш), не через \\.`);
         if (s.includes('*')) notes.push(`«${shown}»: звёздочка здесь не шаблон, она ищется как обычный символ. path: и так ищет любую часть пути — просто убери *.`);
         const hits = files.filter(termFn(s)).length;
+        const tm = /^tag:#?(.+)$/i.exec(s);
+        if (tm && hits === 0) {
+          const v = tm[1].toLowerCase(), full = [...new Set(files.flatMap(tagsOf))].filter(x => x.endsWith('/' + v) || x.includes('/' + v + '/'));
+          if (full.length) notes.push(`«${shown}»: тег «${v}» есть только как вложенный (${full.join(', ')}). tag: ищет от корня: напиши tag:${full[0]} или tag:${full[0].split('/')[0]}.`);
+        }
         if (hits === 0) notes.push(`«${shown}»: под «${s.replace(/^-/, '')}» не подходит ни один файл — проверь опечатку или слеши.` + (tok.neg ? ' С минусом такое условие ничего не убирает.' : ' Без минуса такое условие убирает всё.'));
       });
       return notes;

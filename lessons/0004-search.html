@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0004 · Поиск</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/search-sim.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0004 · Основы · ~30 минут</div>
+  <h1>Поиск</h1>
+  <p class="lede">Поиск Obsidian — маленький язык запросов: по тексту, по имени и пути файла, по тегам и по свойствам. Тот же язык работает в фильтре графа (урок 0005), поэтому здесь его основа.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Одной строкой найти «все фильмы на HDD-2TB-01», «все функции, которые использует AcademicEnd» или «всё, кроме служебных папок» — и понимать, почему запрос нашёл именно это.
+</div>
+
+<h2>1. Где искать</h2>
+<p>Панель <strong>Search</strong> — в левой боковой панели. Открыть: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Если перед этим выделить текст в заметке, поиск откроется уже с ним.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+<p>Что поиск просматривает: <strong>текст</strong> ищется только в заметках (<code>.md</code>) и холстах (<code>.canvas</code>). Но <code>file:</code> и <code>path:</code> находят <em>любой</em> файл хранилища — и картинки, и <code>.mmd</code>, и <code>.html</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+
+<h2>2. Слова и логика</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Находит</th></tr>
+  <tr><td>1</td><td><code>Тарковский зимой</code></td><td>заметки, где есть <strong>оба</strong> слова (в любом месте, в любом порядке)</td></tr>
+  <tr><td>2</td><td><code>"Пикник на обочине"</code></td><td>точную фразу — в кавычках</td></tr>
+  <tr><td>3</td><td><code>Сталкер OR Солярис</code></td><td>хотя бы одно из слов. <code>OR</code> — заглавными</td></tr>
+  <tr><td>4</td><td><code>Тарковский -Солярис</code></td><td>с первым словом, но <strong>без</strong> второго. Минус вплотную к слову</td></tr>
+  <tr><td>5</td><td><code>фантастика (Сталкер OR Пикник)</code></td><td>скобки задают порядок, как в арифметике</td></tr>
+  <tr><td>6</td><td><code>-(Kolnatun README)</code></td><td>минус перед скобками убирает всю группу</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/search">Obsidian Help → Search</a>, разделы Search terms.</p>
+<p>Регистр по умолчанию не важен: <code>тарковский</code> найдёт «Тарковский». Включить различие — кнопка <strong>Match case</strong> в панели поиска или оператор <code>match-case:</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+
+<h2>3. Операторы: где именно искать</h2>
+<p>Оператор — слово с двоеточием перед запросом. Он сужает, <em>где</em> искать.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+<table>
+  <tr><th>#</th><th>Оператор</th><th>Ищет</th><th>Пример</th></tr>
+  <tr><td>1</td><td><code>file:</code></td><td>в имени файла</td><td><code>file:Сталкер</code></td></tr>
+  <tr><td>2</td><td><code>path:</code></td><td>в пути: папки + имя</td><td><code>path:Медиатека/Фильмы</code></td></tr>
+  <tr><td>3</td><td><code>content:</code></td><td>только в тексте заметки</td><td><code>content:"держит"</code></td></tr>
+  <tr><td>4</td><td><code>tag:</code></td><td>тег (раздел 4)</td><td><code>tag:кино</code></td></tr>
+  <tr><td>5</td><td><code>line:( )</code></td><td>слова в <strong>одной строке</strong></td><td><code>line:(Медленный держит)</code></td></tr>
+  <tr><td>6</td><td><code>section:( )</code></td><td>слова в одном разделе — между заголовками</td><td><code>section:(Цитата Счастье)</code></td></tr>
+  <tr><td>7</td><td><code>block:( )</code></td><td>слова в одном блоке (абзац, пункт списка)</td><td><code>block:(Счастье даром)</code></td></tr>
+  <tr><td>8</td><td><code>task:</code> / <code>task-todo:</code> / <code>task-done:</code></td><td>в задачах <code>- [ ]</code>: любых / незакрытых / закрытых</td><td><code>task-todo:пересмотреть</code></td></tr>
+  <tr><td>9</td><td><code>match-case:</code> / <code>ignore-case:</code></td><td>с учётом / без учёта регистра</td><td><code>match-case:BL</code></td></tr>
+</table>
+
+<div class="box"><strong>Привычки Windows — два правила.</strong>
+<ol>
+  <li>Пути — через <code>/</code>: <code>path:Медиатека/Фильмы</code>. Обратный слеш <code>\</code> не сработает.</li>
+  <li><code>*</code> — не шаблон. <code>file:</code> и <code>path:</code> и так ищут <em>часть</em> строки: <code>file:Стал</code> найдёт «Сталкер (1979)». Звёздочка будет искаться как обычный символ.</li>
+</ol>
+Нужно именно «начинается с» — регулярное выражение (раздел 6): <code>file:/^Стал/</code>.</div>
+
+<h2>4. Теги: <code>tag:</code> ищет от корня</h2>
+<p><code>tag:</code> точнее простого поиска: он не смотрит в блоки кода. Писать можно с <code>#</code> и без: <code>tag:#кино</code> = <code>tag:кино</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> Для вложенных тегов (урок 0002) правило одно — <strong>от корня вниз</strong>:</p>
+<table>
+  <tr><th>#</th><th>Запрос</th><th>Тег <code>кино/советское</code> найдётся?</th></tr>
+  <tr><td>1</td><td><code>tag:кино</code></td><td><strong>да</strong> — родитель находит всё, что под ним<span class="cite"><a href="https://obsidian.md/help/tags">[теги]</a></span></td></tr>
+  <tr><td>2</td><td><code>tag:кино/советское</code></td><td><strong>да</strong> — полный тег</td></tr>
+  <tr><td>3</td><td><code>tag:советское</code></td><td><strong>нет</strong> — вложенная часть сама по себе не ищется. Справка: «<code>tag:#work</code> не найдёт <code>#myjob/work</code>»<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></td></tr>
+</table>
+<p>Вывод для схемы: если «советское» нужно искать само по себе (и фильмы, и книги) — ставь отдельный тег <code>советское</code>, а не только <code>кино/советское</code>.</p>
+
+<h2>5. Поиск по свойствам</h2>
+<table>
+  <tr><th>#</th><th>Запрос</th><th>Находит</th></tr>
+  <tr><td>1</td><td><code>[aliases]</code></td><td>заметки, у которых есть свойство <code>aliases</code></td></tr>
+  <tr><td>2</td><td><code>[type:film]</code></td><td>заметки, где значение <code>type</code> — <code>film</code></td></tr>
+  <tr><td>3</td><td><code>[used_by:null]</code></td><td>свойство есть, но пустое — в Kolnatun это «функция, которую уже никто не использует»</td></tr>
+  <tr><td>4</td><td><code>[status:смотрел OR "хочу пересмотреть"]</code></td><td>одно из значений; внутри скобок работают <code>OR</code>, кавычки, regex</td></tr>
+  <tr><td>5</td><td><code>[year:&lt;1975]</code></td><td>сравнение чисел: <code>&lt;</code> меньше, <code>&gt;</code> больше</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/search">Obsidian Help → Search</a>, разделы Search properties и Comparison operators.</p>
+<p>Для списков (List) значение сравнивается с элементами списка: <code>[used_by:AcademicEnd]</code> должен найти функцию, у которой AcademicEnd — один из калькуляторов в <code>used_by</code> (в справке это не расписано; проверь в шаге 9). Найдёт ли <code>[where:HDD]</code> значение <code>HDD-2TB-01</code> (часть значения, а не всё) — справка не уточняет; проверь сам в шаге 4 практики.</p>
+
+<h2>6. Регулярные выражения</h2>
+<p><strong>Регулярное выражение</strong> (regex) — шаблон текста. В поиске пишется между двумя <code>/</code> и работает и с операторами.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+<table>
+  <tr><th>#</th><th>Запрос</th><th>Находит</th></tr>
+  <tr><td>1</td><td><code>/\d{4}-\d{2}-\d{2}/</code></td><td>дату вида 2026-10-06 (<code>\d</code> — цифра, <code>{4}</code> — 4 раза)</td></tr>
+  <tr><td>2</td><td><code>file:/^Стал/</code></td><td>имя файла <strong>начинается</strong> с «Стал» (<code>^</code> — начало)</td></tr>
+  <tr><td>3</td><td><code>path:/\(19[67]\d\)/</code></td><td>фильмы 1960–1979 по году в скобках в имени</td></tr>
+</table>
+<p>Для начала хватит <code>^</code> (начало), <code>$</code> (конец), <code>\d</code> (цифра), <code>.</code> (любой символ). Скобки и точку как обычный символ экранируют <code>\</code>: <code>\(</code>, <code>\.</code>.</p>
+
+<h2>7. Полезные мелочи панели</h2>
+<table>
+  <tr><th>#</th><th>Что</th><th>Где</th><th>Зачем</th></tr>
+  <tr><td>1</td><td><strong>Explain search term</strong></td><td>настройки поиска</td><td>Obsidian расписывает словами, как понял твой запрос — лучший способ найти ошибку</td></tr>
+  <tr><td>2</td><td>Сортировка</td><td>по имени или по времени изменения / создания</td><td>«что Claude поменял последним» — сортировка по Modified time</td></tr>
+  <tr><td>3</td><td>Copy search results</td><td>меню <code>⋯</code> рядом с числом результатов</td><td>список найденного одной кнопкой</td></tr>
+  <tr><td>4</td><td>Встроенный поиск</td><td>блок <code>```query</code> в заметке</td><td>результаты поиска прямо в заметке, обновляются сами</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/search">Obsidian Help → Search</a>.</p>
+<p>Встроенный поиск пишется так — три обратных апострофа, слово <code>query</code>, запрос, три апострофа:</p>
+<pre>```query
+[type:film] tag:кино
+```</pre>
+<p>Для LLM-wiki это лёгкая замена Dataview, когда нужен просто список: «все страницы с <code>[used_by:SalaryCalc]</code>» на странице калькулятора.</p>
+
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></td><td>открыть поиск; с выделенным текстом — искать его<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></td></tr>
+  <tr><td>2</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Command palette (из урока 0002)</td></tr>
+</table>
+<p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
+
+<h2>8. Практика: песочница</h2>
+<p>Это 9 заметок учебного хранилища <code>practice-vault</code> плюс два файла-не-заметки для примера (<code>.jpg</code> и <code>.mmd</code> — в practice-vault их нет). Справа от имени — <code>type</code> и <code>tags</code>. Песочница понимает <code>file:</code>, <code>path:</code>, <code>content:</code>, <code>tag:</code>, <code>[свойство]</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки, кавычки. Простые слова и <code>content:</code> ищут в тексте заметки (без свойств). <code>line:</code>, <code>section:</code>, regex и сравнения <code>&lt; &gt;</code> — только в настоящем Obsidian.</p>
+<p>Если ответ неверный, проверка скажет, что лишнее, чего не хватает и почему (слеши, <code>*</code>, условие, которое ничего не нашло, вложенный тег).</p>
+<div id="sim"></div>
+
+<h2>9. Проверь себя</h2>
+<div id="quiz"></div>
+
+<h2>10. Теперь в настоящем Obsidian</h2>
+<p>Хранилище <code>practice-vault</code>, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>.</p>
+<ol class="steps">
+  <li><strong>Свойство.</strong> <code>[type:film]</code>. Ожидаемо: 2 — <code>Сталкер (1979)</code>, <code>Солярис (1972)</code>.</li>
+  <li><strong>Объяснение.</strong> В настройках поиска включи <strong>Explain search term</strong>, набери <code>tag:кино -Солярис</code>. Ожидаемо: Obsidian словами распишет два условия; результат — 1, <code>Сталкер</code>.</li>
+  <li><strong>Вложенный тег.</strong> <code>tag:советское</code> → 0. <code>tag:кино</code> → 2. <code>tag:кино/советское</code> → 2.</li>
+  <li><strong>Часть значения.</strong> <code>[where:HDD-2TB-01]</code> → 2 (Сталкер, Солярис). Теперь <code>[where:HDD]</code> — найдёт ли? Так ты узнаешь, ищет ли <code>[свойство:значение]</code> часть значения.</li>
+  <li><strong>Простое слово и свойства.</strong> <code>HDD-2TB-01</code> без оператора. В тексте это слово есть у <code>Солярис</code> (раздел «Где лежит») и у <code>Хранилища/HDD-2TB-01</code>. У <code>Сталкер</code> оно только в свойстве <code>where</code>. Есть Сталкер в результатах — значит, простой поиск смотрит и в текст свойств.</li>
+  <li><strong>Сравнение.</strong> <code>[year:&lt;1975]</code>. Ожидаемо: 2 — <code>Солярис (1972)</code>, <code>Пикник на обочине</code> (1972).</li>
+  <li><strong>Одна строка.</strong> <code>line:(Медленный держит)</code> → 1, Сталкер. <code>line:(Медленный Снят)</code> → 0: слова есть в Сталкере, но в разных строках.</li>
+  <li><strong>Начало имени.</strong> <code>file:/^С/</code> (русская С) → 2: <code>Сталкер (1979)</code>, <code>Солярис (1972)</code>. Теперь <code>file:С</code> без regex → 3: добавился <code>Тарковский</code> — «с» есть в середине имени, а регистр не важен.</li>
+  <li><strong>Kolnatun.</strong> <code>[used_by:AcademicEnd]</code> → 1, <code>SetErrorObject</code>. <code>path:Kolnatun -[kind:function]</code> → 1, <code>mdlGeneral.bas</code>.</li>
+  <li><strong>Встроенный поиск.</strong> Создай заметку <code>Поиск-тест</code>, вставь блок <code>```query</code> с <code>[type:film]</code> (раздел 7), <kbd>Ctrl</kbd>+<kbd>E</kbd>. Ожидаемо: внутри заметки список из 2 фильмов. Потом удали заметку.</li>
+</ol>
+<p>Вернуть хранилище к версии курса: <code>git checkout -- practice-vault</code> (откатит все правки в нём).</p>
+
+<h2>11. Что это значит для Kolnatun и LLM-wiki</h2>
+<table>
+  <tr><th>#</th><th>Правило для схемы</th><th>Что даёт поиск</th></tr>
+  <tr><td>1</td><td>у каждой страницы <code>type</code> (и <code>kind</code>)</td><td><code>[type:concept]</code>, <code>[kind:method]</code> — слой одной строкой, без длинных <code>-path:</code></td></tr>
+  <tr><td>2</td><td>связи-списки — List: <code>used_by</code>, <code>where</code></td><td><code>[used_by:SalaryCalc]</code> — всё, что использует калькулятор</td></tr>
+  <tr><td>3</td><td>пустой список не удалять, а оставлять пустым — или удалять страницу (как в <code>RESET-CALCULATOR.md</code>)</td><td><code>[used_by:null]</code> — кандидаты на удаление</td></tr>
+  <tr><td>4</td><td>понятные имена файлов и папок</td><td><code>file:</code> и <code>path:</code> работают и для <code>.mmd</code> диаграмм</td></tr>
+  <tr><td>5</td><td>тег, который ищут сам по себе, — отдельным тегом, не только вложенным</td><td><code>tag:</code> ищет вложенные только от корня</td></tr>
+</table>
+<p>Дальше: урок 0005 — тот же язык как фильтр графа и группы цветов.</p>
+
+<h2>Главный источник</h2>
+<p><a href="https://obsidian.md/help/plugins/search"><strong>Obsidian Help — Search</strong></a>: все операторы, свойства, regex, встроенный поиск. 10 минут.</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. Можно прислать запрос, который «не находит» — разберём, как его понимает Obsidian.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="0003-links.html">Назад: 0003</a>
+  <a href="0005-graph-filters.html">Дальше: 0005 Фильтр графа</a>
+  <a href="../reference/search-cheatsheet.html">Шпаргалка: поиск</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+const files = [
+  { path: 'Медиатека/Фильмы/Сталкер (1979).md',
+    props: { type: 'film', year: 1979, director: '[[Тарковский]]', based_on: '[[Пикник на обочине]]', status: 'смотрел', where: 'HDD-2TB-01', tags: ['фантастика', 'кино/советское', 'пересмотреть'] },
+    text: '# Сталкер (1979)\n## Мой комментарий\nМедленный, но держит. Пересмотреть зимой.\n## Связи\nСнят по книге [[Пикник на обочине]].\n%% заметка для себя: найти версию с хорошими субтитрами %%' },
+  { path: 'Медиатека/Фильмы/Солярис (1972).md',
+    props: { type: 'film', aliases: ['Solaris'], year: 1972, director: '[[Тарковский]]', cast: ['Донатас Банионис', 'Наталья Бондарчук'], status: 'хочу пересмотреть', watched: false, where: 'HDD-2TB-01', tags: ['фантастика', 'кино/советское'] },
+    text: '# Солярис (1972)\nЗаметка-образец для урока 0002: здесь есть свойства всех типов.\n## Мой комментарий\nПока пусто.\n## Где лежит\nHDD-2TB-01, папка Films/Tarkovsky.' },
+  { path: 'Медиатека/Книги/Пикник на обочине.md',
+    props: { type: 'book', authors: ['Аркадий Стругацкий', 'Борис Стругацкий'], year: 1972, status: 'хочу перечитать', where: 'Полка 2' },
+    text: '# Пикник на обочине\n## Мой комментарий\nПока пусто.\n## Связи\nЭкранизация: [[Сталкер (1979)]].\n## Цитата\nСчастье для всех, даром, и пусть никто не уйдёт обиженный! ^final-quote' },
+  { path: 'Люди/Тарковский.md',
+    props: { type: 'person', aliases: ['Андрей Тарковский', 'Tarkovsky'], born: '1932-04-04' },
+    text: '# Тарковский\nРежиссёр. Фильмы: [[Сталкер (1979)]], [[Солярис (1972)]].' },
+  { path: 'Хранилища/HDD-2TB-01.md', props: {},
+    text: '# HDD-2TB-01\nВнешний диск 2 ТБ. Заметка-узел: что на нём лежит, видно в панели Backlinks.' },
+  { path: 'Хранилища/Полка 2.md', props: {}, text: '# Полка 2\nКнижная полка в комнате.' },
+  { path: 'Kolnatun/SetErrorObject.md',
+    props: { type: 'entity', kind: 'function', name: 'SetErrorObject', project: 'BL', source: 'BL\\mdl\\mdlGeneral.bas', line: 234, used_by: ['AcademicEnd'], parent: '[[mdlGeneral.bas]]' },
+    text: '# SetErrorObject\nСтроит объект ошибки ResultMessage (сообщение, стиль 48, ReturnCode).\n## Где используется\n| 1 | AcademicEnd | ошибки маршрутов #1, #2, #3 |\nКонтейнер: [[mdlGeneral.bas]].' },
+  { path: 'Kolnatun/mdlGeneral.bas.md',
+    props: { type: 'entity', kind: 'module', project: 'BL', source: 'BL\\mdl\\mdlGeneral.bas' },
+    text: '# BL - mdlGeneral.bas (module)\nСтраница-контейнер: файл исходника. Функции этого файла — отдельные заметки, например [[SetErrorObject]].' },
+  { path: 'README.md', props: {},
+    text: '# Practice vault\nУчебное хранилище для уроков. Здесь можно ломать что угодно — это не рабочий проект.' },
+  { path: 'Медиатека/Фильмы/stalker-poster.jpg', props: {}, text: '' },
+  { path: 'Kolnatun/AcademicEnd-flow.mmd', props: {}, text: '' },
+];
+SearchSim.mount(document.getElementById('sim'), {
+  files, showProps: ['type', 'tags'],
+  label: 'Песочница: вводи запрос — подсвечиваются найденные файлы.',
+  placeholder: 'например: [type:film]',
+  tasks: [
+    { prompt: 'Все фильмы — по свойству. Ожидаемо: 2.',
+      expect: ['Медиатека/Фильмы/Сталкер (1979).md', 'Медиатека/Фильмы/Солярис (1972).md'],
+      hint: 'Свойство type, значение film. Квадратные скобки: [имя:значение].' },
+    { prompt: 'Всё, что лежит на HDD-2TB-01, — по свойству where. Ожидаемо: 2.',
+      expect: ['Медиатека/Фильмы/Сталкер (1979).md', 'Медиатека/Фильмы/Солярис (1972).md'],
+      hint: '[where:…] — значение пиши как в свойстве, с дефисами.' },
+    { prompt: 'Советские фильмы — по тегу. Начни с tag:советское и прочитай, что скажет проверка. Ожидаемо: 2.',
+      expect: ['Медиатека/Фильмы/Сталкер (1979).md', 'Медиатека/Фильмы/Солярис (1972).md'],
+      hint: 'tag: ищет вложенные теги только от корня. Корень здесь — кино.' },
+    { prompt: 'Книги или люди. Ожидаемо: 2 — Пикник на обочине и Тарковский.',
+      expect: ['Медиатека/Книги/Пикник на обочине.md', 'Люди/Тарковский.md'],
+      hint: 'Два условия по type через OR.' },
+    { prompt: 'Заметки, у которых вообще есть псевдонимы. Ожидаемо: 2.',
+      expect: ['Медиатека/Фильмы/Солярис (1972).md', 'Люди/Тарковский.md'],
+      hint: 'Свойство без значения: [имя].' },
+    { prompt: 'Заметка, в тексте которой есть слово «зимой». Ожидаемо: 1.',
+      expect: ['Медиатека/Фильмы/Сталкер (1979).md'],
+      hint: 'Просто слово или content:слово.' },
+    { prompt: 'Всё, кроме папок Kolnatun и Хранилища, — с минусами. Ожидаемо: 6 (включая README и постер .jpg).',
+      expect: ['Медиатека/Фильмы/Сталкер (1979).md', 'Медиатека/Фильмы/Солярис (1972).md', 'Медиатека/Книги/Пикник на обочине.md', 'Люди/Тарковский.md', 'README.md', 'Медиатека/Фильмы/stalker-poster.jpg'],
+      hint: 'Два условия: -path:… -path:… Слеши не нужны, звёздочки тоже.' },
+    { prompt: 'Только файлы-не-заметки (картинки, диаграммы): по имени файла. Ожидаемо: 2.',
+      expect: ['Медиатека/Фильмы/stalker-poster.jpg', 'Kolnatun/AcademicEnd-flow.mmd'],
+      hint: 'file: ищет часть имени, и расширение — тоже часть имени: file:.jpg OR file:… ' },
+    { prompt: 'Kolnatun: страница, которую использует AcademicEnd. Ожидаемо: 1.',
+      expect: ['Kolnatun/SetErrorObject.md'],
+      hint: 'used_by — список; [used_by:…] проверяет каждый элемент.' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Что найдёт запрос Тарковский -Солярис?',
+    options: ['Заметки с «Тарковский», где нет «Солярис»',
+              'Заметки с «Тарковский» или с «Солярис»',
+              'Заметки, где «Тарковский» идёт до «Солярис»',
+              'Только заметку «Тарковский» без её ссылок'],
+    answer: 0, why: 'Пробел = «и», минус = «без».' },
+  { q: 'У фильма тег кино/советское. Какой запрос его НЕ найдёт?',
+    options: ['tag:советское', 'tag:кино', 'tag:кино/советское', 'tag:#кино'],
+    answer: 0, why: 'tag: ищет от корня: родитель находит вложенные, а вложенная часть сама по себе — нет.' },
+  { q: 'Как найти заметки, где свойство used_by есть, но пустое?',
+    options: ['[used_by:null]', '[used_by]', '-[used_by]', '[used_by:""]'],
+    answer: 0, why: '[имя:null] — свойство есть без значения; [имя] — свойство есть с любым значением; -[имя] — свойства нет.' },
+  { q: 'Как найти файлы, имя которых начинается с «Стал»?',
+    options: ['file:/^Стал/', 'file:Стал*', 'file:Стал', 'path:\\Стал'],
+    answer: 0, why: 'file:Стал ищет часть имени в любом месте; * — не шаблон; \\ — не разделитель. Начало строки — regex с ^.' },
+  { q: 'Что делает path:Медиатека/Фильмы?',
+    options: ['Файлы, в пути которых есть Медиатека/Фильмы',
+              'Заметки, где в тексте есть Медиатека/Фильмы',
+              'Только файлы, лежащие прямо в корне хранилища',
+              'Заметки со свойством path, равным Фильмы'],
+    answer: 0, why: 'path: ищет часть пути — папки и имя, у любых файлов.' },
+  { q: 'Где посмотреть, как Obsidian понял сложный запрос?',
+    options: ['Explain search term в настройках поиска',
+              'Settings → Hotkeys, строка поиска команд',
+              'All properties, сортировка по частоте',
+              'Backlinks → Unlinked mentions заметки'],
+    answer: 0, why: 'Explain search term расписывает запрос словами.' },
+]);
+</script>
+</body>
+</html>
