@@ -26,6 +26,8 @@ h3 { font-size: 1.05rem; margin: 1.6rem 0 .4rem; font-family: var(--sans); }
 .lede { color: var(--muted); font-size: 1.05rem; }
 a { color: var(--accent); }
 code, kbd, pre { font-family: var(--mono); font-size: .88em; }
+/* Cascadia Code draws != as ≠ and <> as ◇; the learner must see the characters to type */
+*, *::before, *::after { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
 code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; }
 pre { background: var(--code-bg); padding: .8rem 1rem; border-radius: 6px; overflow-x: auto; }
 kbd { border: 1px solid var(--line); border-bottom-width: 2px; padding: 0 .35em; border-radius: 4px; font-size: .8em; }
