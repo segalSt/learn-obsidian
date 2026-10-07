@@ -17,7 +17,7 @@
 <h2>Операторы</h2>
 <table>
   <tr><th>#</th><th>Оператор</th><th>Пример</th><th>Значит</th></tr>
-  <tr><td>1</td><td><code>path:</code></td><td><code>path:shared/entities</code></td><td>путь содержит строку</td></tr>
+  <tr><td>1</td><td><code>path:</code></td><td><code>path:shared/entities</code></td><td>путь содержит строку; путь = папки + имя файла + расширение, поэтому <code>path:rules</code> найдёт и файл <code>rules.md</code>, а только папку — <code>path:rules/</code></td></tr>
   <tr><td>2</td><td><code>file:</code></td><td><code>file:glossary</code></td><td>имя файла содержит строку</td></tr>
   <tr><td>3</td><td><code>content:</code></td><td><code>content:"nek_zikui"</code></td><td>только текст заметки</td></tr>
   <tr><td>4</td><td><code>tag:</code></td><td><code>tag:кино</code></td><td>есть тег. Вложенные — только от корня: <code>tag:кино</code> находит <code>кино/советское</code>, <code>tag:советское</code> — нет</td></tr>

@@ -1,7 +1,7 @@
 # Resources
 
 ## Knowledge (official, high trust)
-- [Obsidian Help - Search](https://obsidian.md/help/plugins/search) - every search operator (`path:`, `file:`, `[property:value]`, `-`, `OR`, regex). Graph filters use the same syntax. **Primary for lesson 0004** (also 0005).
+- [Obsidian Help - Search](https://obsidian.md/help/plugins/search) - every search operator (`path:` = folders + file name; confirmed in practice: `path:Сталкер` finds the note) (`path:`, `file:`, `[property:value]`, `-`, `OR`, regex). Graph filters use the same syntax. **Primary for lesson 0004** (also 0005).
 - [Obsidian Help - Graph view](https://obsidian.md/help/plugins/graph) - filters, groups, display, forces, local graph.
 - [Obsidian Help - Properties](https://obsidian.md/help/properties) - frontmatter properties, types. **Primary for lesson 0002.**
 - [Obsidian Help - Properties view](https://obsidian.md/help/plugins/properties) - All properties: sort by name / frequency, rename globally, click to search.
