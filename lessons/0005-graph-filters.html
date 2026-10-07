@@ -57,7 +57,7 @@
 <p>Два способа отфильтровать слой:</p>
 <table>
   <tr><th>#</th><th>Способ</th><th>Пример</th><th>Плюс / минус</th></tr>
-  <tr><td>1</td><td>по папкам</td><td><code>-path:calculators/scaffold -path:rules -path:tasks …</code></td><td>работает уже сейчас; фильтр длинный и ломается при переносе папок</td></tr>
+  <tr><td>1</td><td>по папкам</td><td><code>-path:calculators/scaffold -path:rules/ -path:tasks …</code></td><td>работает уже сейчас; фильтр длинный и ломается при переносе папок</td></tr>
   <tr><td>2</td><td>по свойству</td><td><code>[type:entity] OR [type:concept]</code> — страницы <code>shared/</code> уже имеют <code>type</code></td><td>короткий и не зависит от папок; нужно, чтобы Claude ставил свойство на <em>все</em> страницы</td></tr>
 </table>
 <p>В песочнице ниже у файлов есть ещё свойство <code>layer</code> (result / source / process / port) — <em>предложение</em> для схемы Kolnatun: в реальных файлах его пока нет.</p>
@@ -101,10 +101,10 @@
 <p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
 
 <h2>7. Практика: фильтр для Kolnatun</h2>
-<p>Это упражнение делается <strong>здесь, на странице</strong>: Obsidian не нужен. Песочница — копия части твоего хранилища Kolnatun (25 файлов, имена настоящие). Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Сначала пробуй сам, подсказку — только если застрял.</p>
+<p>Это упражнение делается <strong>здесь, на странице</strong>: Obsidian не нужен. Песочница — копия части твоего хранилища Kolnatun (26 файлов, имена настоящие). Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Сначала пробуй сам, подсказку — только если застрял.</p>
 <div class="box">
   <strong>Как читать проверку.</strong> Песочница показывает, сколько файлов осталось и сколько нужно, и два списка: «должны исчезнуть, но остались» и «должны остаться, но исчезли». Если какое-то условие не нашло ни одного файла, она скажет об этом отдельно (частые причины: <code>\</code> вместо <code>/</code>, опечатка, <code>*</code>).<br><br>
-  <strong>Разобранный пример.</strong> Убрать правила и задачи: <code>-path:rules -path:tasks</code> — два условия через пробел, у каждого свой минус.
+  <strong>Разобранный пример.</strong> Убрать правила и задачи: <code>-path:rules/ -path:tasks</code> — два условия через пробел, у каждого свой минус. Слеш в <code>rules/</code> важен: <code>path:</code> ищет часть пути, и <code>-path:rules</code> убрал бы ещё и <code>specification/rules.md</code> — спецификацию, а не правила. <code>rules/</code> есть только в пути файлов из папки <code>rules</code>.
 </div>
 <div id="sim"></div>
 
@@ -171,6 +171,7 @@ const files = [
   F('calculators/AcademicEnd/calc-logic.md','result'),
   F('calculators/AcademicEnd/GetarrStudyPath.md','result'),
   F('calculators/AcademicEnd/specification/glossary.md','result'),
+  F('calculators/AcademicEnd/specification/rules.md','result'),
   F('calculators/AcademicEnd/python/README.md','port'),
   F('calculators/SalaryCalc/calc-logic.md','result'),
   F('calculators/SalaryCalc/CalcNek.md','result'),
@@ -189,7 +190,7 @@ const where = fn => files.filter(fn).map(f => f.path);
 const L = f => f.props.layer;
 SearchSim.mount(document.getElementById('sim'), { files, tasks: [
   { prompt: 'Убери рабочие промпты: обе папки calculators/scaffold и calculators/scaffold-Reverse. Одним условием.',
-    explain: 'Должно остаться 21 из 25.',
+    explain: 'Должно остаться 22 из 26.',
     expect: where(f => !f.path.startsWith('calculators/scaffold')),
     hint: 'path: ищет кусок пути, звёздочка не нужна. Какой кусок есть в начале обеих папок? Подставь его после -path:' },
   { prompt: 'Оставь только страницы исходного кода — всё, что лежит в calculators/shared/entities.',
@@ -197,9 +198,9 @@ SearchSim.mount(document.getElementById('sim'), { files, tasks: [
     expect: where(f => L(f) === 'source'),
     hint: 'path: + кусок пути entities. Слеши — прямые /.' },
   { prompt: 'Цель урока: оставь только результаты анализа и исходники. Для этого убери 6 вещей.',
-    explain: 'Убрать:\n  1) папки scaffold и scaffold-Reverse (как в задаче 1)\n  2) папку rules\n  3) папку tasks\n  4) файл START.md\n  5) Python-порт: папку python и файл python-port-route.md\n  6) файл calculators/shared/README.md\nПиши несколько условий с минусом через пробел. Должно остаться 15.',
+    explain: 'Убрать:\n  1) папки scaffold и scaffold-Reverse (как в задаче 1)\n  2) папку rules — именно папку: в specification тоже есть файл rules.md, а это результат\n  3) папку tasks\n  4) файл START.md\n  5) Python-порт: папку python и файл python-port-route.md\n  6) файл calculators/shared/README.md\nПиши несколько условий с минусом через пробел. Должно остаться 16.',
     expect: where(f => L(f) === 'result' || L(f) === 'source'),
-    hint: 'Начни с ответа задачи 1 и добавляй по одному: -path:rules -path:tasks … Для 4 и 6 удобен file: (часть имени файла). Для 5 одно слово python покрывает оба.' },
+    hint: 'Начни с ответа задачи 1 и добавляй по одному: -path:rules/ -path:tasks … Слеш после rules — чтобы не задеть specification/rules.md. Для 4 и 6 удобен file: (часть имени файла). Для 5 одно слово python покрывает оба.' },
   { prompt: 'То же, что задача 3, но через свойство layer.',
     explain: 'У каждого файла в списке выше есть фиолетовая метка layer:… — это свойство файла.\nЗначения: result (результат), source (исходник), process (промпты), port (Python-порт).\nСинтаксис свойства: [имя:значение], например [layer:port]. Два условия через OR = «или».\nДолжно остаться 15 — те же файлы, что в задаче 3, но фильтр короче.',
     expect: where(f => L(f) === 'result' || L(f) === 'source'),
@@ -215,7 +216,7 @@ Quiz.mount(document.getElementById('quiz'), [
               'Оставляет в графе только файлы, путь которых содержит rules',
               'Убирает из графа только файл, имя которого равно rules',
               'Убирает файлы, внутри текста которых встречается rules'],
-    answer: 0, why: 'Минус убирает совпадения; path: проверяет часть пути (урок 0004).' },
+    answer: 0, why: 'Минус убирает совпадения; path: проверяет часть пути (урок 0004) — поэтому уйдёт и specification/rules.md. Только папка — path:rules/.' },
   { q: 'Чем Group отличается от фильтра Search files?',
     options: ['Группа красит найденное, фильтр убирает остальное',
               'Группа убирает найденное, фильтр его красит',
