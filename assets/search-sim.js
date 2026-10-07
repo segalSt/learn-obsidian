@@ -132,6 +132,12 @@
           const v = tm[1].toLowerCase(), full = [...new Set(files.flatMap(tagsOf))].filter(x => x.endsWith('/' + v) || x.includes('/' + v + '/'));
           if (full.length) notes.push(`«${shown}»: тег «${v}» есть только как вложенный (${full.join(', ')}). tag: ищет от корня: напиши tag:${full[0]} или tag:${full[0].split('/')[0]}.`);
         }
+        // bare word that looks like a folder/file name: the operator before it does not carry over
+        const bare = !/^[a-z-]+:/i.test(s) && !s.startsWith('[') && s.length > 0;
+        if (bare && files.some(f => f.text !== undefined) && files.some(f => f.path.toLowerCase().includes(s.toLowerCase()))) {
+          notes.push(`«${shown}»: без оператора это обычное слово — оно ищется в тексте заметок, а не в пути. Оператор действует только на слово сразу после двоеточия: (path:a OR b) не значит path:b. Пиши path:${s}.`);
+          return;
+        }
         if (hits === 0) notes.push(`«${shown}»: под «${s.replace(/^-/, '')}» не подходит ни один файл — проверь опечатку или слеши.` + (tok.neg ? ' С минусом такое условие ничего не убирает.' : ' Без минуса такое условие убирает всё.'));
       });
       return notes;
