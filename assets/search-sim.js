@@ -183,7 +183,10 @@
         fb.textContent = '';
         if (!extra.length && !miss.length) { fb.className = 'feedback ok'; fb.textContent = `Верно. Осталось ровно ${want.size} нужных файлов.`; return; }
         fb.className = 'feedback bad';
-        fb.appendChild(el('div', {}, `Осталось ${res.filter(Boolean).length} файлов, нужно ${want.size}.`));
+        const got = res.filter(Boolean).length;
+        fb.appendChild(el('div', {}, got === want.size
+          ? `Осталось ${got} файлов — число совпало, но набор не тот: одна ошибка лишнее оставила, другая нужное убрала. Списки ниже.`
+          : `Осталось ${got} файлов, нужно ${want.size}.`));
         const why = diagnose(inp.value);
         if (why.length) { const w = el('div'); w.style.marginTop = '.3rem'; why.forEach(x => w.appendChild(el('div', {}, '⚠ ' + x))); fb.appendChild(w); }
         [listLine('Должны исчезнуть, но остались', extra), listLine('Должны остаться, но исчезли', miss)].forEach(x => x && fb.appendChild(x));
