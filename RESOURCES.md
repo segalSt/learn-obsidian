@@ -12,6 +12,7 @@
 - [Obsidian Help - Internal links](https://obsidian.md/help/links) - wikilink / Markdown, headings, blocks (^id Latin only), display text, embeds, unresolved, auto-update on rename. **Primary for lesson 0003.** Does NOT say whether property links count in backlinks (verified in user's Obsidian 2026-10-07: they do, in Linked mentions).
 - [Obsidian Help - Backlinks](https://obsidian.md/help/plugins/backlinks) - linked / unlinked mentions, backlinks in document.
 - [Obsidian Help - Outgoing links](https://obsidian.md/help/plugins/outgoing-links) - links and unlinked mentions of the active note.
+- [Obsidian Forum - Turn case sensitivity on](https://forum.obsidian.md/t/turn-case-sensitivity-on/101287) - community answer: internal links are case-insensitive, no setting (user-verified 2026-10-07; autocomplete keeps the original casing).
 - [Obsidian Help - Editing shortcuts](https://obsidian.md/help/editing-shortcuts) - default text editing keys. Graph view has no hotkey in Help (opened from the Ribbon).
 - [Obsidian Help - Bases](https://obsidian.md/help/bases) - core table views over properties.
 - [Dataview documentation](https://blacksmithgu.github.io/obsidian-dataview/) - query language (TABLE / LIST, FROM, WHERE, GROUP BY, FLATTEN).

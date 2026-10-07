@@ -14,3 +14,6 @@ Internal links in properties are listed in Backlinks → Linked mentions.
 ## Still open
 Experiment 2 (does `based_on` update on rename) and step 5 (is property text an unlinked mention).
 Also: the user reset their lesson-0002 practice edits on their own between sessions; the vault was back at the course version.
+
+## Case sensitivity (2026-10-07)
+User checked: links are case-insensitive (`[[тарковский]]` opens `Тарковский`), and autocomplete inserts the file's original casing. Not in Help (forum says the same). Added to lesson 0003 section 2, exercise 7, cheat sheet; rule: still write the exact casing.
