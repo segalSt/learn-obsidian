@@ -54,3 +54,4 @@ input[type=text] { width: 100%; padding: .55rem .7rem; border: 1px solid var(--l
 .vault { display: inline-block; font-family: var(--sans); font-size: .72rem; font-weight: 600; padding: .05rem .45rem; border-radius: 999px; margin-right: .35rem; vertical-align: .1em; border: 1px solid; }
 .vault.pv { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
 .vault.kn { color: var(--bad); background: var(--bad-soft); border-color: var(--bad); }
+.vault.lw { color: var(--accent); background: var(--accent-soft); border-color: var(--accent); }
