@@ -59,6 +59,15 @@
 </ol>
 Нужно именно «начинается с» — регулярное выражение (раздел 6): <code>file:/^Стал/</code>.</div>
 
+<div class="box"><strong>Оператор действует на одно слово — или на группу в скобках.</strong> <code>path:Kolnatun OR Хранилища</code> — это «путь содержит Kolnatun» <em>или</em> «слово Хранилища в тексте». Второе слово оператор не получает. Чтобы оператор относился к нескольким словам, их берут в скобки сразу после двоеточия. Справка говорит, что так умеют «некоторые операторы», и приводит <code>task:(call OR email)</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> <code>path:</code> на практике тоже умеет: Explain search term для запроса ниже показывает «Excluding → Match file path → Match any of: Kolnatun, Хранилища».
+<table>
+  <tr><th>#</th><th>Запрос</th><th>Что значит</th></tr>
+  <tr><td>1</td><td><code>-(path:Kolnatun OR Хранилища)</code></td><td><strong>ошибка</strong>: убирает папку Kolnatun и заметки со словом «Хранилища» в тексте, а папку Хранилища оставляет</td></tr>
+  <tr><td>2</td><td><code>-(path:Kolnatun OR path:Хранилища)</code></td><td>убрать обе папки — оператор у каждого слова</td></tr>
+  <tr><td>3</td><td><code>-(path:(Kolnatun OR Хранилища))</code></td><td>то же, короче — оператор на группу</td></tr>
+  <tr><td>4</td><td><code>-path:Kolnatun -path:Хранилища</code></td><td>то же, без OR: «не там и не там»</td></tr>
+</table></div>
+
 <h2>4. Теги: <code>tag:</code> ищет от корня</h2>
 <div class="box"><strong><code>tag</code> или <code>tags</code>?</strong> В поиске оператор пишется в единственном числе: <code>tag:</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> Во множественном числе, <code>tags</code>, называется свойство в YAML (урок 0002); старое имя <code>tag</code> там устарело с версии 1.9.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Запомнить так: в YAML у заметки <em>много</em> тегов, а запрос ищет <em>один</em> тег.</div>
 <p><code>tag:</code> точнее простого поиска: он не смотрит в блоки кода. Писать можно с <code>#</code> и без: <code>tag:#кино</code> = <code>tag:кино</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> Для вложенных тегов (урок 0002) правило одно — <strong>от корня вниз</strong>:</p>
@@ -118,7 +127,7 @@
 <p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
 
 <h2>8. Практика: песочница</h2>
-<p>Это 9 заметок учебного хранилища <code>practice-vault</code> плюс два файла-не-заметки для примера (<code>.jpg</code> и <code>.mmd</code> — в practice-vault их нет). Справа от имени — <code>type</code> и <code>tags</code>. Песочница понимает <code>file:</code>, <code>path:</code>, <code>content:</code>, <code>tag:</code>, <code>[свойство]</code>, <code>[свойство:значение]</code>, <code>[свойство:a OR b]</code>, <code>-</code>, <code>OR</code>, скобки, кавычки. Простые слова и <code>content:</code> ищут в тексте заметки (без свойств). <code>line:</code>, <code>section:</code>, regex и сравнения <code>&lt; &gt;</code> — только в настоящем Obsidian.</p>
+<p>Это 9 заметок учебного хранилища <code>practice-vault</code> плюс два файла-не-заметки для примера (<code>.jpg</code> и <code>.mmd</code> — в practice-vault их нет). Справа от имени — <code>type</code> и <code>tags</code>. Песочница понимает <code>file:</code>, <code>path:</code>, <code>content:</code>, <code>tag:</code>, <code>[свойство]</code>, <code>[свойство:значение]</code>, <code>[свойство:a OR b]</code>, <code>path:(a OR b)</code>, <code>-</code>, <code>OR</code>, скобки, кавычки. Простые слова и <code>content:</code> ищут в тексте заметки (без свойств). <code>line:</code>, <code>section:</code>, regex и сравнения <code>&lt; &gt;</code> — только в настоящем Obsidian.</p>
 <p>Если ответ неверный, проверка скажет, что лишнее, чего не хватает и почему (слеши, <code>*</code>, условие, которое ничего не нашло, вложенный тег).</p>
 <div id="sim"></div>
 

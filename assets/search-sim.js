@@ -1,5 +1,5 @@
 /* search-sim.js - tiny simulator of Obsidian search / graph-filter syntax.
-   Supports: path:x  file:x  tag:x  content:x  [prop]  [prop:value]  [prop:a OR b]  -term  OR  (groups)  "quoted text"
+   Supports: path:x  file:x  tag:x  content:x  [prop]  [prop:value]  [prop:a OR b]  path:(a OR b)  -term  OR  (groups)  "quoted text"
    tag:x matches the tag x and its nested tags (x/...), never a nested part alone (Help: tag:#work does not find #myjob/work).
    Tags come from file.props.tags. content: and bare words search file.text (note body, no properties);
    without file.text, bare words match the path (old behaviour, used by lesson 0005).
@@ -15,6 +15,14 @@
       let neg = false;
       if (c === '-') { neg = true; i++; }
       let s = '';
+      // operator with a group: path:(a OR b) - keep the whole group in one term
+      const og = /^(path|file|content|tag):\(/i.exec(q.slice(i));
+      if (og) {
+        let depth = 0, j = i + og[0].length - 1;
+        for (; j < q.length; j++) { if (q[j] === '(') depth++; else if (q[j] === ')' && --depth === 0) break; }
+        s = q.slice(i, Math.min(j + 1, q.length)); i = j + 1;
+        out.push({ term: s, neg }); continue;
+      }
       if (q[i] === '[') { const j = q.indexOf(']', i); s = q.slice(i, j < 0 ? q.length : j + 1); i = j < 0 ? q.length : j + 1; }
       else {
         while (i < q.length && !/[\s()]/.test(q[i])) {
@@ -31,6 +39,12 @@
     const low = t.toLowerCase();
     let f;
     let m;
+    if ((m = /^(path|file|content|tag):\((.*)\)?$/i.exec(t))) {
+      // op:(a OR b c) -> op:a OR (op:b op:c); the operator applies to every word in the group
+      const op = m[1], inner = m[2].replace(/\)$/, '');
+      const alts = inner.split(/\s+OR\s+/).map(a => a.trim().split(/\s+/).filter(Boolean).map(w => termFn(op + ':' + w.replace(/^"|"$/g, ''))));
+      return file => alts.some(ws => ws.length && ws.every(fn => fn(file)));
+    }
     if ((m = /^\[([^:\]]+)(?::([^\]]*))?\]$/.exec(t))) {
       const key = m[1].trim();
       // [prop:a OR b] - any of the values; quotes are stripped ([status:"хочу пересмотреть"])

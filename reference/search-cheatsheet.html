@@ -35,7 +35,7 @@
 </table>
 <p>Текст ищется только в заметках и холстах; <code>file:</code> и <code>path:</code> находят любые файлы. Встроить результаты в заметку — блок <code>```query</code>. Как Obsidian понял запрос — Explain search term в настройках поиска.</p>
 
-<div class="box"><strong>Два правила.</strong> Пути — через <code>/</code>, не <code>\</code>. Звёздочка <code>*</code> не шаблон: <code>path:</code> и <code>file:</code> уже ищут <em>часть</em> строки.</div>
+<div class="box"><strong>Три правила.</strong> Пути — через <code>/</code>, не <code>\</code>. Звёздочка <code>*</code> не шаблон: <code>path:</code> и <code>file:</code> уже ищут <em>часть</em> строки. Оператор действует на одно слово: <code>path:a OR b</code> ищет <code>b</code> в тексте; нужно <code>path:a OR path:b</code> или группа <code>path:(a OR b)</code> (Explain search term: «Match file path → Match any of»).</div>
 
 <h2>Логика</h2>
 <table>
