@@ -101,7 +101,7 @@
 <p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
 
 <h2>7. Практика: фильтр для Kolnatun</h2>
-<p>Песочница — копия части твоего хранилища Kolnatun (25 файлов, имена настоящие). Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Сначала пробуй сам, подсказку — только если застрял.</p>
+<p>Это упражнение делается <strong>здесь, на странице</strong>: Obsidian не нужен. Песочница — копия части твоего хранилища Kolnatun (25 файлов, имена настоящие). Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Сначала пробуй сам, подсказку — только если застрял.</p>
 <div class="box">
   <strong>Как читать проверку.</strong> Песочница показывает, сколько файлов осталось и сколько нужно, и два списка: «должны исчезнуть, но остались» и «должны остаться, но исчезли». Если какое-то условие не нашло ни одного файла, она скажет об этом отдельно (частые причины: <code>\</code> вместо <code>/</code>, опечатка, <code>*</code>).<br><br>
   <strong>Разобранный пример.</strong> Убрать правила и задачи: <code>-path:rules -path:tasks</code> — два условия через пробел, у каждого свой минус.
@@ -112,6 +112,7 @@
 <div id="quiz"></div>
 
 <h2>9. Теперь в настоящем Obsidian</h2>
+<p>Метка у шага — в каком хранилище его делать: <span class="vault pv">practice-vault</span> учебное, <code>learn-obsidian/practice-vault</code>; <span class="vault kn">Kolnatun · рабочее</span> рабочее, <code>kol-natun-vb/Main/claude/kolnatun-context-2.0</code> — там только смотреть и менять настройки, файлы не трогать. Папка <code>Kolnatun/</code> внутри practice-vault — учебная копия, это не рабочее хранилище.</p>
 <p>Сначала на учебном хранилище <code>practice-vault</code> — там известно, что должно получиться (числа — для версии курса, без твоих правок). Потом то же на Kolnatun.</p>
 <table>
   <tr><th>#</th><th>Хранилище</th><th>Папка (Obsidian → Open folder as vault)</th></tr>
@@ -120,15 +121,15 @@
 </table>
 <p>Открыть хранилище: внизу слева значок <strong>Vault profile</strong> → <strong>Manage vaults…</strong> → справа от <strong>Open folder as vault</strong> кнопка <strong>Open</strong> → выбрать папку. Уже открытое раньше — <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open another vault</code>.<span class="cite"><a href="https://obsidian.md/help/manage-vaults">[хранилища]</a></span> Путь в окне выбора папки Windows покажет с <code></code> — это нормально: <code></code> только в Проводнике, внутри Obsidian пути через <code>/</code>.</p>
 <ol class="steps">
-  <li><strong>Весь граф.</strong> Открой граф. Ожидаемо: 9 заметок — Сталкер, Солярис, Пикник, Тарковский, <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>SetErrorObject</code>, <code>mdlGeneral.bas</code>, <code>README</code>. Если включён Tags — ещё точки тегов.</li>
-  <li><strong>Сироты.</strong> Filters → выключи <strong>Orphans</strong>. Ожидаемо: пропадут <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>README</code> — у них нет ни одной ссылки. Осталось 6. Включи Orphans обратно.</li>
-  <li><strong>Фильтр по свойству.</strong> Search files: <code>[type:film] OR [type:person]</code>. Ожидаемо: 3 — Сталкер, Солярис, Тарковский. Очисти строку.</li>
-  <li><strong>Фильтр с минусом.</strong> <code>-path:Kolnatun -path:Хранилища</code>. Ожидаемо: 5 — медиатека, Тарковский, README. Очисти.</li>
-  <li><strong>Группы.</strong> New group: <code>path:Kolnatun</code> — один цвет; ещё одна: <code>[type:film]</code> — другой. Ожидаемо: все 9 на месте, 2 точки Kolnatun и 2 фильма окрашены.</li>
-  <li><strong>Стрелки.</strong> Display → включи <strong>Arrows</strong>. Найди <code>SetErrorObject</code> и <code>mdlGeneral.bas</code>: они ссылаются друг на друга — стрелки с обеих сторон.</li>
-  <li><strong>Локальный граф.</strong> Tags выключен. Открой <code>Люди/Тарковский</code>, <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open local graph</code>. Depth 1 → 3 точки: Тарковский, Сталкер, Солярис. Depth 2 → 4: добавился <code>Пикник на обочине</code> (сосед Сталкера).</li>
-  <li><strong>Kolnatun.</strong> Открой рабочее хранилище, граф → Filters → Search files: твой ответ на задачу 3 песочницы. Выключи Attachments (уйдут <code>.mmd</code>, <code>.html</code>). Группа <code>path:shared/entities</code> — цвет исходников. Это цель урока. Файлы Kolnatun не меняются — меняются только настройки графа.</li>
-  <li><strong>Kolnatun, одна функция.</strong> Открой <code>shared/entities/BL/mdl/mdlGeneral.bas/SetErrorObject</code> → Open local graph, Depth 1: контейнер и кто ссылается.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Весь граф.</strong> Открой граф. Ожидаемо: 9 заметок — Сталкер, Солярис, Пикник, Тарковский, <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>SetErrorObject</code>, <code>mdlGeneral.bas</code>, <code>README</code>. Если включён Tags — ещё точки тегов.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Сироты.</strong> Filters → выключи <strong>Orphans</strong>. Ожидаемо: пропадут <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>README</code> — у них нет ни одной ссылки. Осталось 6. Включи Orphans обратно.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Фильтр по свойству.</strong> Search files: <code>[type:film] OR [type:person]</code>. Ожидаемо: 3 — Сталкер, Солярис, Тарковский. Очисти строку.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Фильтр с минусом.</strong> <code>-path:Kolnatun -path:Хранилища</code>. Ожидаемо: 5 — медиатека, Тарковский, README. Очисти.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Группы.</strong> New group: <code>path:Kolnatun</code> — один цвет; ещё одна: <code>[type:film]</code> — другой. Ожидаемо: все 9 на месте, 2 точки Kolnatun и 2 фильма окрашены.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Стрелки.</strong> Display → включи <strong>Arrows</strong>. Найди <code>SetErrorObject</code> и <code>mdlGeneral.bas</code>: они ссылаются друг на друга — стрелки с обеих сторон.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Локальный граф.</strong> Tags выключен. Открой <code>Люди/Тарковский</code>, <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open local graph</code>. Depth 1 → 3 точки: Тарковский, Сталкер, Солярис. Depth 2 → 4: добавился <code>Пикник на обочине</code> (сосед Сталкера).</li>
+  <li><span class="vault kn">Kolnatun · рабочее</span><strong>Kolnatun.</strong> Открой рабочее хранилище, граф → Filters → Search files: твой ответ на задачу 3 песочницы. Выключи Attachments (уйдут <code>.mmd</code>, <code>.html</code>). Группа <code>path:shared/entities</code> — цвет исходников. Это цель урока. Файлы Kolnatun не меняются — меняются только настройки графа.</li>
+  <li><span class="vault kn">Kolnatun · рабочее</span><strong>Kolnatun, одна функция.</strong> Открой <code>calculators/shared/entities/BL/mdl/mdlGeneral.bas/SetErrorObject</code> → Open local graph, Depth 1: контейнер и кто ссылается.</li>
 </ol>
 
 <h2>10. Что это значит для Kolnatun и LLM-wiki</h2>

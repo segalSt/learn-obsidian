@@ -182,20 +182,21 @@ GROUP BY type
 <div id="quiz"></div>
 
 <h2>13. Теперь в настоящем Obsidian</h2>
+<p>Метка у шага — в каком хранилище его делать: <span class="vault pv">practice-vault</span> учебное, <code>learn-obsidian/practice-vault</code>; <span class="vault kn">Kolnatun · рабочее</span> рабочее, <code>kol-natun-vb/Main/claude/kolnatun-context-2.0</code> — там только смотреть и менять настройки, файлы не трогать. Папка <code>Kolnatun/</code> внутри practice-vault — учебная копия, это не рабочее хранилище.</p>
 <p>Ожидаемые результаты посчитаны для версии <code>practice-vault</code> из курса. Если ты менял свойства в своих упражнениях, числа могут отличаться — вернуть версию курса: <code>git checkout -- practice-vault</code>.</p>
 <ol>
-  <li><strong>Установка.</strong> Открой <code>practice-vault</code>, поставь и включи Dataview (раздел 2). Ожидаемо: в Settings → Community plugins → Installed plugins Dataview с включённым переключателем.</li>
-  <li><strong>Заметка для запросов.</strong> Создай в корне хранилища заметку <code>Запросы</code>. Вставь блок <code>LIST FROM "Медиатека"</code> из раздела 3, переключись в чтение (<kbd>Ctrl</kbd>+<kbd>E</kbd>). Ожидаемо: 3 ссылки — Пикник на обочине, Солярис (1972), Сталкер (1979). Замени на <code>FROM "Фильмы"</code> — результатов нет (путь от корня). <code>FROM "Медиатека/Фильмы"</code> — 2.</li>
-  <li><strong>Таблица.</strong> <code>TABLE year, status FROM "Медиатека" SORT year DESC</code>. Ожидаемо: 3 строки, первая — Сталкер (1979), потом две заметки 1972 года.</li>
-  <li><strong>Фильтр по числу.</strong> <code>TABLE type, year WHERE year AND year &lt; 1975</code> (без FROM — всё хранилище). Ожидаемо: 2 — Солярис и Пикник. Проверь сам: убери <code>year AND</code> — появились ли заметки без <code>year</code>?</li>
-  <li><strong>Тег.</strong> <code>LIST FROM #кино</code>. Ожидаемо: 2 фильма — у них тег <code>кино/советское</code>, а FROM берёт подтеги.</li>
-  <li><strong>Свойство where.</strong> <code>LIST WHERE where = "HDD-2TB-01"</code> — Dataview покажет ошибку или ничего не найдёт. <code>LIST WHERE row.where = "HDD-2TB-01"</code> — 2 фильма.</li>
-  <li><strong>Свои заголовки.</strong> <code>TABLE WITHOUT ID file.link AS "Фильм", year AS "Год", row.where AS "Где" FROM "Медиатека/Фильмы" SORT year ASC</code>. Ожидаемо: столбцы Фильм / Год / Где; Солярис 1972 HDD-2TB-01, Сталкер 1979 HDD-2TB-01.</li>
-  <li><strong>Группы.</strong> Блок <code>GROUP BY type</code> из раздела 7. Ожидаемо: 4 строки — book 1, entity 2, film 2, person 1.</li>
-  <li><strong>Развёртка.</strong> <code>TABLE authors FROM "Медиатека/Книги" FLATTEN authors</code>. Ожидаемо: 2 строки Пикник на обочине — по одной на каждого автора.</li>
-  <li><strong>Ссылки.</strong> <code>LIST FROM [[Пикник на обочине]]</code> → 1, Сталкер (ссылается на книгу). <code>LIST FROM outgoing([[Тарковский]])</code> → 2 фильма (ссылки в тексте Тарковского). Проверь сам: <code>LIST FROM [[Тарковский]]</code> — на Тарковского ссылаются только <em>свойства</em> <code>director</code>; находит ли Dataview такие ссылки?</li>
-  <li><strong>Inline.</strong> Напиши в тексте заметки <code>`= this.file.name`</code> и <code>`= [[Солярис (1972)]].year`</code>. Ожидаемо в чтении: «Запросы» и 1972.</li>
-  <li><strong>Запрос Kolnatun.</strong> Открой <code>Kolnatun/mdlGeneral.bas</code> и вставь в конец:
+  <li><span class="vault pv">practice-vault</span><strong>Установка.</strong> Открой <code>practice-vault</code>, поставь и включи Dataview (раздел 2). Ожидаемо: в Settings → Community plugins → Installed plugins Dataview с включённым переключателем.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Заметка для запросов.</strong> Создай в корне хранилища заметку <code>Запросы</code>. Вставь блок <code>LIST FROM "Медиатека"</code> из раздела 3, переключись в чтение (<kbd>Ctrl</kbd>+<kbd>E</kbd>). Ожидаемо: 3 ссылки — Пикник на обочине, Солярис (1972), Сталкер (1979). Замени на <code>FROM "Фильмы"</code> — результатов нет (путь от корня). <code>FROM "Медиатека/Фильмы"</code> — 2.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Таблица.</strong> <code>TABLE year, status FROM "Медиатека" SORT year DESC</code>. Ожидаемо: 3 строки, первая — Сталкер (1979), потом две заметки 1972 года.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Фильтр по числу.</strong> <code>TABLE type, year WHERE year AND year &lt; 1975</code> (без FROM — всё хранилище). Ожидаемо: 2 — Солярис и Пикник. Проверь сам: убери <code>year AND</code> — появились ли заметки без <code>year</code>?</li>
+  <li><span class="vault pv">practice-vault</span><strong>Тег.</strong> <code>LIST FROM #кино</code>. Ожидаемо: 2 фильма — у них тег <code>кино/советское</code>, а FROM берёт подтеги.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Свойство where.</strong> <code>LIST WHERE where = "HDD-2TB-01"</code> — Dataview покажет ошибку или ничего не найдёт. <code>LIST WHERE row.where = "HDD-2TB-01"</code> — 2 фильма.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Свои заголовки.</strong> <code>TABLE WITHOUT ID file.link AS "Фильм", year AS "Год", row.where AS "Где" FROM "Медиатека/Фильмы" SORT year ASC</code>. Ожидаемо: столбцы Фильм / Год / Где; Солярис 1972 HDD-2TB-01, Сталкер 1979 HDD-2TB-01.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Группы.</strong> Блок <code>GROUP BY type</code> из раздела 7. Ожидаемо: 4 строки — book 1, entity 2, film 2, person 1.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Развёртка.</strong> <code>TABLE authors FROM "Медиатека/Книги" FLATTEN authors</code>. Ожидаемо: 2 строки Пикник на обочине — по одной на каждого автора.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Ссылки.</strong> <code>LIST FROM [[Пикник на обочине]]</code> → 1, Сталкер (ссылается на книгу). <code>LIST FROM outgoing([[Тарковский]])</code> → 2 фильма (ссылки в тексте Тарковского). Проверь сам: <code>LIST FROM [[Тарковский]]</code> — на Тарковского ссылаются только <em>свойства</em> <code>director</code>; находит ли Dataview такие ссылки?</li>
+  <li><span class="vault pv">practice-vault</span><strong>Inline.</strong> Напиши в тексте заметки <code>`= this.file.name`</code> и <code>`= [[Солярис (1972)]].year`</code>. Ожидаемо в чтении: «Запросы» и 1972.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Запрос Kolnatun.</strong> Открой <code>Kolnatun/mdlGeneral.bas</code> и вставь в конец:
 <pre>```dataview
 TABLE kind, line, used_by
 FROM "Kolnatun"
@@ -203,7 +204,7 @@ WHERE (kind = "method" OR kind = "function") AND source = this.source
 SORT line ASC
 ```</pre>
   Ожидаемо: 1 строка — SetErrorObject, function, 234, AcademicEnd. Это тот же запрос, что в Kolnatun, только папка другая: <code>this.source</code> — исходник страницы-контейнера.</li>
-  <li><strong>Kolnatun, только чтение.</strong> Открой в рабочем хранилище <code>calculators/shared/INDEX.md</code> в режиме чтения. Теперь ты можешь прочитать три его таблицы: функции, которые использует больше одного калькулятора; сколько функций каждого файла уже разобрано; помеченные дубликаты. Ничего там не меняй.</li>
+  <li><span class="vault kn">Kolnatun · рабочее</span><strong>Kolnatun, только чтение.</strong> Открой в рабочем хранилище <code>calculators/shared/INDEX.md</code> в режиме чтения. Теперь ты можешь прочитать три его таблицы: функции, которые использует больше одного калькулятора; сколько функций каждого файла уже разобрано; помеченные дубликаты. Ничего там не меняй.</li>
 </ol>
 <p>Вернуть хранилище к версии курса: удалить заметку <code>Запросы</code> и выполнить <code>git checkout -- practice-vault</code>.</p>
 

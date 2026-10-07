@@ -135,18 +135,19 @@
 <div id="quiz"></div>
 
 <h2>10. Теперь в настоящем Obsidian</h2>
+<p>Метка у шага — в каком хранилище его делать: <span class="vault pv">practice-vault</span> учебное, <code>learn-obsidian/practice-vault</code>; <span class="vault kn">Kolnatun · рабочее</span> рабочее, <code>kol-natun-vb/Main/claude/kolnatun-context-2.0</code> — там только смотреть и менять настройки, файлы не трогать. Папка <code>Kolnatun/</code> внутри practice-vault — учебная копия, это не рабочее хранилище.</p>
 <p>Хранилище <code>practice-vault</code>, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>.</p>
 <ol class="steps">
-  <li><strong>Свойство.</strong> <code>[type:film]</code>. Ожидаемо: 2 — <code>Сталкер (1979)</code>, <code>Солярис (1972)</code>.</li>
-  <li><strong>Объяснение.</strong> В настройках поиска включи <strong>Explain search term</strong>, набери <code>tag:кино -Солярис</code>. Ожидаемо: Obsidian словами распишет два условия; результат — 1, <code>Сталкер</code>.</li>
-  <li><strong>Вложенный тег.</strong> <code>tag:советское</code> → 0. <code>tag:кино</code> → 2. <code>tag:кино/советское</code> → 2.</li>
-  <li><strong>Часть значения.</strong> <code>[where:HDD-2TB-01]</code> → 2 (Сталкер, Солярис). Теперь <code>[where:HDD]</code> — найдёт ли? Так ты узнаешь, ищет ли <code>[свойство:значение]</code> часть значения.</li>
-  <li><strong>Простое слово и свойства.</strong> <code>HDD-2TB-01</code> без оператора. В тексте это слово есть у <code>Солярис</code> (раздел «Где лежит») и у <code>Хранилища/HDD-2TB-01</code>. У <code>Сталкер</code> оно только в свойстве <code>where</code>. Есть Сталкер в результатах — значит, простой поиск смотрит и в текст свойств.</li>
-  <li><strong>Сравнение.</strong> <code>[year:&lt;1975]</code>. Ожидаемо: 2 — <code>Солярис (1972)</code>, <code>Пикник на обочине</code> (1972).</li>
-  <li><strong>Одна строка.</strong> <code>line:(Медленный держит)</code> → 1, Сталкер. <code>line:(Медленный Снят)</code> → 0: слова есть в Сталкере, но в разных строках.</li>
-  <li><strong>Начало имени.</strong> <code>file:/^С/</code> (русская С) → 2: <code>Сталкер (1979)</code>, <code>Солярис (1972)</code>. Теперь <code>file:С</code> без regex → 3: добавился <code>Тарковский</code> — «с» есть в середине имени, а регистр не важен.</li>
-  <li><strong>Kolnatun.</strong> <code>[used_by:AcademicEnd]</code> → 1, <code>SetErrorObject</code>. <code>path:Kolnatun -[kind:function]</code> → 1, <code>mdlGeneral.bas</code>.</li>
-  <li><strong>Встроенный поиск.</strong> Создай заметку <code>Поиск-тест</code>, вставь блок <code>```query</code> с <code>[type:film]</code> (раздел 7), <kbd>Ctrl</kbd>+<kbd>E</kbd>. Ожидаемо: внутри заметки список из 2 фильмов. Потом удали заметку.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Свойство.</strong> <code>[type:film]</code>. Ожидаемо: 2 — <code>Сталкер (1979)</code>, <code>Солярис (1972)</code>.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Объяснение.</strong> В настройках поиска включи <strong>Explain search term</strong>, набери <code>tag:кино -Солярис</code>. Ожидаемо: Obsidian словами распишет два условия; результат — 1, <code>Сталкер</code>.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Вложенный тег.</strong> <code>tag:советское</code> → 0. <code>tag:кино</code> → 2. <code>tag:кино/советское</code> → 2.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Часть значения.</strong> <code>[where:HDD-2TB-01]</code> → 2 (Сталкер, Солярис). Теперь <code>[where:HDD]</code> — найдёт ли? Так ты узнаешь, ищет ли <code>[свойство:значение]</code> часть значения.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Простое слово и свойства.</strong> <code>HDD-2TB-01</code> без оператора. В тексте это слово есть у <code>Солярис</code> (раздел «Где лежит») и у <code>Хранилища/HDD-2TB-01</code>. У <code>Сталкер</code> оно только в свойстве <code>where</code>. Есть Сталкер в результатах — значит, простой поиск смотрит и в текст свойств.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Сравнение.</strong> <code>[year:&lt;1975]</code>. Ожидаемо: 2 — <code>Солярис (1972)</code>, <code>Пикник на обочине</code> (1972).</li>
+  <li><span class="vault pv">practice-vault</span><strong>Одна строка.</strong> <code>line:(Медленный держит)</code> → 1, Сталкер. <code>line:(Медленный Снят)</code> → 0: слова есть в Сталкере, но в разных строках.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Начало имени.</strong> <code>file:/^С/</code> (русская С) → 2: <code>Сталкер (1979)</code>, <code>Солярис (1972)</code>. Теперь <code>file:С</code> без regex → 3: добавился <code>Тарковский</code> — «с» есть в середине имени, а регистр не важен.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Kolnatun.</strong> <code>[used_by:AcademicEnd]</code> → 1, <code>SetErrorObject</code>. <code>path:Kolnatun -[kind:function]</code> → 1, <code>mdlGeneral.bas</code>.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Встроенный поиск.</strong> Создай заметку <code>Поиск-тест</code>, вставь блок <code>```query</code> с <code>[type:film]</code> (раздел 7), <kbd>Ctrl</kbd>+<kbd>E</kbd>. Ожидаемо: внутри заметки список из 2 фильмов. Потом удали заметку.</li>
 </ol>
 <p>Вернуть хранилище к версии курса: <code>git checkout -- practice-vault</code> (откатит все правки в нём).</p>
 
