@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0007 · Bases</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/line-tagger.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0007 · Таблицы без кода · ~35 минут</div>
+  <h1>Bases: таблица, которую можно править</h1>
+  <p class="lede">Dataview (урок 0006) показывает таблицу по свойствам, но только читает. Bases — встроенный в Obsidian плагин: та же таблица собирается мышкой, а значение в ячейке можно поменять, и оно запишется в свойство заметки.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Собрать в <code>practice-vault</code> базу «Медиатека»: таблица с годом, статусом и местом хранения, сортировка, группы, формула, итог по столбцу, второй вид карточками — и вставить её в заметку. Потом прочитать <code>.base</code>-файл как текст и перевести на Bases запрос Kolnatun из урока 0006.
+</div>
+
+<h2>1. Что такое Bases</h2>
+<p><strong>Bases</strong> — «core plugin (встроенный плагин), который даёт базоподобные виды твоих заметок»: в базе можно смотреть, <em>править</em>, сортировать и фильтровать файлы и их свойства.<span class="cite"><a href="https://obsidian.md/help/bases">[bases]</a></span></p>
+<table>
+  <tr><th>#</th><th>Факт</th><th>Что это значит</th></tr>
+  <tr><td>1</td><td><strong>Core plugin</strong> — встроенный, ставить не надо</td><td>в отличие от Dataview, нет Restricted mode и стороннего кода. Включается в Settings → <strong>Core plugins</strong> → Bases<span class="cite"><a href="https://obsidian.md/help/plugins">[core]</a></span></td></tr>
+  <tr><td>2</td><td>данные — в твоих заметках</td><td>«все данные Bases хранятся в локальных Markdown-файлах и их свойствах»<span class="cite"><a href="https://obsidian.md/help/bases">[bases]</a></span>. База — это только <em>вид</em>: какие файлы показать и как</td></tr>
+  <tr><td>3</td><td>вид хранится в файле <code>.base</code></td><td>это текст в формате YAML (тот же, что у свойств, урок 0002). Его можно открыть и прочитать как текст, а можно вставить в заметку блоком <code>```base</code><span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span></td></tr>
+  <tr><td>4</td><td>правка в таблице <strong>меняет заметку</strong></td><td>главное отличие от Dataview, который «только читает». Поменял статус в ячейке — поменялось свойство <code>status</code> в файле. Отмена — <kbd>Ctrl</kbd>+<kbd>Z</kbd><span class="cite"><a href="https://obsidian.md/help/bases/views/table">[table]</a></span></td></tr>
+</table>
+<p>Bases появились в Obsidian 1.9 (виды Table и Cards), List — в 1.10, Kanban — в 1.14.<span class="cite"><a href="https://obsidian.md/help/bases/views">[views]</a></span> Если в меню вида нет какого-то варианта — версия Obsidian старше.</p>
+
+<h2>2. Слова урока</h2>
+<table>
+  <tr><th>#</th><th>Слово</th><th>Что это</th></tr>
+  <tr><td>1</td><td><strong>Base</strong> (база)</td><td>файл <code>.base</code>: фильтры + формулы + один или несколько видов</td></tr>
+  <tr><td>2</td><td><strong>View</strong> (вид)</td><td>одна раскладка базы: Table, List, Cards, Kanban, Map. У каждого вида свои сортировка, группы, столбцы, фильтры. Пример: база «Книги» с видами «Читаю» и «Прочитано недавно»<span class="cite"><a href="https://obsidian.md/help/bases/views">[views]</a></span></td></tr>
+  <tr><td>3</td><td><strong>Filter</strong> (фильтр)</td><td>условие, какие файлы показать. <em>База без фильтров показывает все файлы хранилища</em><span class="cite"><a href="https://obsidian.md/help/bases/views">[views]</a></span></td></tr>
+  <tr><td>4</td><td><strong>Formula</strong> (формула)</td><td>вычисляемое свойство: живёт в <code>.base</code>, в заметки не пишется. <code>formula.имя</code><span class="cite"><a href="https://obsidian.md/help/formulas">[formulas]</a></span></td></tr>
+  <tr><td>5</td><td><strong>Summary</strong> (итог)</td><td>строка под столбцом таблицы: сумма, среднее, min, max, сколько заполнено<span class="cite"><a href="https://obsidian.md/help/bases/views/table">[table]</a></span></td></tr>
+</table>
+
+<h2>3. Создать базу</h2>
+<table>
+  <tr><th>#</th><th>Способ</th><th>Где появится файл</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <strong>Bases: Create new base</strong></td><td>в папке <em>открытой сейчас</em> заметки</td></tr>
+  <tr><td>2</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <strong>Bases: Insert new base</strong></td><td>создаёт базу и сразу вставляет её в открытую заметку</td></tr>
+  <tr><td>3</td><td>File explorer → правый клик по папке → <strong>New base</strong></td><td>в этой папке</td></tr>
+  <tr><td>4</td><td>Ribbon (левая вертикальная панель) → <strong>Create new base</strong></td><td>в папке открытой заметки</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/bases/create-base">Bases → Create a base</a>.</p>
+<p>Вставить готовую базу в заметку — как картинку, через embed (урок 0003): <code>![[Медиатека.base]]</code> — покажет первый вид; <code>![[Медиатека.base#Фильмы]]</code> — вид «Фильмы».<span class="cite"><a href="https://obsidian.md/help/bases/create-base">[create]</a></span></p>
+
+<h2>4. Панель базы</h2>
+<p>Над таблицей — <strong>toolbar</strong> (панель инструментов). Всё, что в Dataview писалось командами, здесь — кнопки:<span class="cite"><a href="https://obsidian.md/help/bases/views">[views]</a></span></p>
+<table>
+  <tr><th>#</th><th>Кнопка</th><th>Что делает</th><th>В Dataview было</th></tr>
+  <tr><td>1</td><td><strong>View menu</strong> (имя вида слева вверху)</td><td>создать / переключить / настроить вид. <strong>Add view</strong> — новый вид; стрелка справа от имени — настройки вида</td><td>тип запроса</td></tr>
+  <tr><td>2</td><td><strong>Results</strong></td><td>сколько файлов в виде; ограничить число, скопировать, экспорт в CSV</td><td><code>LIMIT</code></td></tr>
+  <tr><td>3</td><td><strong>Sort</strong> → Add sort</td><td>сортировка по одному или нескольким свойствам; порядок сортировок — перетаскиванием</td><td><code>SORT</code></td></tr>
+  <tr><td>4</td><td><strong>Group</strong> → Group by</td><td>разбить на разделы по значению свойства. <strong>Только одно</strong> свойство на вид</td><td><code>GROUP BY</code></td></tr>
+  <tr><td>5</td><td><strong>Filter</strong></td><td>какие файлы показать (раздел 5)</td><td><code>FROM</code> + <code>WHERE</code></td></tr>
+  <tr><td>6</td><td><strong>Properties</strong></td><td>какие свойства показать столбцами; <strong>Add formula</strong> — формула</td><td>столбцы после <code>TABLE</code></td></tr>
+  <tr><td>7</td><td><strong>Search</strong></td><td>найти строку по видимым свойствам</td><td>—</td></tr>
+  <tr><td>8</td><td><strong>New</strong></td><td>создать новую заметку прямо из вида</td><td>—</td></tr>
+</table>
+
+<h2>5. Фильтры</h2>
+<p>В меню <strong>Filter</strong> два раздела:<span class="cite"><a href="https://obsidian.md/help/bases/views">[views]</a></span></p>
+<ul>
+  <li><strong>All views</strong> — фильтр для <em>всех</em> видов базы. Сюда — «что вообще входит в базу»: например, только папка <code>Медиатека</code>.</li>
+  <li><strong>This view</strong> — только для открытого вида: «из медиатеки — только фильмы». Оба фильтра действуют вместе, как «и».<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span></li>
+</ul>
+<p>Условие — три части: <strong>свойство</strong> → <strong>оператор</strong> (список зависит от типа свойства: текст, число, дата) → <strong>значение</strong>. Несколько условий объединяет <strong>conjunction</strong> (связка):</p>
+<table>
+  <tr><th>#</th><th>В меню</th><th>Значит</th><th>В тексте <code>.base</code></th></tr>
+  <tr><td>1</td><td>All the following are true</td><td>все условия — «и»</td><td><code>and:</code></td></tr>
+  <tr><td>2</td><td>Any of the following are true</td><td>хотя бы одно — «или»</td><td><code>or:</code></td></tr>
+  <tr><td>3</td><td>None of the following are true</td><td>ни одного — «кроме»</td><td><code>not:</code></td></tr>
+</table>
+<p><strong>Filter group</strong> (группа фильтров) — связка внутри связки, как скобки в поиске: «фильм <em>и</em> (смотрел <em>или</em> хочу пересмотреть)». Кнопка с кодом <code>&lt;/&gt;</code> открывает <strong>advanced filter editor</strong> — тот же фильтр текстом; там доступны функции, которых нет в меню.<span class="cite"><a href="https://obsidian.md/help/bases/views">[views]</a></span></p>
+
+<h3>Язык фильтров и формул</h3>
+<p>Похож на Dataview, но не тот же. Главные отличия:<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span><span class="cite"><a href="https://obsidian.md/help/bases/functions">[функции]</a></span></p>
+<table>
+  <tr><th>#</th><th>Нужно</th><th>Dataview (0006)</th><th>Bases</th></tr>
+  <tr><td>1</td><td>папка с подпапками</td><td><code>FROM "Медиатека/Фильмы"</code></td><td><code>file.inFolder("Медиатека/Фильмы")</code></td></tr>
+  <tr><td>2</td><td>тег с подтегами</td><td><code>FROM #кино</code></td><td><code>file.hasTag("кино")</code> — подтеги <code>кино/советское</code> тоже</td></tr>
+  <tr><td>3</td><td>равно</td><td><code>type = "film"</code></td><td><code>type == "film"</code> — <strong>два</strong> знака равенства</td></tr>
+  <tr><td>4</td><td>и / или / не</td><td><code>AND</code>, <code>OR</code>, <code>!</code></td><td><code>&amp;&amp;</code>, <code>||</code>, <code>!</code> — или пункты списка под <code>and:</code> / <code>or:</code> / <code>not:</code></td></tr>
+  <tr><td>5</td><td>есть элемент в списке</td><td><code>contains(used_by, "AcademicEnd")</code></td><td><code>used_by.contains("AcademicEnd")</code> — функция пишется <strong>через точку</strong> после значения</td></tr>
+  <tr><td>6</td><td>сколько элементов</td><td><code>length(used_by)</code></td><td><code>used_by.length</code> — без скобок, это поле</td></tr>
+  <tr><td>7</td><td>свойство есть</td><td><code>WHERE duplicate_of</code></td><td><code>file.hasProperty("duplicate_of")</code></td></tr>
+  <tr><td>8</td><td>изменено за неделю</td><td><code>file.mtime &gt;= date(today) - dur(7 days)</code></td><td><code>file.mtime &gt; now() - "1 week"</code></td></tr>
+  <tr><td>9</td><td>заметка, где стоит запрос</td><td><code>this</code></td><td><code>this</code> — но см. ниже</td></tr>
+</table>
+<div class="box"><strong>Нет FROM — есть фильтр.</strong> Справка прямо говорит: «по умолчанию база включает <em>каждый файл</em> хранилища; нет <code>from</code>, как в SQL или Dataview».<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span> Каждый — значит и картинки, <code>.canvas</code>, <code>.mmd</code>, <code>.html</code>. В Kolnatun рядом с заметками лежат диаграммы и HTML — для таблицы заметок добавь <code>file.ext == "md"</code>.</div>
+<div class="box"><strong>Путь в <code>file.inFolder</code> — через <code>/</code>, без <code>*</code>.</strong> Как в Dataview: <code>"Медиатека/Фильмы"</code>, подпапки берутся сами. Справка называет аргумент «folder name» и показывает только пример из одной папки (<code>file.inFolder("notes")</code>); надёжно — путь от корня хранилища. Найдёт ли <code>file.inFolder("Фильмы")</code> вложенную папку — открытый вопрос, шаг 3 практики.<span class="cite"><a href="https://obsidian.md/help/bases/functions">[функции]</a></span></div>
+<div class="box"><strong><code>this</code> зависит от того, где открыта база.</strong> Открыта как файл — <code>this</code> = сам <code>.base</code>-файл. Вставлена в заметку — <code>this</code> = эта заметка. В боковой панели — <code>this</code> = заметка, открытая в главной области; поэтому <code>file.hasLink(this.file)</code> в боковой панели работает как Backlinks.<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span></div>
+
+<h2>6. Свойства, формулы, итоги</h2>
+<p>В базе три вида свойств:<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span></p>
+<table>
+  <tr><th>#</th><th>Вид</th><th>Пишешь</th><th>Откуда</th></tr>
+  <tr><td>1</td><td><strong>Note properties</strong></td><td><code>year</code> или <code>note.year</code></td><td>YAML заметки (урок 0002); есть только у <code>.md</code></td></tr>
+  <tr><td>2</td><td><strong>File properties</strong></td><td><code>file.name</code>, <code>file.folder</code>, <code>file.path</code>, <code>file.ext</code>, <code>file.size</code>, <code>file.ctime</code>, <code>file.mtime</code>, <code>file.tags</code>, <code>file.links</code>, <code>file.backlinks</code></td><td>есть у любого файла</td></tr>
+  <tr><td>3</td><td><strong>Formula properties</strong></td><td><code>formula.age</code></td><td>формула из этой базы</td></tr>
+</table>
+<p><strong>Формула:</strong> Properties → <strong>Add formula</strong> → имя → выражение в поле Formula. Редактор подсказывает функции и ставит зелёную галочку, когда выражение верное.<span class="cite"><a href="https://obsidian.md/help/formulas">[formulas]</a></span> Примеры для медиатеки:</p>
+<table>
+  <tr><th>#</th><th>Формула</th><th>Что даёт</th></tr>
+  <tr><td>1</td><td><code>today().year - year</code></td><td>сколько лет фильму или книге: <code>today()</code> — сегодня, <code>.year</code> — год даты</td></tr>
+  <tr><td>2</td><td><code>cast.length</code></td><td>сколько актёров в списке <code>cast</code></td></tr>
+  <tr><td>3</td><td><code>if(status == "смотрел", "✓", "")</code></td><td>галочка у просмотренных: <code>if(условие, если да, если нет)</code></td></tr>
+</table>
+<p>Формула <strong>не пишется в заметки</strong>: она хранится в <code>.base</code> и считается при показе. Формула не может ссылаться сама на себя, даже через другую формулу.<span class="cite"><a href="https://obsidian.md/help/formulas">[formulas]</a></span></p>
+<p><strong>Итог:</strong> правый клик по заголовку столбца → <strong>Summarize…</strong> → Average, Min, Max, Sum, Median… для чисел; Earliest / Latest для дат; Empty / Filled / Unique — для любых. Итог считается по <em>видимым</em> строкам и принадлежит виду, а не базе.<span class="cite"><a href="https://obsidian.md/help/bases/views/table">[table]</a></span></p>
+
+<h2>7. Виды</h2>
+<table>
+  <tr><th>#</th><th>Вид</th><th>Как выглядит</th><th>Для чего</th></tr>
+  <tr><td>1</td><td><strong>Table</strong></td><td>строка = файл, столбец = свойство</td><td>Kolnatun: функции, исходник, used_by</td></tr>
+  <tr><td>2</td><td><strong>List</strong></td><td>список с маркерами или номерами; свойства — через запятую или вложенными пунктами</td><td>короткий перечень</td></tr>
+  <tr><td>3</td><td><strong>Cards</strong></td><td>сетка карточек, сверху — картинка из свойства (Image property: ссылка на вложение, URL или цвет <code>#hex</code>)</td><td>медиатека: постеры фильмов</td></tr>
+  <tr><td>4</td><td><strong>Kanban</strong></td><td>колонки по значению свойства из Group by</td><td>статусы: перетащил карточку — поменялось свойство</td></tr>
+  <tr><td>5</td><td><strong>Map</strong></td><td>булавки на карте; нужен плагин Maps</td><td>—</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источники: <a href="https://obsidian.md/help/bases/views">Views</a>, <a href="https://obsidian.md/help/bases/views/list">List</a>, <a href="https://obsidian.md/help/bases/views/cards">Cards</a>, <a href="https://obsidian.md/help/bases/views/kanban">Kanban</a>.</p>
+<div class="box"><strong>Kanban пишет в заметки.</strong> «Перетащи карточку в другую колонку — обновится сгруппированное свойство в этой заметке». Группа по <code>file.folder</code> — перетаскивание <em>переносит файл</em> в другую папку. Заметки без значения свойства — в колонке <strong>None</strong>.<span class="cite"><a href="https://obsidian.md/help/bases/views/kanban">[kanban]</a></span></div>
+
+<h2>8. Файл <code>.base</code> как текст</h2>
+<p>Обычно базу правят мышкой, но под ней — YAML, и его можно прочитать (а Claude — написать). Пять разделов верхнего уровня:<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span></p>
+<pre>filters:                       # 1. для всех видов (All views)
+  and:
+    - file.inFolder("Медиатека")
+    - file.ext == "md"
+formulas:                      # 2. вычисляемые свойства
+  age: "today().year - year"
+properties:                    # 3. настройки свойств: подписи столбцов
+  formula.age:
+    displayName: "Лет"
+summaries:                     # 4. свои формулы итогов (необязательно)
+  avgRounded: "values.mean().round(1)"
+views:                         # 5. виды
+  - type: table
+    name: "Всё"
+    order:                     #    столбцы по порядку
+      - file.name
+      - year
+      - status
+      - where
+      - formula.age
+    summaries:
+      year: Min
+  - type: cards
+    name: "Фильмы"
+    filters:                   #    фильтр только этого вида (This view)
+      and:
+        - 'type == "film"'</pre>
+<div class="box"><strong>Кавычки в кавычках.</strong> Условие с текстом в кавычках — <code>type == "film"</code> — целиком берут в одинарные кавычки: <code>'type == "film"'</code>. Справка: «вложенные кавычки нужны, чтобы включить текст в поле YAML».<span class="cite"><a href="https://obsidian.md/help/bases/syntax">[синтаксис]</a></span> Отступы — пробелами, как в свойствах (урок 0002).</div>
+
+<h2>9. Bases или Dataview?</h2>
+<table>
+  <tr><th>#</th><th>Что</th><th>Dataview</th><th>Bases</th></tr>
+  <tr><td>1</td><td>установка</td><td>community plugin, Restricted mode</td><td>встроен (core plugin)</td></tr>
+  <tr><td>2</td><td>как собирать</td><td>писать код DQL</td><td>мышкой; текст <code>.base</code> — по желанию</td></tr>
+  <tr><td>3</td><td>править значения в таблице</td><td>нет, только чтение</td><td><strong>да</strong> — меняет заметки</td></tr>
+  <tr><td>4</td><td>откуда берёт</td><td><code>FROM</code>; без него — все заметки</td><td>все файлы хранилища, сужают фильтры</td></tr>
+  <tr><td>5</td><td>группы</td><td><code>GROUP BY</code> + <code>rows</code>: можно считать по группе (<code>length(rows)</code>)</td><td>Group by — одно свойство; итог по группе — в её заголовке</td></tr>
+  <tr><td>6</td><td>строка на элемент списка</td><td><code>FLATTEN</code></td><td>в справке нет</td></tr>
+  <tr><td>7</td><td>виды</td><td>LIST, TABLE, TASK, CALENDAR</td><td>Table, List, Cards, Kanban, Map; несколько видов в одной базе</td></tr>
+  <tr><td>8</td><td>экспорт</td><td>—</td><td>копировать в таблицу, CSV (меню Results)</td></tr>
+</table>
+<p>Правило: <em>смотреть и править</em> медиатеку — Bases. <em>Сводки с подсчётом по группам</em>, как <code>length(rows)</code> в <code>INDEX.md</code> Kolnatun, — Dataview.</p>
+
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша</th><th>Что делает в таблице базы</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></td><td>отменить / вернуть изменение свойства</td></tr>
+  <tr><td>2</td><td><kbd>Enter</kbd></td><td>войти в ячейку; у Checkbox — переключить, у формулы — открыть редактор</td></tr>
+  <tr><td>3</td><td><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>следующая / предыдущая ячейка</td></tr>
+  <tr><td>4</td><td><kbd>Esc</kbd></td><td>снять выделение</td></tr>
+  <tr><td>5</td><td><kbd>Backspace</kbd></td><td><strong>очистить</strong> выделенные ячейки — стирает значения свойств в заметках</td></tr>
+  <tr><td>6</td><td><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>копировать / вставить ячейки</td></tr>
+  <tr><td>7</td><td><kbd>Shift</kbd>+клик</td><td>выделить несколько ячеек; правый клик по выделению — действия с файлами</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/bases/views/table">Table view → Shortcuts</a>. Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
+
+<h2>10. Упражнение: какой это раздел <code>.base</code></h2>
+<p>Строки из файла базы. К какому разделу каждая относится?</p>
+<div id="parts"></div>
+
+<h2>11. Упражнение: верно ли записано в Bases</h2>
+<p>Условия для фильтра или формулы Bases (не Dataview). Сработает ли строка?</p>
+<div id="works"></div>
+
+<h2>12. Проверь себя</h2>
+<div id="quiz"></div>
+
+<h2>13. Теперь в настоящем Obsidian</h2>
+<p>Метка у шага — в каком хранилище его делать: <span class="vault pv">practice-vault</span> учебное, <code>learn-obsidian/practice-vault</code>; <span class="vault kn">Kolnatun · рабочее</span> рабочее, <code>kol-natun-vb/Main/claude/kolnatun-context-2.0</code> — там только смотреть, файлы не создавать и не менять. Папка <code>Kolnatun/</code> внутри practice-vault — учебная копия, это не рабочее хранилище.</p>
+<p>Ожидаемые результаты посчитаны для версии <code>practice-vault</code> из курса. Если ты менял свойства в своих упражнениях, числа могут отличаться — вернуть версию курса: <code>git checkout -- practice-vault</code>. В этом уроке правки в таблице <em>меняют</em> заметки — так и задумано.</p>
+<ol>
+  <li><span class="vault pv">practice-vault</span><strong>Плагин.</strong> Settings → Core plugins → <strong>Bases</strong>. Ожидаемо: переключатель включён (если нет — включи).</li>
+  <li><span class="vault pv">practice-vault</span><strong>Новая база.</strong> Открой <code>README</code> (он в корне), <kbd>Ctrl</kbd>+<kbd>P</kbd> → <strong>Bases: Create new base</strong>. Переименуй файл в <code>Медиатека</code> (расширение <code>.base</code> останется). Ожидаемо: таблица со всеми файлами хранилища — 9 заметок. Проверь сам: показывает ли база в списке и саму себя?</li>
+  <li><span class="vault pv">practice-vault</span><strong>Фильтр для всех видов.</strong> Filter → раздел <strong>All views</strong> → кнопка <code>&lt;/&gt;</code> → впиши <code>file.inFolder("Медиатека")</code>. Ожидаемо: 3 — Пикник на обочине, Солярис (1972), Сталкер (1979). Проверь сам: что даст <code>file.inFolder("Фильмы")</code> — 0 или 2? Верни <code>"Медиатека"</code>.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Столбцы.</strong> Properties → отметь <code>year</code>, <code>status</code>, <code>where</code>, <code>type</code>. Ожидаемо: Пикник 1972 «хочу перечитать» Полка 2 book; Солярис 1972 «хочу пересмотреть» HDD-2TB-01 film; Сталкер 1979 «смотрел» HDD-2TB-01 film. Свойство <code>where</code> в Bases — обычный столбец, <code>row.</code> не нужен.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Сортировка.</strong> Sort → Add sort → <code>year</code>, от большего к меньшему. Ожидаемо: первая строка — Сталкер (1979).</li>
+  <li><span class="vault pv">practice-vault</span><strong>Правка в ячейке.</strong> В строке Сталкер поменяй <code>status</code> на <code>хочу пересмотреть</code>. Открой заметку <code>Сталкер (1979)</code>. Ожидаемо: в свойствах уже новое значение. Вернись в базу, <kbd>Ctrl</kbd>+<kbd>Z</kbd> — снова «смотрел».</li>
+  <li><span class="vault pv">practice-vault</span><strong>Группы.</strong> Group → Group by → <code>type</code>. Ожидаемо: 2 раздела — book (1), film (2). Убери группу корзиной.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Формула.</strong> Properties → Add formula → имя <code>age</code>, формула <code>today().year - year</code>. Ожидаемо: зелёная галочка; в 2026 году — 54, 54, 47.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Итог.</strong> Правый клик по заголовку <code>year</code> → Summarize… → <strong>Min</strong>. Ожидаемо: 1972. Поменяй на <strong>Average</strong> — 1974.33 (5923 / 3).</li>
+  <li><span class="vault pv">practice-vault</span><strong>Второй вид.</strong> Имя вида слева вверху → <strong>Add view</strong> → Cards, имя <code>Фильмы</code>. Filter → <strong>This view</strong> → <code>&lt;/&gt;</code> → <code>type == "film"</code>. Ожидаемо: 2 карточки. Переключись на первый вид — там по-прежнему 3: фильтр This view на него не действует.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Текст базы.</strong> Открой <code>Медиатека.base</code> в любом текстовом редакторе (например, Блокнот; в Obsidian он открывается как таблица). Ожидаемо: YAML с разделами <code>filters</code>, <code>formulas</code>, <code>views</code> — как в разделе 8. Найди там <code>file.inFolder("Медиатека")</code> и <code>today().year - year</code>. Ничего не меняй.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Встроить в заметку.</strong> Создай в корне заметку <code>Обзор</code>, впиши <code>![[Медиатека.base]]</code>, ниже — <code>![[Медиатека.base#Фильмы]]</code>. Ожидаемо в чтении (<kbd>Ctrl</kbd>+<kbd>E</kbd>): сначала таблица из 3 строк, под ней 2 карточки.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Блок <code>base</code> и <code>this</code>.</strong> Открой <code>Kolnatun/mdlGeneral.bas</code> и вставь в конец:
+<pre>```base
+filters:
+  and:
+    - file.inFolder("Kolnatun")
+    - 'kind == "function" || kind == "method"'
+    - source == this.source
+views:
+  - type: table
+    name: Функции
+    order:
+      - file.name
+      - kind
+      - line
+      - used_by
+```</pre>
+  Ожидаемо: 1 строка — SetErrorObject, function, 234, AcademicEnd. Тот же запрос, что в шаге 12 урока 0006, но на Bases: <code>this</code> во вставленной базе — заметка, где стоит блок. Проверь сам: работает ли <code>this.source</code> — справка показывает только <code>this.file</code>.</li>
+  <li><span class="vault pv">practice-vault</span><strong>Kanban (Obsidian 1.14+).</strong> В базе <code>Медиатека</code> добавь вид Kanban, Group by → <code>status</code>. Ожидаемо: 3 колонки — смотрел, хочу перечитать, хочу пересмотреть. Перетащи Сталкер в «хочу пересмотреть» — его <code>status</code> поменяется в заметке. <kbd>Ctrl</kbd>+<kbd>Z</kbd> или перетащи обратно. Нет Kanban в меню — версия старше 1.14, шаг пропусти.</li>
+  <li><span class="vault kn">Kolnatun · рабочее</span><strong>Kolnatun, только смотреть.</strong> Открой <code>calculators/shared/INDEX.md</code> в режиме чтения рядом с этим уроком. Для каждой из трёх таблиц Dataview реши: можно ли сделать её в Bases — и как (подсказка: раздел 9, строка 5). Базу в рабочем хранилище <em>не создавай</em>: новый файл там — изменение проекта.</li>
+</ol>
+<p>Вернуть хранилище к версии курса: удалить <code>Медиатека.base</code> и <code>Обзор</code>, убрать блок <code>base</code> из <code>Kolnatun/mdlGeneral.bas</code> и выполнить <code>git checkout -- practice-vault</code>.</p>
+
+<h2>14. Что это значит для Kolnatun и LLM-wiki</h2>
+<table>
+  <tr><th>#</th><th>Правило для схемы</th><th>Почему</th></tr>
+  <tr><td>1</td><td>в базах для Kolnatun — фильтр <code>file.ext == "md"</code></td><td>база берёт <em>все</em> файлы: без него в таблицу попадут <code>.mmd</code> и <code>.html</code></td></tr>
+  <tr><td>2</td><td>свойства, которые ведёт Claude (<code>used_by</code>, <code>source</code>, <code>line</code>), руками в таблице не править</td><td>правка в ячейке меняет файл; <kbd>Backspace</kbd> по выделению стирает значения. Для Kolnatun Bases — окно для чтения</td></tr>
+  <tr><td>3</td><td>одинаковые значения (<code>kind: function</code>, не <code>Function</code>)</td><td><code>==</code> сравнивает точно; Group by и Kanban заведут отдельную колонку на каждый вариант написания</td></tr>
+  <tr><td>4</td><td>списки — List (урок 0002)</td><td><code>used_by.contains("AcademicEnd")</code>, <code>used_by.length &gt; 1</code> работают со списком</td></tr>
+  <tr><td>5</td><td>медиатека — в Bases, Kolnatun INDEX — в Dataview</td><td>медиатеку удобно править и смотреть карточками; INDEX считает по группам (<code>length(rows)</code>)</td></tr>
+</table>
+<p>Пример: первая таблица <code>INDEX.md</code> («функции, которые использует больше одного калькулятора») на языке Bases:</p>
+<pre>filters:
+  and:
+    - file.inFolder("calculators/shared")
+    - file.ext == "md"
+    - used_by.length > 1
+views:
+  - type: table
+    name: Общий код
+    order:
+      - file.name
+      - type
+      - kind
+      - source
+      - used_by</pre>
+
+<h2>Главный источник</h2>
+<p><a href="https://obsidian.md/help/bases/views"><strong>Obsidian Help → Bases → Views</strong></a>, потом <a href="https://obsidian.md/help/bases/syntax">Bases syntax</a> и <a href="https://obsidian.md/help/bases/functions">Functions</a> — как справочник. 15 минут.</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. Можно прислать текст своего <code>.base</code>-файла, если таблица показывает не то.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="0006-dataview.html">Назад: 0006</a>
+  <a href="0008-llm-wiki.html">Дальше: 0008 LLM-wiki</a>
+  <a href="../reference/bases.html">Шпаргалка: Bases</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+LineTagger.mount(document.getElementById('parts'), {
+  categories: ['filters', 'formulas', 'properties', 'views'],
+  lines: [
+    { text: '- file.inFolder("Медиатека")', cat: 'filters', why: 'Условие отбора файлов: только папка Медиатека с подпапками.' },
+    { text: 'age: "today().year - year"', cat: 'formulas', why: 'Имя формулы и выражение. В таблице — formula.age.' },
+    { text: 'formula.age:\n    displayName: "Лет"', cat: 'properties', why: 'Раздел properties хранит настройки свойств, например подпись столбца.' },
+    { text: '- type: cards', cat: 'views', why: 'type — раскладка вида: table, list, cards, kanban, map.' },
+    { text: "- 'type == \"film\"'", cat: 'filters', why: 'Условие. Если оно внутри вида — это фильтр This view, но всё равно filters.' },
+    { text: 'order:\n  - file.name\n  - year', cat: 'views', why: 'order — столбцы вида по порядку.' },
+    { text: 'not:\n  - file.hasTag("book")', cat: 'filters', why: 'not: — связка «ни одно из условий» (None of the following are true).' },
+    { text: 'ppu: "(price / age).toFixed(2)"', cat: 'formulas', why: 'Вычисляемое свойство: цена за единицу с двумя знаками после запятой.' },
+    { text: 'name: "Фильмы"', cat: 'views', why: 'Имя вида — его видно слева вверху и в ![[Медиатека.base#Фильмы]].' },
+    { text: 'status:\n    displayName: Статус', cat: 'properties', why: 'Подпись столбца для свойства status.' },
+  ]
+});
+LineTagger.mount(document.getElementById('works'), {
+  categories: ['сработает', 'не сработает'],
+  lines: [
+    { text: 'file.inFolder("Медиатека/Фильмы")', cat: 'сработает', why: 'Путь от корня, через /, подпапки берутся сами.' },
+    { text: 'file.inFolder("Медиатека\\Фильмы")', cat: 'не сработает', why: 'Обратный слеш — привычка Windows. В Obsidian разделитель /.' },
+    { text: 'file.inFolder("Медиатека/*")', cat: 'не сработает', why: '* — не шаблон. inFolder и так берёт все подпапки.' },
+    { text: 'type == "film"', cat: 'сработает', why: 'Равенство в Bases — два знака ==, текст в кавычках.' },
+    { text: 'type = "film"', cat: 'не сработает', why: 'Один = — это Dataview. В Bases сравнение — ==.' },
+    { text: 'used_by.contains("AcademicEnd")', cat: 'сработает', why: 'Функция списка вызывается через точку после значения.' },
+    { text: 'contains(used_by, "AcademicEnd")', cat: 'не сработает', why: 'Так пишут в Dataview. В Bases нет глобальной contains(): функция пишется через точку — used_by.contains(...).' },
+    { text: 'used_by.length > 1', cat: 'сработает', why: 'length — поле списка, без скобок.' },
+    { text: 'length(used_by) > 1', cat: 'не сработает', why: 'Глобальной length() в Bases нет — это Dataview. Нужно used_by.length.' },
+    { text: 'year > 1975 && status != "смотрел"', cat: 'сработает', why: '&& — «и» в выражении Bases.' },
+    { text: 'year > 1975 AND status != "смотрел"', cat: 'не сработает', why: 'AND — из Dataview. В выражении Bases «и» — &&, или два пункта под and:.' },
+    { text: 'file.hasTag("кино")', cat: 'сработает', why: 'hasTag берёт и вложенные теги: кино/советское подходит.' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Что покажет база, в которой нет ни одного фильтра?',
+    options: ['Все файлы хранилища, любые', 'Только заметки из её папки', 'Ничего, пока нет фильтра FROM', 'Только заметки со свойствами'],
+    answer: 0, why: 'Справка: база по умолчанию включает каждый файл хранилища; FROM в Bases нет — сужают фильтры.' },
+  { q: 'Ты поменял status в ячейке таблицы базы. Что произошло?',
+    options: ['Свойство изменилось в заметке', 'Изменился только файл .base', 'Ничего: база только читает', 'Значение пропадёт после закрытия'],
+    answer: 0, why: 'Данные Bases — свойства заметок; правка в ячейке пишет в YAML заметки. Только читает — это Dataview.' },
+  { q: 'Где хранится формула age = today().year - year?',
+    options: ['В файле .base, в заметки не пишется', 'В свойстве age каждой заметки', 'В настройках плагина Bases', 'В отдельной заметке формул'],
+    answer: 0, why: 'Формула — вычисляемое свойство базы, раздел formulas файла .base; считается при показе.' },
+  { q: 'Фильтр в разделе This view вида «Фильмы» — на что действует?',
+    options: ['Только на вид «Фильмы»', 'На все виды этой базы', 'На все базы хранилища', 'На поиск и фильтр графа'],
+    answer: 0, why: 'This view — только открытый вид. Для всех видов базы — раздел All views; оба действуют вместе как «и».' },
+  { q: 'Как в Bases записать «в списке used_by есть AcademicEnd»?',
+    options: ['used_by.contains("AcademicEnd")', 'contains(used_by, "AcademicEnd")', 'used_by = "AcademicEnd"', '[used_by:AcademicEnd]'],
+    answer: 0, why: 'В Bases функция пишется через точку после значения. contains(…, …) — Dataview, [used_by:…] — поиск, = — не сравнение в Bases.' },
+  { q: 'Вид Kanban сгруппирован по status. Ты перетащил карточку в другую колонку. Итог?',
+    options: ['status в заметке стал как у колонки', 'Карточка сдвинулась, заметка та же', 'Заметка переехала в другую папку', 'Создалась копия заметки в колонке'],
+    answer: 0, why: 'Справка: перетаскивание обновляет сгруппированное свойство в заметке. Файл переезжает, только когда группа — file.folder.' },
+]);
+</script>
+</body>
+</html>

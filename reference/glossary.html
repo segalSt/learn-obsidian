@@ -91,8 +91,17 @@
   <tr><td>74</td><td>Inline field</td><td>Поле Dataview в тексте: <code>ключ:: значение</code>. Не свойство Obsidian — данные лучше держать в YAML.</td></tr>
   <tr><td>75</td><td>DataviewJS</td><td>Запросы Dataview на JavaScript; в курсе не используем.</td></tr>
   <tr><td>76</td><td>Metadata cache</td><td>Локальная запись Obsidian о файлах хранилища (ссылки, теги, свойства) в IndexedDB. По ней работают граф и Outline. <a href="https://obsidian.md/help/data-storage">[справка]</a></td></tr>
+  <tr><td>77</td><td>Bases</td><td>Встроенный (core) плагин: таблица, список, карточки, Kanban по свойствам заметок; правка в ячейке меняет заметку. <a href="https://obsidian.md/help/bases">[справка]</a></td></tr>
+  <tr><td>78</td><td>Core plugin (встроенный плагин)</td><td>Плагин из поставки Obsidian; включается в Settings → Core plugins, ставить не надо.</td></tr>
+  <tr><td>79</td><td>.base</td><td>Файл базы: YAML с разделами <code>filters</code>, <code>formulas</code>, <code>properties</code>, <code>summaries</code>, <code>views</code>. Встроить: <code>![[Имя.base]]</code> или блок <code>```base</code>. <a href="https://obsidian.md/help/bases/syntax">[справка]</a></td></tr>
+  <tr><td>80</td><td>View (вид базы)</td><td>Раскладка базы — Table, List, Cards, Kanban, Map — со своими сортировкой, группой, столбцами и фильтром This view.</td></tr>
+  <tr><td>81</td><td>All views / This view</td><td>Два раздела меню Filter: фильтр для всех видов базы / только для открытого вида. Действуют вместе как «и».</td></tr>
+  <tr><td>82</td><td>Conjunction (связка фильтров)</td><td>All the following are true (<code>and</code>), Any… (<code>or</code>), None… (<code>not</code>). Filter group — связка внутри связки.</td></tr>
+  <tr><td>83</td><td>Formula property (формула)</td><td>Вычисляемое свойство базы: <code>formula.age</code> = <code>today().year - year</code>. Хранится в <code>.base</code>, в заметки не пишется. <a href="https://obsidian.md/help/formulas">[справка]</a></td></tr>
+  <tr><td>84</td><td>Summary (итог столбца)</td><td>Строка под столбцом таблицы: Min, Max, Average, Sum, Empty, Filled… Правый клик по заголовку → Summarize….</td></tr>
+  <tr><td>85</td><td>Kanban (вид)</td><td>Колонки по значению Group by; перетаскивание карточки меняет свойство в заметке. Obsidian 1.14+.</td></tr>
 </table>
-<footer class="lesson-foot"><a href="../index.html">Все уроки</a> <a href="note-anatomy.html">Шпаргалка: заметка</a> <a href="properties.html">Шпаргалка: свойства</a> <a href="dataview.html">Шпаргалка: Dataview</a> <a href="search-cheatsheet.html">Шпаргалка: поиск и граф</a> <a href="../lessons/0005-graph-filters.html">Урок 0005</a></footer>
+<footer class="lesson-foot"><a href="../index.html">Все уроки</a> <a href="note-anatomy.html">Шпаргалка: заметка</a> <a href="properties.html">Шпаргалка: свойства</a> <a href="dataview.html">Шпаргалка: Dataview</a> <a href="bases.html">Шпаргалка: Bases</a> <a href="search-cheatsheet.html">Шпаргалка: поиск и граф</a> <a href="../lessons/0005-graph-filters.html">Урок 0005</a></footer>
 </main>
 </body>
 </html>

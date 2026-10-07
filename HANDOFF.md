@@ -1,6 +1,6 @@
 # Handoff - learn-obsidian course (2026-10-06)
 
-Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: lesson 0007 "Bases" (0001-0006 and 0008 are built).
+Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: all lessons 0001-0008 are built; next: wait for the learner's results, then decide on 0009.
 
 ## Where things are
 - Repo (this folder): `C:\_repos\GitHub\segal.st\teach\learn-obsidian` -> https://github.com/segalSt/learn-obsidian (public, branch `main`).
@@ -24,7 +24,7 @@ Next session focus: **continue the Obsidian course from the CLI (Claude Code)**:
 | 4 | 0004 Search | `lessons/0004-search.html` | ready (2026-10-07); open checks in hands-on: does `[prop:value]` match part of a value, does a plain word match property text |
 | 5 | 0005 Graph | `lessons/0005-graph-filters.html` | rebuilt 2026-10-07 on top of 0002-0004: filter toggles, groups, local graph, display/forces, practice-vault hands-on with counts |
 | 6 | 0006 Dataview | `lessons/0006-dataview.html` | ready (2026-10-07): install, LIST/TABLE, FROM (path from root), WHERE, row.where, SORT/LIMIT order, GROUP BY/FLATTEN, inline DQL, Kolnatun INDEX queries; hands-on in a learner-created `Запросы` note (vault files unchanged). Open checks: FROM [[Тарковский]] (frontmatter links), missing-field comparison |
-| 7 | 0007 Bases | - | **next to build** |
+| 7 | 0007 Bases | `lessons/0007-bases.html` | ready (2026-10-07): create/embed, toolbar, All views / This view filters, Bases vs Dataview syntax, formulas, summaries, Cards/Kanban, .base YAML; hands-on `Медиатека.base` + `Обзор` + base block in `Kolnatun/mdlGeneral.bas`. Open checks: inFolder by folder name, `this.source`, base lists itself |
 | 8 | 0008 LLM-wiki (Karpathy pattern) + Obsidian | `lessons/0008-llm-wiki.html`, vault `practice-llm-wiki/` | ready (2026-10-06), overview, readable any time |
 
 Components in `assets/` (reuse, don't inline): `style.css`, `quiz.js` (equal-length options, shuffled), `search-sim.js` (Obsidian search simulator with diagnostic feedback), `line-tagger.js` ("what is this line" exercise).

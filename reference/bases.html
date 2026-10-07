@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Bases</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>Bases</h1>
+  <p class="lede">Встроенный плагин: таблица / список / карточки / Kanban по свойствам. Файл <code>.base</code> (YAML) или блок <code>```base</code>. Правка в ячейке меняет заметку.</p>
+</header>
+
+<h2>Создать и встроить</h2>
+<table>
+  <tr><th>#</th><th>Как</th><th>Результат</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → Bases: Create new base</td><td>база в папке открытой заметки</td></tr>
+  <tr><td>2</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → Bases: Insert new base</td><td>база + вставка в открытую заметку</td></tr>
+  <tr><td>3</td><td>File explorer → правый клик по папке → New base</td><td>база в этой папке</td></tr>
+  <tr><td>4</td><td><code>![[Медиатека.base]]</code> / <code>![[Медиатека.base#Фильмы]]</code></td><td>первый вид / вид «Фильмы» в заметке</td></tr>
+</table>
+
+<h2>Панель</h2>
+<p><strong>View menu</strong> (Add view, настройки вида) · <strong>Results</strong> (лимит, копировать, CSV) · <strong>Sort</strong> · <strong>Group</strong> (одно свойство) · <strong>Filter</strong> (All views / This view, <code>&lt;/&gt;</code> — текстом) · <strong>Properties</strong> (столбцы, Add formula) · <strong>Search</strong> · <strong>New</strong>. Итог: правый клик по заголовку столбца → Summarize….</p>
+
+<h2>Выражения</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Значит</th></tr>
+  <tr><td>1</td><td><code>file.inFolder("Медиатека/Фильмы")</code></td><td>папка + подпапки; путь через <code>/</code>, без <code>*</code></td></tr>
+  <tr><td>2</td><td><code>file.hasTag("кино")</code></td><td>тег + вложенные</td></tr>
+  <tr><td>3</td><td><code>file.hasProperty("duplicate_of")</code></td><td>свойство есть</td></tr>
+  <tr><td>4</td><td><code>file.hasLink(this.file)</code></td><td>ссылается на заметку <code>this</code></td></tr>
+  <tr><td>5</td><td><code>file.ext == "md"</code></td><td>только заметки (база берёт <em>все</em> файлы)</td></tr>
+  <tr><td>6</td><td><code>== != &gt; &lt; &gt;= &lt;=</code>, <code>&amp;&amp; || !</code></td><td>сравнение, и / или / не</td></tr>
+  <tr><td>7</td><td><code>used_by.contains("AcademicEnd")</code>, <code>used_by.length</code></td><td>функции — через точку; <code>length</code> без скобок</td></tr>
+  <tr><td>8</td><td><code>today()</code>, <code>now()</code>, <code>date("2026-10-07")</code>, <code>now() - "1 week"</code></td><td>даты и длительности</td></tr>
+  <tr><td>9</td><td><code>if(условие, да, нет)</code></td><td>условие в формуле</td></tr>
+  <tr><td>10</td><td><code>year</code> = <code>note.year</code>, <code>file.name</code>, <code>formula.age</code></td><td>свойство заметки, файла, формулы</td></tr>
+  <tr><td>11</td><td><code>this</code></td><td>файл <code>.base</code>; во вставке — заметка со вставкой; в боковой панели — открытая заметка</td></tr>
+</table>
+
+<h2>Файл .base</h2>
+<pre>filters:            # All views
+  and:
+    - file.inFolder("Медиатека")
+    - 'type == "film"'      # текст внутри — условие в одинарных кавычках
+formulas:
+  age: "today().year - year"
+properties:
+  formula.age:
+    displayName: "Лет"
+views:
+  - type: table             # table | list | cards | kanban | map
+    name: "Всё"
+    filters: { ... }        # This view
+    order: [file.name, year, formula.age]
+    groupBy: { property: note.type, direction: ASC }
+    summaries: { year: Min }
+    limit: 10</pre>
+
+<div class="box"><strong>Ловушки.</strong> <code>=</code> — это Dataview, в Bases <code>==</code>. <code>AND</code> / <code>OR</code> — Dataview, в Bases <code>&amp;&amp;</code> / <code>||</code> или списки <code>and:</code> / <code>or:</code>. <code>contains(x, "a")</code> и <code>length(x)</code> — Dataview, в Bases <code>x.contains("a")</code>, <code>x.length</code>. <kbd>Backspace</kbd> по выделенным ячейкам стирает свойства в заметках; Kanban при перетаскивании меняет свойство (по <code>file.folder</code> — переносит файл).</div>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://obsidian.md/help/bases">Bases</a> <a href="https://obsidian.md/help/bases/create-base">Create a base</a> <a href="https://obsidian.md/help/bases/views">Views</a> <a href="https://obsidian.md/help/bases/syntax">Syntax</a> <a href="https://obsidian.md/help/bases/functions">Functions</a> <a href="https://obsidian.md/help/formulas">Formulas</a> <a href="https://obsidian.md/help/bases/views/table">Table</a> <a href="https://obsidian.md/help/bases/views/kanban">Kanban</a> ·
+  <a href="../lessons/0007-bases.html">Урок 0007</a> <a href="dataview.html">Шпаргалка: Dataview</a> <a href="glossary.html">Глоссарий</a> <a href="../index.html">Все уроки</a>
+</footer>
+</main>
+</body>
+</html>
