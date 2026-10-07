@@ -116,7 +116,7 @@
 <p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
 
 <h2>8. Практика: песочница</h2>
-<p>Это 9 заметок учебного хранилища <code>practice-vault</code> плюс два файла-не-заметки для примера (<code>.jpg</code> и <code>.mmd</code> — в practice-vault их нет). Справа от имени — <code>type</code> и <code>tags</code>. Песочница понимает <code>file:</code>, <code>path:</code>, <code>content:</code>, <code>tag:</code>, <code>[свойство]</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки, кавычки. Простые слова и <code>content:</code> ищут в тексте заметки (без свойств). <code>line:</code>, <code>section:</code>, regex и сравнения <code>&lt; &gt;</code> — только в настоящем Obsidian.</p>
+<p>Это 9 заметок учебного хранилища <code>practice-vault</code> плюс два файла-не-заметки для примера (<code>.jpg</code> и <code>.mmd</code> — в practice-vault их нет). Справа от имени — <code>type</code> и <code>tags</code>. Песочница понимает <code>file:</code>, <code>path:</code>, <code>content:</code>, <code>tag:</code>, <code>[свойство]</code>, <code>[свойство:значение]</code>, <code>[свойство:a OR b]</code>, <code>-</code>, <code>OR</code>, скобки, кавычки. Простые слова и <code>content:</code> ищут в тексте заметки (без свойств). <code>line:</code>, <code>section:</code>, regex и сравнения <code>&lt; &gt;</code> — только в настоящем Obsidian.</p>
 <p>Если ответ неверный, проверка скажет, что лишнее, чего не хватает и почему (слеши, <code>*</code>, условие, которое ничего не нашло, вложенный тег).</p>
 <div id="sim"></div>
 
@@ -208,7 +208,7 @@ SearchSim.mount(document.getElementById('sim'), {
       hint: 'tag: ищет вложенные теги только от корня. Корень здесь — кино.' },
     { prompt: 'Книги или люди. Ожидаемо: 2 — Пикник на обочине и Тарковский.',
       expect: ['Медиатека/Книги/Пикник на обочине.md', 'Люди/Тарковский.md'],
-      hint: 'Два условия по type через OR.' },
+      hint: 'Два условия по type через OR: [type:…] OR [type:…], или короче — внутри одних скобок: [type:… OR …].' },
     { prompt: 'Заметки, у которых вообще есть псевдонимы. Ожидаемо: 2.',
       expect: ['Медиатека/Фильмы/Солярис (1972).md', 'Люди/Тарковский.md'],
       hint: 'Свойство без значения: [имя].' },

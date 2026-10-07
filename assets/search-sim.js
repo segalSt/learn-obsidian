@@ -1,5 +1,5 @@
 /* search-sim.js - tiny simulator of Obsidian search / graph-filter syntax.
-   Supports: path:x  file:x  tag:x  content:x  [prop]  [prop:value]  -term  OR  (groups)  "quoted text"
+   Supports: path:x  file:x  tag:x  content:x  [prop]  [prop:value]  [prop:a OR b]  -term  OR  (groups)  "quoted text"
    tag:x matches the tag x and its nested tags (x/...), never a nested part alone (Help: tag:#work does not find #myjob/work).
    Tags come from file.props.tags. content: and bare words search file.text (note body, no properties);
    without file.text, bare words match the path (old behaviour, used by lesson 0005).
@@ -32,13 +32,15 @@
     let f;
     let m;
     if ((m = /^\[([^:\]]+)(?::([^\]]*))?\]$/.exec(t))) {
-      const key = m[1].trim(), val = m[2] === undefined ? null : m[2].trim().toLowerCase();
+      const key = m[1].trim();
+      // [prop:a OR b] - any of the values; quotes are stripped ([status:"хочу пересмотреть"])
+      const vals = m[2] === undefined ? null : m[2].split(/\s+OR\s+/).map(s => s.trim().replace(/^"|"$/g, '').toLowerCase());
       f = file => {
         const v = (file.props || {})[key];
         if (v === undefined) return false;
-        if (val === null) return true;
+        if (vals === null) return true;
         const arr = Array.isArray(v) ? v : [v];
-        return arr.some(x => String(x).toLowerCase().includes(val));
+        return arr.some(x => vals.some(val => String(x).toLowerCase().includes(val)));
       };
     } else if (low.startsWith('path:')) { const v = low.slice(5); f = file => file.path.toLowerCase().includes(v); }
     else if (low.startsWith('file:')) { const v = low.slice(5); f = file => file.path.split('/').pop().toLowerCase().includes(v); }
