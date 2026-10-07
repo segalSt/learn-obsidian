@@ -81,6 +81,7 @@
 </table>
 <p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/search">Obsidian Help → Search</a>, разделы Search properties и Comparison operators.</p>
 <p>Для списков (List) значение сравнивается с элементами списка: <code>[used_by:AcademicEnd]</code> должен найти функцию, у которой AcademicEnd — один из калькуляторов в <code>used_by</code> (в справке это не расписано; проверь в шаге 9). Найдёт ли <code>[where:HDD]</code> значение <code>HDD-2TB-01</code> (часть значения, а не всё) — справка не уточняет; проверь сам в шаге 4 практики.</p>
+<div class="box"><strong>Справка и практика расходятся.</strong> По справке <code>[aliases]</code> находит файлы со <em>свойством</em> <code>aliases</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> На практике в <code>practice-vault</code> он находит 3 файла, а не 2: Солярис и Тарковский (свойство) плюс <code>README</code>, где слово <code>aliases</code> есть просто в тексте. Поэтому имя свойства в скобках — не строгий фильтр. Если результат нужен точным, добавь значение (<code>[aliases:Solaris]</code>) или исключи лишнее (<code>[aliases] -file:README</code>). Песочница ниже этого не повторяет и показывает 2.</div>
 
 <h2>6. Регулярные выражения</h2>
 <p><strong>Регулярное выражение</strong> (regex) — шаблон текста. В поиске пишется между двумя <code>/</code> и работает и с операторами.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
@@ -209,7 +210,7 @@ SearchSim.mount(document.getElementById('sim'), {
     { prompt: 'Книги или люди. Ожидаемо: 2 — Пикник на обочине и Тарковский.',
       expect: ['Медиатека/Книги/Пикник на обочине.md', 'Люди/Тарковский.md'],
       hint: 'Два условия по type через OR: [type:…] OR [type:…], или короче — внутри одних скобок: [type:… OR …].' },
-    { prompt: 'Заметки, у которых вообще есть псевдонимы. Ожидаемо: 2.',
+    { prompt: 'Заметки, у которых вообще есть псевдонимы. Ожидаемо: 2 (в настоящем Obsidian будет 3 — см. рамку в разделе 5).',
       expect: ['Медиатека/Фильмы/Солярис (1972).md', 'Люди/Тарковский.md'],
       hint: 'Свойство без значения: [имя].' },
     { prompt: 'Заметка, в тексте которой есть слово «зимой». Ожидаемо: 1.',
