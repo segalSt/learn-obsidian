@@ -51,6 +51,7 @@
 <table>
   <tr><th>#</th><th>Задача</th><th>Фильтр</th></tr>
   <tr><td>1</td><td>результаты + исходники</td><td><code>-path:calculators/scaffold -path:rules/ -path:tasks -file:START -path:python -file:README</code> (слеш в <code>rules/</code>: иначе уйдут и <code>specification/rules.md</code>)</td></tr>
+  <tr><td>1a</td><td>то же группами (сначала проверь каждую группу без минуса)</td><td><code>-(path:(scaffold OR rules/ OR python OR tasks) OR file:(START OR README))</code></td></tr>
   <tr><td>2</td><td>то же через свойство (когда появится)</td><td><code>[layer:result] OR [layer:source]</code></td></tr>
   <tr><td>3</td><td>только исходники</td><td><code>path:shared/entities</code></td></tr>
   <tr><td>4</td><td>один калькулятор + исходники</td><td><code>(path:calculators/SalaryCalc -path:python) OR path:shared/entities</code></td></tr>
