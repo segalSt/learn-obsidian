@@ -11,3 +11,4 @@
 - Hands-on steps use `practice-vault/` (separate vault), never the work Kolnatun vault.
 - User habits to pre-empt: Windows `\` in paths, `*` as wildcard. Define every setting / term on first use.
 - Every lesson has a "Клавиши урока" table; anything a quiz or exercise checks (keys, syntax) must be explained in the lesson first. Keys go to `reference/hotkeys.html`; unverified keys are marked "проверь в Settings → Hotkeys".
+- Lessons / reference stay generic: no learner results or personal phrasing ("проверено в твоём Obsidian", "твой вопрос", "скажи мне"). Facts the learner found go in as plain statements; raw results only in `learning-records/`. Before every commit: grep lessons/ and reference/ for such phrases, stage explicit paths (never `git add -A`), make sure the learner's practice-vault edits (rating, location, Untitled.canvas, daily notes) are not staged.
