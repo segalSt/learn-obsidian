@@ -22,7 +22,7 @@ Next session focus: **continue the Obsidian course from the CLI (Claude Code)**:
 | 2 | 0002 Properties | `lessons/0002-properties.html` | ready (built 2026-10-06), user not done yet |
 | 3 | 0003 Links & backlinks | `lessons/0003-links.html` | ready (2026-10-06); verified: property links show in Backlinks; pending: based_on on rename, property text in unlinked mentions |
 | 4 | 0004 Search | `lessons/0004-search.html` | ready (2026-10-07); open checks in hands-on: does `[prop:value]` match part of a value, does a plain word match property text |
-| 5 | 0005 Graph filters | `lessons/0005-graph-filters.html` | done once, reworked after feedback |
+| 5 | 0005 Graph | `lessons/0005-graph-filters.html` | rebuilt 2026-10-07 on top of 0002-0004: filter toggles, groups, local graph, display/forces, practice-vault hands-on with counts |
 | 6 | 0006 Dataview / 0007 Bases | - | **next to build** |
 | 7 | 0008 LLM-wiki (Karpathy pattern) + Obsidian | `lessons/0008-llm-wiki.html`, vault `practice-llm-wiki/` | ready (2026-10-06), overview, readable any time |
 

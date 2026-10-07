@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>0005 · Фильтр графа</title>
+<title>0005 · Граф</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/search-sim.js"></script>
 <script src="../assets/quiz.js"></script>
@@ -11,30 +11,41 @@
 <body>
 <main>
 <header class="lesson-head">
-  <div class="kicker">Урок 0005 · Граф · ~15 минут</div>
-  <h1>Фильтр графа — это поиск</h1>
-  <p class="lede">Граф показывает всё хранилище: результаты, исходники, промпты. Одна строка фильтра оставляет только нужный слой.</p>
+  <div class="kicker">Урок 0005 · Граф · ~25 минут</div>
+  <h1>Граф: фильтр, группы, локальный граф</h1>
+  <p class="lede">Граф рисует то, что ты уже знаешь: заметки — точки, ссылки (урок 0003) — линии. Фильтр графа — это поиск (урок 0004). Научишься оставлять в графе нужный слой, красить слои и смотреть соседей одной заметки.</p>
 </header>
 
 <div class="box goal">
-  <strong>Цель урока.</strong> За минуту оставить в графе Kolnatun только <em>результаты анализа</em> и <em>связанные части исходного кода</em>, без рабочих промптов.
+  <strong>Цель урока.</strong> За минуту оставить в графе Kolnatun только <em>результаты анализа</em> и <em>части исходного кода</em>, без рабочих промптов, и покрасить исходники отдельным цветом. А для одной функции — увидеть только её соседей.
 </div>
 
-<h2>1. Одна идея</h2>
-<p>В графе есть Filters → поле <strong>Search files</strong>. Туда пишется тот же язык, что в обычном поиске Obsidian.<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span> Выучил поиск — умеешь фильтровать граф.</p>
-
-<h2>2. Пять операторов, которых хватит</h2>
+<h2>1. Граф за минуту</h2>
+<p><strong>Graph view</strong> — карта хранилища: каждая заметка — точка (node), каждая ссылка — линия. Открыть: кнопка <strong>Open graph view</strong> на левой панели (Ribbon).<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span> Отдельной клавиши в справке нет: если хочешь, назначь её в Settings → Hotkeys (урок 0002).</p>
 <table>
-  <tr><th>#</th><th>Пишешь</th><th>Остаются файлы, у которых…</th></tr>
-  <tr><td>1</td><td><code>path:shared/entities</code></td><td>путь содержит эту строку</td></tr>
-  <tr><td>2</td><td><code>file:glossary</code></td><td>имя файла содержит эту строку</td></tr>
-  <tr><td>3</td><td><code>[layer:source]</code></td><td>свойство <code>layer</code> равно <code>source</code></td></tr>
-  <tr><td>4</td><td><code>-path:rules</code></td><td>минус = <em>убрать</em> то, что подходит</td></tr>
-  <tr><td>5</td><td><code>A OR B</code></td><td>подходит A или B (без OR — нужно оба)</td></tr>
+  <tr><th>#</th><th>Действие</th><th>Что происходит</th></tr>
+  <tr><td>1</td><td>навести мышь на точку</td><td>подсвечиваются её связи</td></tr>
+  <tr><td>2</td><td>клик по точке</td><td>открывается заметка</td></tr>
+  <tr><td>3</td><td>правый клик</td><td>меню действий с заметкой</td></tr>
+  <tr><td>4</td><td>колесо мыши или <kbd>+</kbd> / <kbd>-</kbd></td><td>масштаб</td></tr>
+  <tr><td>5</td><td>тянуть мышью или стрелки (с <kbd>Shift</kbd> — быстрее)</td><td>двигать карту</td></tr>
 </table>
-<p>Пробел между условиями = «и». Скобки группируют: <code>(path:SalaryCalc -path:python) OR path:entities</code>. Источник всех операторов — справка Search.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></p>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/graph">Obsidian Help → Graph view</a>.</p>
+<p>Настройки графа открываются значком шестерёнки в углу графа. В них четыре раздела: <strong>Filters</strong>, <strong>Groups</strong>, <strong>Display</strong>, <strong>Forces</strong>.</p>
 
-<h2>3. Слои твоего хранилища</h2>
+<h2>2. Filters: что показывать</h2>
+<table>
+  <tr><th>#</th><th>Настройка</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><strong>Search files</strong></td><td>строка поиска — <em>тот же язык, что в уроке 0004</em>. В графе остаются только найденные заметки</td></tr>
+  <tr><td>2</td><td><strong>Tags</strong></td><td>показывать теги отдельными точками</td></tr>
+  <tr><td>3</td><td><strong>Attachments</strong></td><td>показывать вложения — не-заметки: <code>.mmd</code>, <code>.html</code>, картинки</td></tr>
+  <tr><td>4</td><td><strong>Existing files only</strong></td><td>только заметки, которые есть на диске; точки для ссылок на ещё не созданные заметки (урок 0003) скрыты</td></tr>
+  <tr><td>5</td><td><strong>Orphans</strong></td><td>показывать заметки-сироты — без единой ссылки (урок 0008: находка для lint)</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/graph">Obsidian Help → Graph view → Filters</a>.</p>
+<p>Всё из урока 0004 работает и здесь: <code>-path:</code>, <code>OR</code>, скобки, <code>[свойство:значение]</code>, <code>tag:</code>. Те же привычки Windows: пути через <code>/</code>, <code>*</code> — не шаблон. Шпаргалка операторов — <a href="../reference/search-cheatsheet.html">поиск и граф</a>.</p>
+
+<h2>3. Слои Kolnatun в графе</h2>
 <table>
   <tr><th>#</th><th>Слой</th><th>Где лежит</th><th>В графе</th></tr>
   <tr><td>1</td><td>результаты анализа</td><td><code>calculators/&lt;Calc&gt;/</code>, <code>shared/concepts</code>, <code>shared/INDEX.md</code>, <code>architecture/</code></td><td>да</td></tr>
@@ -42,36 +53,97 @@
   <tr><td>3</td><td>процесс, промпты</td><td><code>calculators/scaffold*</code>, <code>rules/</code>, <code>tasks/</code>, <code>START.md</code>, <code>shared/README.md</code></td><td>нет</td></tr>
   <tr><td>4</td><td>Python-порт</td><td><code>python/</code>, <code>python-port-route.md</code></td><td>нет</td></tr>
 </table>
-<p>Свойство <code>layer</code> в песочнице ниже — <em>будущее</em>: в реальных файлах его ещё нет. Пока работаем путями.</p>
+<p>Два способа отфильтровать слой:</p>
+<table>
+  <tr><th>#</th><th>Способ</th><th>Пример</th><th>Плюс / минус</th></tr>
+  <tr><td>1</td><td>по папкам</td><td><code>-path:calculators/scaffold -path:rules -path:tasks …</code></td><td>работает уже сейчас; фильтр длинный и ломается при переносе папок</td></tr>
+  <tr><td>2</td><td>по свойству</td><td><code>[type:entity] OR [type:concept]</code> — страницы <code>shared/</code> уже имеют <code>type</code></td><td>короткий и не зависит от папок; нужно, чтобы Claude ставил свойство на <em>все</em> страницы</td></tr>
+</table>
+<p>В песочнице ниже у файлов есть ещё свойство <code>layer</code> (result / source / process / port) — <em>предложение</em> для схемы Kolnatun: в реальных файлах его пока нет.</p>
 
-<h2>4. Практика</h2>
-<p>Песочница — копия части твоего хранилища. Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Текст внутри заметок не ищет (настоящий Obsidian ищет). Сначала пробуй сам, подсказку — только если застрял.</p>
+<h2>4. Groups: покрасить слои</h2>
+<p><strong>Group</strong> — поисковый запрос + цвет: найденные заметки красятся этим цветом. Создать: Groups → <strong>New group</strong> → запрос → клик по цветному кружку → цвет.<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span> Фильтр <em>убирает</em> лишнее, группа <em>оставляет всё, но красит</em>.</p>
+<table>
+  <tr><th>#</th><th>Хранилище</th><th>Запрос группы</th><th>Что видно</th></tr>
+  <tr><td>1</td><td>Kolnatun</td><td><code>path:shared/entities</code></td><td>исходники одним цветом</td></tr>
+  <tr><td>2</td><td>Kolnatun</td><td><code>path:shared/concepts</code></td><td>общие понятия</td></tr>
+  <tr><td>3</td><td>Kolnatun</td><td><code>path:calculators/AcademicEnd</code></td><td>один калькулятор и куда он тянется</td></tr>
+  <tr><td>4</td><td>медиатека</td><td><code>[type:film]</code> / <code>[type:person]</code></td><td>фильмы и люди разными цветами</td></tr>
+</table>
+
+<h2>5. Local graph: соседи одной заметки</h2>
+<p><strong>Local graph</strong> показывает не всё хранилище, а заметки, связанные с открытой. Открыть: <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open local graph</code>. У него есть <strong>Depth</strong> (глубина): 1 — прямые соседи, 2 — ещё и соседи соседей, и так далее. Остальные настройки — те же, что у общего графа.<span class="cite"><a href="https://obsidian.md/help/plugins/graph">[граф]</a></span></p>
+<p>Пример: локальный граф <code>SetErrorObject</code> с глубиной 1 — его контейнер <code>mdlGeneral.bas</code> и всё, что ссылается на функцию. Это ответ на «откуда эта функция и кто её использует» без фильтров.</p>
+
+<h2>6. Display и Forces: чтобы читалось</h2>
+<table>
+  <tr><th>#</th><th>Настройка</th><th>Что меняет</th><th>Когда трогать</th></tr>
+  <tr><td>1</td><td><strong>Arrows</strong></td><td>стрелки — направление ссылки</td><td>увидеть, кто на кого ссылается: функция → контейнер</td></tr>
+  <tr><td>2</td><td><strong>Text fade threshold</strong></td><td>когда показываются имена заметок</td><td>имена не видны или мешают</td></tr>
+  <tr><td>3</td><td>Node size / Link thickness</td><td>размер точек / толщина линий</td><td>крупнее для скриншота</td></tr>
+  <tr><td>4</td><td><strong>Repel force</strong> / <strong>Link distance</strong></td><td>как сильно точки отталкиваются / длина линий</td><td>всё слиплось в комок — увеличь</td></tr>
+  <tr><td>5</td><td>Center force / Link force</td><td>компактность графа / натяжение линий</td><td>граф расползся — увеличь center force</td></tr>
+  <tr><td>6</td><td>Animate</td><td>«замедленная съёмка»: как росла вики</td><td>интересно после серии ingest</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/graph">Obsidian Help → Graph view → Display, Forces</a>.</p>
+
+<div class="box"><strong>Не прячь промпты через Excluded files.</strong> Это другая настройка: Settings → Files &amp; Links → <em>Excluded files</em> — папки, которые Obsidian делает «невидимыми» во <em>всём</em> хранилище: они пропадают из поиска, графа и unlinked mentions, хуже видны в Quick switcher и подсказках ссылок.<span class="cite"><a href="https://obsidian.md/help/settings">[настройки]</a></span> Файлы остаются на диске, но искать по промптам ты уже не сможешь. Фильтр графа действует только на граф — поэтому он.</div>
+
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша / команда</th><th>Что делает</th></tr>
+  <tr><td>1</td><td>кнопка <strong>Open graph view</strong> (Ribbon)</td><td>общий граф</td></tr>
+  <tr><td>2</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open local graph</code></td><td>локальный граф открытой заметки</td></tr>
+  <tr><td>3</td><td>колесо, <kbd>+</kbd> / <kbd>-</kbd></td><td>масштаб</td></tr>
+  <tr><td>4</td><td>стрелки, <kbd>Shift</kbd>+стрелки</td><td>двигать карту, быстрее</td></tr>
+</table>
+<p>Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
+
+<h2>7. Практика: фильтр для Kolnatun</h2>
+<p>Песочница — копия части твоего хранилища Kolnatun (25 файлов, имена настоящие). Она понимает <code>path:</code>, <code>file:</code>, <code>[свойство:значение]</code>, <code>-</code>, <code>OR</code>, скобки. Сначала пробуй сам, подсказку — только если застрял.</p>
 <div class="box">
   <strong>Как читать проверку.</strong> Песочница показывает, сколько файлов осталось и сколько нужно, и два списка: «должны исчезнуть, но остались» и «должны остаться, но исчезли». Если какое-то условие не нашло ни одного файла, она скажет об этом отдельно (частые причины: <code>\</code> вместо <code>/</code>, опечатка, <code>*</code>).<br><br>
-  <strong>Разобранный пример.</strong> Убрать правила и задачи: <code>-path:rules -path:tasks</code> — два условия через пробел, у каждого свой минус. Пути — через <code>/</code>, как в Obsidian, звёздочки не нужны.
+  <strong>Разобранный пример.</strong> Убрать правила и задачи: <code>-path:rules -path:tasks</code> — два условия через пробел, у каждого свой минус.
 </div>
 <div id="sim"></div>
 
-<h2>5. Проверь себя</h2>
-<p>Без подглядывания в таблицу выше.</p>
+<h2>8. Проверь себя</h2>
 <div id="quiz"></div>
 
-<h2>6. Теперь в настоящем Obsidian</h2>
+<h2>9. Теперь в настоящем Obsidian</h2>
+<p>Сначала на учебном хранилище <code>practice-vault</code> — там известно, что должно получиться (числа — для версии курса, без твоих правок). Потом то же на Kolnatun.</p>
 <ol class="steps">
-  <li>Открой граф: кнопка <strong>Open graph view</strong> на левой панели (или <kbd>Ctrl</kbd>+<kbd>G</kbd>, если эта клавиша есть в Settings → Hotkeys).</li>
-  <li>Шестерёнка справа вверху → <strong>Filters</strong> → в <strong>Search files</strong> вставь свой ответ на задачу 3.</li>
-  <li>Там же выключи <strong>Attachments</strong> — уйдут <code>.mmd</code>, <code>.html</code>.</li>
-  <li><strong>Groups</strong> → New group → <code>path:shared/entities</code>, выбери цвет. Так исходники видны сразу.</li>
-  <li><strong>Не прячь промпты через Excluded files.</strong> Это другая настройка: Settings → Files &amp; Links → <em>Excluded files</em> — список папок, которые Obsidian делает «невидимыми» во <em>всём</em> хранилище: они пропадают из поиска, графа и unlinked mentions, хуже видны в Quick switcher и подсказках ссылок.<span class="cite"><a href="https://obsidian.md/help/settings">[настройки]</a></span> Файлы остаются на диске и открываются из списка файлов, но искать по промптам ты уже не сможешь. Фильтр графа действует только на граф — поэтому он.</li>
+  <li><strong>Весь граф.</strong> Открой граф. Ожидаемо: 9 заметок — Сталкер, Солярис, Пикник, Тарковский, <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>SetErrorObject</code>, <code>mdlGeneral.bas</code>, <code>README</code>. Если включён Tags — ещё точки тегов.</li>
+  <li><strong>Сироты.</strong> Filters → выключи <strong>Orphans</strong>. Ожидаемо: пропадут <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>README</code> — у них нет ни одной ссылки. Осталось 6. Включи Orphans обратно.</li>
+  <li><strong>Фильтр по свойству.</strong> Search files: <code>[type:film] OR [type:person]</code>. Ожидаемо: 3 — Сталкер, Солярис, Тарковский. Очисти строку.</li>
+  <li><strong>Фильтр с минусом.</strong> <code>-path:Kolnatun -path:Хранилища</code>. Ожидаемо: 5 — медиатека, Тарковский, README. Очисти.</li>
+  <li><strong>Группы.</strong> New group: <code>path:Kolnatun</code> — один цвет; ещё одна: <code>[type:film]</code> — другой. Ожидаемо: все 9 на месте, 2 точки Kolnatun и 2 фильма окрашены.</li>
+  <li><strong>Стрелки.</strong> Display → включи <strong>Arrows</strong>. Найди <code>SetErrorObject</code> и <code>mdlGeneral.bas</code>: они ссылаются друг на друга — стрелки с обеих сторон.</li>
+  <li><strong>Локальный граф.</strong> Tags выключен. Открой <code>Люди/Тарковский</code>, <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open local graph</code>. Depth 1 → 3 точки: Тарковский, Сталкер, Солярис. Depth 2 → 4: добавился <code>Пикник на обочине</code> (сосед Сталкера).</li>
+  <li><strong>Kolnatun.</strong> Открой рабочее хранилище, граф → Filters → Search files: твой ответ на задачу 3 песочницы. Выключи Attachments (уйдут <code>.mmd</code>, <code>.html</code>). Группа <code>path:shared/entities</code> — цвет исходников. Это цель урока. Файлы Kolnatun не меняются — меняются только настройки графа.</li>
+  <li><strong>Kolnatun, одна функция.</strong> Открой <code>shared/entities/BL/mdl/mdlGeneral.bas/SetErrorObject</code> → Open local graph, Depth 1: контейнер и кто ссылается.</li>
 </ol>
 
+<h2>10. Что это значит для Kolnatun и LLM-wiki</h2>
+<table>
+  <tr><th>#</th><th>Правило для схемы</th><th>Что даёт граф</th></tr>
+  <tr><td>1</td><td><code>type</code> (а потом, может быть, <code>layer</code>) — на <em>каждой</em> странице</td><td>короткий фильтр и группы по свойству, а не длинный список <code>-path:</code></td></tr>
+  <tr><td>2</td><td>каждое упоминание — ссылкой (урок 0003)</td><td>линии в графе = реальные связи; изолированные точки — пропущенные ссылки</td></tr>
+  <tr><td>3</td><td>контейнер ← член, калькулятор → функция</td><td>со стрелками видно направление зависимостей</td></tr>
+  <tr><td>4</td><td>сироты в lint-отчёт (урок 0008)</td><td>Orphans выключить и сравнить — проверка за секунду</td></tr>
+</table>
+
 <h2>Главный источник</h2>
-<p><a href="https://obsidian.md/help/plugins/search"><strong>Obsidian Help — Search</strong></a>. Пять минут чтения; там ещё <code>line:</code>, <code>section:</code>, регулярные выражения — пригодятся позже.</p>
+<p><a href="https://obsidian.md/help/plugins/graph"><strong>Obsidian Help — Graph view</strong></a>: фильтры, группы, Display, Forces, локальный граф. 5 минут. Язык фильтра — <a href="https://obsidian.md/help/plugins/search">Search</a> (урок 0004).</p>
 
 <div class="box ask">Что-то непонятно или не работает в твоём графе — спроси меня в чате. Пришли скриншот или свой фильтр, разберём.</div>
 
 <footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="0004-search.html">Назад: 0004</a>
+  <span>Дальше: 0006 Dataview (скоро)</span>
   <a href="../reference/search-cheatsheet.html">Шпаргалка: поиск и граф</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
   <a href="../reference/glossary.html">Глоссарий</a>
 </footer>
 </main>
@@ -130,24 +202,36 @@ SearchSim.mount(document.getElementById('sim'), { files, tasks: [
     hint: 'Две части через OR. Первая в скобках: (path:… -path:…). Вторая — ответ задачи 2.' },
 ]});
 Quiz.mount(document.getElementById('quiz'), [
-  { q: 'Что делает -path:rules в фильтре графа?',
-    options: ['Скрывает все файлы, путь которых содержит rules',
-              'Показывает только файлы, путь которых содержит rules',
-              'Скрывает только файл, имя которого равно rules',
-              'Скрывает файлы, внутри текста которых встречается rules'],
-    answer: 0, why: 'Минус убирает совпадения; path: проверяет часть пути, не имя и не текст.' },
-  { q: 'Чем file: отличается от path:?',
-    options: ['file: только имя, path: весь путь',
-              'file: весь путь, path: только имя',
-              'file: текст заметки, path: имя файла',
-              'оба смотрят одно и то же'],
-    answer: 0, why: 'file: — имя файла, path: — путь целиком (папки + имя).' },
+  { q: 'Что делает -path:rules в Filters → Search files?',
+    options: ['Убирает из графа файлы, путь которых содержит rules',
+              'Оставляет в графе только файлы, путь которых содержит rules',
+              'Убирает из графа только файл, имя которого равно rules',
+              'Убирает файлы, внутри текста которых встречается rules'],
+    answer: 0, why: 'Минус убирает совпадения; path: проверяет часть пути (урок 0004).' },
+  { q: 'Чем Group отличается от фильтра Search files?',
+    options: ['Группа красит найденное, фильтр убирает остальное',
+              'Группа убирает найденное, фильтр его красит',
+              'Группа работает только в локальном графе',
+              'Группа ищет только по тегам, а не по путям'],
+    answer: 0, why: 'Группа = запрос + цвет, все точки остаются; фильтр оставляет только найденные.' },
   { q: 'Что покажет [layer:source] OR path:concepts ?',
     options: ['Файлы-исходники и все страницы из concepts',
               'Только исходники, лежащие внутри папки concepts',
               'Всё, кроме исходников и папки concepts',
               'Только страницы concepts со свойством layer'],
     answer: 0, why: 'OR объединяет два набора. Без OR (только пробел) было бы пересечение.' },
+  { q: 'Локальный граф Тарковского, Depth 2. Что добавится к Depth 1?',
+    options: ['Соседи соседей: заметки, связанные с его фильмами',
+              'Все заметки хранилища, даже несвязанные',
+              'Только заметки, которые ссылаются на Тарковского',
+              'Только теги заметки Тарковский'],
+    answer: 0, why: 'Каждый уровень глубины добавляет заметки, связанные с показанными на предыдущем уровне.' },
+  { q: 'Что делает выключенный Orphans?',
+    options: ['Прячет заметки без единой ссылки',
+              'Прячет ссылки на несуществующие заметки',
+              'Прячет вложения: картинки и .mmd',
+              'Прячет теги, которые стоят у одной заметки'],
+    answer: 0, why: 'Orphans — заметки без ссылок. Несуществующие — Existing files only, вложения — Attachments.' },
   { q: 'Почему не Settings → Excluded files, чтобы спрятать scaffold?',
     options: ['Excluded files прячет их и в поиске',
               'Excluded files вообще не влияет на граф',
