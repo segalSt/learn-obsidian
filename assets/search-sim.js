@@ -139,6 +139,8 @@
       tokenize(q).forEach(tok => {
         if (!tok || typeof tok !== 'object') return;
         const s = tok.term, shown = (tok.neg ? '-' : '') + s;
+        // Help lists OR, -, ( ) and the space; AND is not an operator, it is searched as the word "and"
+        if (s === 'AND') { notes.push(`«AND»: в Obsidian нет такого оператора — это обычное слово «and», и оно ищется в тексте. «И» — это пробел: a b. Просто убери AND.`); return; }
         if (s.includes('\\')) notes.push(`«${shown}»: в Obsidian части пути разделяются через / (прямой слеш), не через \\.`);
         if (s.includes('*')) notes.push(`«${shown}»: звёздочка здесь не шаблон, она ищется как обычный символ. path: и так ищет любую часть пути — просто убери *.`);
         const hits = files.filter(termFn(s)).length;
