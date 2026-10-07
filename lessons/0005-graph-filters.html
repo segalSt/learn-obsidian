@@ -113,6 +113,12 @@
 
 <h2>9. Теперь в настоящем Obsidian</h2>
 <p>Сначала на учебном хранилище <code>practice-vault</code> — там известно, что должно получиться (числа — для версии курса, без твоих правок). Потом то же на Kolnatun.</p>
+<table>
+  <tr><th>#</th><th>Хранилище</th><th>Папка (Obsidian → Open folder as vault)</th></tr>
+  <tr><td>1</td><td>учебное, шаги 1–7</td><td><code>C:/_repos/github/segal.st/teach/learn-obsidian/practice-vault</code></td></tr>
+  <tr><td>2</td><td>Kolnatun, шаги 8–9 (только настройки графа)</td><td><code>C:/_repos/Azure/kol-natun-vb/Main/claude/kolnatun-context-2.0</code> — корень хранилища, в нём лежит <code>.obsidian</code>; пути в фильтрах (<code>calculators/…</code>) считаются от него</td></tr>
+</table>
+<p>Открыть хранилище: внизу слева значок <strong>Vault profile</strong> → <strong>Manage vaults…</strong> → справа от <strong>Open folder as vault</strong> кнопка <strong>Open</strong> → выбрать папку. Уже открытое раньше — <kbd>Ctrl</kbd>+<kbd>P</kbd> → <code>Open another vault</code>.<span class="cite"><a href="https://obsidian.md/help/manage-vaults">[хранилища]</a></span> Путь в окне выбора папки Windows покажет с <code></code> — это нормально: <code></code> только в Проводнике, внутри Obsidian пути через <code>/</code>.</p>
 <ol class="steps">
   <li><strong>Весь граф.</strong> Открой граф. Ожидаемо: 9 заметок — Сталкер, Солярис, Пикник, Тарковский, <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>SetErrorObject</code>, <code>mdlGeneral.bas</code>, <code>README</code>. Если включён Tags — ещё точки тегов.</li>
   <li><strong>Сироты.</strong> Filters → выключи <strong>Orphans</strong>. Ожидаемо: пропадут <code>HDD-2TB-01</code>, <code>Полка 2</code>, <code>README</code> — у них нет ни одной ссылки. Осталось 6. Включи Orphans обратно.</li>
