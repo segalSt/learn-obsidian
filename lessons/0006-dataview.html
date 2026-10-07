@@ -94,7 +94,7 @@ FROM "Медиатека"
 <table>
   <tr><th>#</th><th>Условие</th><th>Значит</th></tr>
   <tr><td>1</td><td><code>type = "film"</code></td><td>равно. <strong>Текст — в кавычках</strong>: без них <code>film</code> — это имя <em>поля</em>, а не слово</td></tr>
-  <tr><td>2</td><td><code>status != "смотрел"</code></td><td>не равно</td></tr>
+  <tr><td>2</td><td><code>status != "смотрел"</code></td><td>не равно: <code>!</code> («не») + <code>=</code>. Других вариантов (<code>&lt;&gt;</code>, <code>=!</code>) в списке операторов нет. Заметки <em>без</em> <code>status</code> тоже могут пройти — см. «Пустые значения» ниже; надёжно: <code>status AND status != "смотрел"</code></td></tr>
   <tr><td>3</td><td><code>year &lt; 1975</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td>сравнение; числа без кавычек</td></tr>
   <tr><td>4</td><td><code>a AND b</code>, <code>a OR b</code>, <code>!a</code></td><td>и / или / не; скобки группируют</td></tr>
   <tr><td>5</td><td><code>WHERE duplicate_of</code></td><td>поле есть и не пустое — как <code>[duplicate_of]</code> в поиске</td></tr>
