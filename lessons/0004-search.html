@@ -85,7 +85,7 @@
   <tr><td>1</td><td><code>[aliases]</code></td><td>заметки, у которых есть свойство <code>aliases</code></td></tr>
   <tr><td>2</td><td><code>[type:film]</code></td><td>заметки, где значение <code>type</code> — <code>film</code></td></tr>
   <tr><td>3</td><td><code>[used_by:null]</code></td><td>свойство есть, но пустое — в Kolnatun это «функция, которую уже никто не использует»</td></tr>
-  <tr><td>4</td><td><code>[status:смотрел OR "хочу пересмотреть"]</code></td><td>одно из значений; внутри скобок работают <code>OR</code>, кавычки, regex</td></tr>
+  <tr><td>4</td><td><code>[status:смотрел OR "хочу пересмотреть"]</code></td><td>одно из значений. Внутри значения работают <code>OR</code>, скобки для группировки, кавычки, regex: <code>[layer:(result OR source)]</code> — то же самое<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span></td></tr>
   <tr><td>5</td><td><code>[year:&lt;1975]</code></td><td>сравнение чисел: <code>&lt;</code> меньше, <code>&gt;</code> больше</td></tr>
 </table>
 <p class="cite" style="vertical-align:baseline">Источник: <a href="https://obsidian.md/help/plugins/search">Obsidian Help → Search</a>, разделы Search properties и Comparison operators.</p>

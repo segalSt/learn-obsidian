@@ -215,7 +215,7 @@ SearchSim.mount(document.getElementById('sim'), { files, tasks: [
   { prompt: 'То же, что задача 3, но через свойство layer.',
     explain: 'У каждого файла в списке выше есть фиолетовая метка layer:… — это свойство файла.\nЗначения: result (результат), source (исходник), process (промпты), port (Python-порт).\nСинтаксис свойства: [имя:значение], например [layer:port]. Два условия через OR = «или».\nДолжно остаться 15 — те же файлы, что в задаче 3, но фильтр короче.',
     expect: where(f => L(f) === 'result' || L(f) === 'source'),
-    hint: '[layer:result] OR [layer:…]' },
+    hint: '[layer:result] OR [layer:…] — или одним условием: [layer:(… OR …)].' },
   { prompt: 'Только SalaryCalc без Python-порта, плюс все entities.',
     explain: 'Должно остаться 7: 3 файла SalaryCalc + 4 entities.',
     expect: where(f => (f.path.startsWith('calculators/SalaryCalc') && L(f) !== 'port') || L(f) === 'source'),
