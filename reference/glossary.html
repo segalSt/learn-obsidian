@@ -24,7 +24,7 @@
   <tr><td>7</td><td>Group (граф)</td><td>Запрос + цвет: красит совпавшие точки, ничего не убирая.</td></tr>
   <tr><td>8</td><td>Backlinks</td><td>Кто ссылается на эту заметку. Панель справа: Linked mentions (ссылки) и Unlinked mentions (имя без ссылки). <a href="https://obsidian.md/help/plugins/backlinks">[справка]</a></td></tr>
   <tr><td>9</td><td>Attachment</td><td>Не-<code>.md</code> файл в хранилище (<code>.mmd</code>, <code>.html</code>, картинки).</td></tr>
-  <tr><td>10</td><td>Dataview</td><td>Плагин: запросы-таблицы по свойствам (<code>TABLE … FROM … WHERE</code>). <a href="https://blacksmithgu.github.io/obsidian-dataview/">[docs]</a></td></tr>
+  <tr><td>10</td><td>Dataview</td><td>Плагин сообщества: запросы-таблицы по свойствам (урок 0006) (<code>TABLE … FROM … WHERE</code>). <a href="https://blacksmithgu.github.io/obsidian-dataview/">[docs]</a></td></tr>
   <tr><td>11</td><td>Bases</td><td>Встроенные таблицы по свойствам, без кода. <a href="https://obsidian.md/help/bases">[справка]</a></td></tr>
   <tr><td>12</td><td>Layer (слой)</td><td>Наш термин: результат / исходник / процесс / порт. Сейчас — по папкам; позже — свойство <code>layer</code>.</td></tr>
   <tr><td>13</td><td>Entity (сущность)</td><td>Наш термин: страница части исходного кода в <code>shared/entities</code>. Контейнер (файл) &gt; член (метод/функция).</td></tr>
@@ -76,8 +76,22 @@
   <tr><td>59</td><td>Regular expression (regex)</td><td>Шаблон текста между <code>/ /</code>: <code>file:/^Стал/</code> — имя начинается с «Стал».</td></tr>
   <tr><td>60</td><td>Explain search term</td><td>Настройка поиска: показывает словами, как Obsidian понял запрос.</td></tr>
   <tr><td>61</td><td>Embedded search (блок query)</td><td>Блок <code>```query … ```</code> в заметке: результаты поиска прямо в ней, обновляются сами.</td></tr>
+  <tr><td>62</td><td>Community plugin (плагин сообщества)</td><td>Плагин не от разработчиков Obsidian. Settings → Community plugins → Browse → Install → Enable. Запускает сторонний код. <a href="https://obsidian.md/help/community-plugins">[справка]</a></td></tr>
+  <tr><td>63</td><td>Restricted mode</td><td>Режим, в котором плагины сообщества выключены; по умолчанию включён.</td></tr>
+  <tr><td>64</td><td>DQL (Dataview Query Language)</td><td>Язык запросов Dataview в блоке <code>```dataview</code>: тип запроса → FROM → команды, выполняется сверху вниз. <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/structure/">[docs]</a></td></tr>
+  <tr><td>65</td><td>Query type (тип запроса)</td><td>Обязательная первая часть DQL: <code>LIST</code>, <code>TABLE</code>, <code>TASK</code>, <code>CALENDAR</code>.</td></tr>
+  <tr><td>66</td><td>FROM</td><td>Источник DQL: <code>"папка"</code> от корня, <code>#тег</code> с подтегами, <code>[[заметка]]</code> — кто на неё ссылается.</td></tr>
+  <tr><td>67</td><td>Data command (команда)</td><td><code>WHERE</code>, <code>SORT</code>, <code>GROUP BY</code>, <code>FLATTEN</code>, <code>LIMIT</code> — сколько угодно, по порядку.</td></tr>
+  <tr><td>68</td><td>GROUP BY / rows</td><td>Одна строка на значение поля; заметки группы — в списке <code>rows</code> (<code>length(rows)</code>, <code>rows.file.link</code>).</td></tr>
+  <tr><td>69</td><td>FLATTEN</td><td>Одна строка на каждый элемент списка: <code>FLATTEN authors</code>.</td></tr>
+  <tr><td>70</td><td>Implicit fields (file.*)</td><td>Поля, которые Dataview добавляет каждой заметке: <code>file.name</code>, <code>file.link</code>, <code>file.mtime</code>, <code>file.inlinks</code>… <a href="https://blacksmithgu.github.io/obsidian-dataview/annotation/metadata-pages/">[docs]</a></td></tr>
+  <tr><td>71</td><td>this</td><td>В Dataview: заметка, в которой стоит запрос. <code>source = this.source</code>.</td></tr>
+  <tr><td>72</td><td>row</td><td>Поле-обёртка Dataview для свойств с именем команды или пробелом: <code>row.where</code>, <code>row["имя поля"]</code>.</td></tr>
+  <tr><td>73</td><td>Inline DQL</td><td>Одно значение в строке текста: <code>`= this.file.name`</code>.</td></tr>
+  <tr><td>74</td><td>Inline field</td><td>Поле Dataview в тексте: <code>ключ:: значение</code>. Не свойство Obsidian — данные лучше держать в YAML.</td></tr>
+  <tr><td>75</td><td>DataviewJS</td><td>Запросы Dataview на JavaScript; в курсе не используем.</td></tr>
 </table>
-<footer class="lesson-foot"><a href="../index.html">Все уроки</a> <a href="note-anatomy.html">Шпаргалка: заметка</a> <a href="properties.html">Шпаргалка: свойства</a> <a href="search-cheatsheet.html">Шпаргалка: поиск и граф</a> <a href="../lessons/0005-graph-filters.html">Урок 0005</a></footer>
+<footer class="lesson-foot"><a href="../index.html">Все уроки</a> <a href="note-anatomy.html">Шпаргалка: заметка</a> <a href="properties.html">Шпаргалка: свойства</a> <a href="dataview.html">Шпаргалка: Dataview</a> <a href="search-cheatsheet.html">Шпаргалка: поиск и граф</a> <a href="../lessons/0005-graph-filters.html">Урок 0005</a></footer>
 </main>
 </body>
 </html>

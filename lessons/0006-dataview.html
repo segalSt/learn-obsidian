@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0006 · Dataview</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/line-tagger.js"></script>
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Урок 0006 · Таблицы по свойствам · ~35 минут</div>
+  <h1>Dataview: первая таблица</h1>
+  <p class="lede">Поиск (урок 0004) отвечает списком файлов. Dataview отвечает <em>таблицей</em>: «фильм — год — где лежит», «функция — строка — кто использует». Таблица живёт прямо в заметке и сама обновляется, когда меняются свойства.</p>
+</header>
+
+<div class="box goal">
+  <strong>Цель урока.</strong> Читать и править запросы, которые уже стоят в Kolnatun (<code>shared/INDEX.md</code>, страницы-контейнеры), и написать свою таблицу для медиатеки: «все фильмы на HDD-2TB-01, по годам».
+</div>
+
+<h2>1. Что такое Dataview</h2>
+<p><strong>Dataview</strong> — «живой индекс и движок запросов» по твоему хранилищу: читает свойства заметок и показывает их списком, таблицей, задачами или календарём.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/">[dataview]</a></span> Три вещи, которые надо знать сразу:</p>
+<table>
+  <tr><th>#</th><th>Факт</th><th>Что это значит</th></tr>
+  <tr><td>1</td><td>Dataview — <strong>community plugin</strong> (плагин сообщества), не встроенный в Obsidian</td><td>его надо установить и включить (раздел 2). Встроенная замена — Bases, урок 0007<span class="cite"><a href="https://obsidian.md/help/bases">[bases]</a></span></td></tr>
+  <tr><td>2</td><td>Dataview <strong>только читает</strong></td><td>«не предназначен для правки заметок и всегда оставляет их нетронутыми» — кроме галочек задач в запросах TASK<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/">[dataview]</a></span>. Сломать данные запросом нельзя</td></tr>
+  <tr><td>3</td><td>видит только то, что проиндексировал</td><td>свойства, теги, ссылки, задачи, списки, поля <code>file.*</code><span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/">[dataview]</a></span>. Обычный текст абзаца — нет: для текста есть поиск</td></tr>
+</table>
+<p>Языков запросов у Dataview три: <strong>DQL</strong> (Dataview Query Language — язык этого урока), <strong>inline DQL</strong> (одно значение прямо в строке текста, раздел 8) и <strong>DataviewJS</strong> (запросы на JavaScript — гибче всего, но сложнее; в этом курсе не нужен).<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/">[dataview]</a></span></p>
+
+<h2>2. Установка</h2>
+<p><strong>Community plugins</strong> — плагины, которые пишут не разработчики Obsidian. Справка предупреждает: они «запускают сторонний код от твоего имени, который потенциально может навредить».<span class="cite"><a href="https://obsidian.md/help/community-plugins">[плагины]</a></span> Поэтому по умолчанию они выключены режимом <strong>Restricted mode</strong>.</p>
+<ol>
+  <li>Settings → <strong>Community plugins</strong> → выключить Restricted mode (кнопка «Turn on community plugins»).</li>
+  <li><strong>Browse</strong> → найти <code>Dataview</code> → <strong>Install</strong>.</li>
+  <li><strong>Enable</strong> — сразу после установки или позже в Settings → Community plugins → Installed plugins. Установить ≠ включить: без Enable плагин не работает.<span class="cite"><a href="https://obsidian.md/help/community-plugins">[плагины]</a></span></li>
+</ol>
+<p>Настройки хранятся в папке <code>.obsidian</code> внутри хранилища — «все файлы настроек твоего хранилища».<span class="cite"><a href="https://obsidian.md/help/configuration-folder">[настройки]</a></span> Поэтому плагин ставят и включают в каждом хранилище: в шаге 1 практики — в <code>practice-vault</code>.</p>
+
+<h2>3. Первый запрос</h2>
+<p>Запрос DQL пишется в блоке кода с языком <code>dataview</code> — три обратных апострофа, слово <code>dataview</code>, запрос, три апострофа:<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/structure/">[структура]</a></span></p>
+<pre>```dataview
+LIST
+FROM "Медиатека"
+```</pre>
+<p>В режиме чтения (<kbd>Ctrl</kbd>+<kbd>E</kbd>, урок 0001) на месте блока появится список ссылок: Пикник на обочине, Солярис (1972), Сталкер (1979). В Live Preview результат обычно тоже виден, пока курсор вне блока; курсор внутри — видишь код.</p>
+<p>Структура любого запроса:<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/structure/">[структура]</a></span></p>
+<table>
+  <tr><th>#</th><th>Часть</th><th>Обязательна?</th><th>Сколько раз</th></tr>
+  <tr><td>1</td><td><strong>Query type</strong> (тип запроса): <code>LIST</code>, <code>TABLE</code>, <code>TASK</code>, <code>CALENDAR</code></td><td><strong>да</strong>, всегда первой</td><td>1</td></tr>
+  <tr><td>2</td><td><code>FROM</code> — откуда брать заметки</td><td>нет; без него — всё хранилище</td><td>0 или 1, сразу после типа</td></tr>
+  <tr><td>3</td><td><strong>Data commands</strong> (команды): <code>WHERE</code>, <code>SORT</code>, <code>GROUP BY</code>, <code>FLATTEN</code>, <code>LIMIT</code></td><td>нет</td><td>сколько угодно, в любом порядке</td></tr>
+</table>
+<div class="box"><strong>Сверху вниз, строка за строкой.</strong> Это не SQL: запрос «выполняется сверху вниз, строка за строкой, больше похоже на программу».<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/differences-to-sql/">[vs SQL]</a></span> Каждая команда получает результат предыдущей. Поэтому <code>LIMIT 1</code>, а потом <code>SORT year DESC</code> — это «взять одну любую заметку и отсортировать её», а не «самую новую».<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">[команды]</a></span></div>
+
+<h2>4. Типы запросов</h2>
+<table>
+  <tr><th>#</th><th>Тип</th><th>Что показывает</th><th>Пример</th></tr>
+  <tr><td>1</td><td><code>LIST</code></td><td>список ссылок на заметки; можно добавить <em>одно</em> значение рядом</td><td><code>LIST year FROM "Медиатека"</code> — рядом с каждой ссылкой год</td></tr>
+  <tr><td>2</td><td><code>TABLE</code></td><td>таблица: первый столбец — заметка (File), дальше столбцы через запятую</td><td><code>TABLE year, status FROM "Медиатека"</code></td></tr>
+  <tr><td>3</td><td><code>TASK</code></td><td>задачи <code>- [ ]</code> из заметок; отметка галочки <strong>меняет файл</strong></td><td><code>TASK WHERE !completed</code></td></tr>
+  <tr><td>4</td><td><code>CALENDAR</code></td><td>календарь: точка на дате из поля</td><td><code>CALENDAR file.ctime</code></td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/query-types/">Dataview → Query Types</a>.</p>
+<p>Две добавки к <code>TABLE</code>:</p>
+<ul>
+  <li><code>AS</code> — своё имя столбца: <code>TABLE year AS "Год", status AS "Статус"</code>. Имя с пробелом — в кавычках.</li>
+  <li><code>WITHOUT ID</code> — убрать первый столбец File. Так переименовывают и его: <code>TABLE WITHOUT ID file.link AS "Фильм", year AS "Год"</code>.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/query-types/">[типы]</a></span></li>
+</ul>
+
+<h2>5. FROM: откуда брать</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Берёт</th></tr>
+  <tr><td>1</td><td><code>FROM "Медиатека"</code></td><td>папку <strong>и все подпапки</strong>. Путь — в кавычках</td></tr>
+  <tr><td>2</td><td><code>FROM "Медиатека/Фильмы/Сталкер (1979)"</code></td><td>один файл</td></tr>
+  <tr><td>3</td><td><code>FROM #кино</code></td><td>тег <strong>и все его подтеги</strong> (<code>#кино/советское</code> тоже)</td></tr>
+  <tr><td>4</td><td><code>FROM [[Пикник на обочине]]</code></td><td>заметки, которые <strong>ссылаются на</strong> Пикник (как Backlinks, урок 0003)</td></tr>
+  <tr><td>5</td><td><code>FROM outgoing([[Тарковский]])</code></td><td>заметки, <strong>на которые ссылается</strong> Тарковский</td></tr>
+  <tr><td>6</td><td><code>FROM #кино and -"Медиатека/Книги"</code></td><td>сочетание: <code>and</code>, <code>or</code>, минус = «кроме»</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">Dataview → Data Commands → FROM</a>.</p>
+<div class="box"><strong>Путь — от корня хранилища, через <code>/</code>, без <code>*</code>.</strong>
+<ol>
+  <li>В отличие от <code>path:</code> в поиске (там — <em>любая часть</em> пути), <code>FROM "папка"</code> — это путь от корня хранилища. В Kolnatun так и написано: <code>FROM "calculators/shared/entities"</code>, полный путь. В practice-vault <code>FROM "Фильмы"</code> ничего не найдёт — нужно <code>FROM "Медиатека/Фильмы"</code>.</li>
+  <li>Разделитель — <code>/</code>. Скопированный из Проводника Windows путь с <code>\</code> не сработает.</li>
+  <li><code>*</code> не нужна и не шаблон: папка и так берётся со всеми подпапками.</li>
+  <li>Без кавычек нельзя: <code>FROM Медиатека</code> — ошибка; кавычки отличают папку от тега и ссылки.</li>
+</ol></div>
+
+<h2>6. WHERE: фильтр по свойствам</h2>
+<p>Все свойства из YAML (урок 0002) — сразу поля Dataview, по имени: <code>year</code>, <code>status</code>, <code>used_by</code>.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/annotation/add-metadata/">[метаданные]</a></span> <code>WHERE условие</code> оставляет только заметки, где условие истинно.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">[команды]</a></span></p>
+<table>
+  <tr><th>#</th><th>Условие</th><th>Значит</th></tr>
+  <tr><td>1</td><td><code>type = "film"</code></td><td>равно. <strong>Текст — в кавычках</strong>: без них <code>film</code> — это имя <em>поля</em>, а не слово</td></tr>
+  <tr><td>2</td><td><code>status != "смотрел"</code></td><td>не равно</td></tr>
+  <tr><td>3</td><td><code>year &lt; 1975</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td>сравнение; числа без кавычек</td></tr>
+  <tr><td>4</td><td><code>a AND b</code>, <code>a OR b</code>, <code>!a</code></td><td>и / или / не; скобки группируют</td></tr>
+  <tr><td>5</td><td><code>WHERE duplicate_of</code></td><td>поле есть и не пустое — как <code>[duplicate_of]</code> в поиске</td></tr>
+  <tr><td>6</td><td><code>contains(used_by, "AcademicEnd")</code></td><td>для списка — есть такой элемент; для текста — есть такая часть. <strong>С учётом регистра</strong>; без учёта — <code>icontains</code></td></tr>
+  <tr><td>7</td><td><code>length(used_by) &gt; 1</code></td><td>в списке больше одного элемента</td></tr>
+  <tr><td>8</td><td><code>file.mtime &gt;= date(today) - dur(1 day)</code></td><td>изменено за последние сутки: <code>date()</code> — дата, <code>dur()</code> — длительность</td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источники: <a href="https://blacksmithgu.github.io/obsidian-dataview/reference/expressions/">Expressions</a>, <a href="https://blacksmithgu.github.io/obsidian-dataview/reference/functions/">Functions</a>, <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">Data Commands</a>.</p>
+
+<h3>Поля, которые есть у каждой заметки</h3>
+<p>Кроме твоих свойств, Dataview сам добавляет <strong>implicit fields</strong> (неявные поля) <code>file.*</code>:<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/annotation/metadata-pages/">[file.*]</a></span></p>
+<table>
+  <tr><th>#</th><th>Поле</th><th>Что в нём</th></tr>
+  <tr><td>1</td><td><code>file.name</code></td><td>имя файла, как в боковой панели</td></tr>
+  <tr><td>2</td><td><code>file.link</code></td><td>ссылка на файл — для столбца «Фильм» в <code>TABLE WITHOUT ID</code></td></tr>
+  <tr><td>3</td><td><code>file.folder</code> / <code>file.path</code></td><td>папка / полный путь с именем</td></tr>
+  <tr><td>4</td><td><code>file.ctime</code> / <code>file.mtime</code></td><td>создан / изменён (дата и время); <code>file.cday</code> / <code>file.mday</code> — только дата</td></tr>
+  <tr><td>5</td><td><code>file.tags</code></td><td>все теги заметки</td></tr>
+  <tr><td>6</td><td><code>file.inlinks</code> / <code>file.outlinks</code></td><td>входящие / исходящие ссылки</td></tr>
+  <tr><td>7</td><td><code>file.aliases</code></td><td>псевдонимы</td></tr>
+</table>
+
+<div class="box"><strong>Свойство с именем команды.</strong> У фильмов есть свойство <code>where</code> (урок 0002). Но <code>WHERE</code> — команда Dataview, и <code>WHERE where = "HDD-2TB-01"</code> не сработает. Для таких имён есть «фальшивое» поле <code>row</code>: <code>row.where</code>, <code>row.from</code>.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/resources/faq/">[faq]</a></span> Правильно: <code>WHERE row.where = "HDD-2TB-01"</code>. Имя с пробелом — так же: <code>row["имя с пробелом"]</code>.</div>
+
+<div class="box"><strong>Пустые значения.</strong> Документация предупреждает: сравнение с отсутствующим полем может дать неожиданный результат, и советует сначала проверить, что поле есть: <code>WHERE year AND year &lt; 1975</code>.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/reference/expressions/">[выражения]</a></span> В шаге 4 практики проверь сам, что будет без <code>year AND</code>.</div>
+
+<h2>7. Сортировка, группы, развёртка</h2>
+<table>
+  <tr><th>#</th><th>Команда</th><th>Что делает</th><th>Пример</th></tr>
+  <tr><td>1</td><td><code>SORT поле ASC</code> / <code>DESC</code></td><td>по возрастанию / убыванию; при равенстве — по второму полю</td><td><code>SORT year DESC, file.name ASC</code></td></tr>
+  <tr><td>2</td><td><code>LIMIT n</code></td><td>не больше n результатов</td><td><code>LIMIT 5</code></td></tr>
+  <tr><td>3</td><td><code>GROUP BY поле</code></td><td>одна строка на каждое значение поля; заметки группы — в списке <code>rows</code></td><td><code>GROUP BY type</code></td></tr>
+  <tr><td>4</td><td><code>FLATTEN поле</code></td><td>наоборот: одна строка на <em>каждый элемент</em> списка</td><td><code>FLATTEN authors</code></td></tr>
+</table>
+<p class="cite" style="vertical-align:baseline">Источник: <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">Dataview → Data Commands</a>.</p>
+<p>После <code>GROUP BY</code> в столбцах пишут не поле заметки, а то, что есть у группы: <code>length(rows)</code> — сколько заметок в группе; <code>rows.file.link</code> — их ссылки (Dataview сам берёт поле из каждой заметки списка).<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">[команды]</a></span></p>
+<pre>```dataview
+TABLE length(rows) AS "Сколько", rows.file.link AS "Заметки"
+WHERE type
+GROUP BY type
+```</pre>
+
+<h2>8. Inline: одно значение в тексте</h2>
+<p><strong>Inline DQL</strong> — выражение в обычном коде строки (одинарные апострофы) с префиксом <code>=</code>. Показывает ровно одно значение, без типов запросов и команд.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/dql-js-inline/">[inline]</a></span></p>
+<table>
+  <tr><th>#</th><th>Пишешь в тексте</th><th>Видишь</th></tr>
+  <tr><td>1</td><td><code>`= this.file.name`</code></td><td>имя этой заметки. <code>this</code> — заметка, в которой стоит запрос</td></tr>
+  <tr><td>2</td><td><code>`= date(today)`</code></td><td>сегодняшнюю дату</td></tr>
+  <tr><td>3</td><td><code>`= [[Солярис (1972)]].year`</code></td><td>свойство другой заметки: 1972</td></tr>
+</table>
+<p><code>this</code> работает и в обычном запросе: в Kolnatun <code>source = this.source</code> значит «тот же исходник, что у этой страницы» (раздел 10).</p>
+<p>У Dataview есть и свой синтаксис полей прямо в тексте — <strong>inline fields</strong>: <code>Режиссёр:: [[Тарковский]]</code>, с <em>двумя</em> двоеточиями.<span class="cite"><a href="https://blacksmithgu.github.io/obsidian-dataview/annotation/add-metadata/">[метаданные]</a></span> Это синтаксис Dataview, а не свойства Obsidian: свойства — это YAML в начале заметки (урок 0002), и именно их показывают All properties, поиск <code>[свойство]</code> и Bases.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Для Kolnatun и медиатеки держи данные в YAML-свойствах — их читают все инструменты.</p>
+
+<h2>9. Поиск или Dataview?</h2>
+<table>
+  <tr><th>#</th><th>Задача</th><th>Поиск (0004)</th><th>Dataview</th></tr>
+  <tr><td>1</td><td>все фильмы</td><td><code>[type:film]</code></td><td><code>LIST WHERE type = "film"</code></td></tr>
+  <tr><td>2</td><td>что использует AcademicEnd</td><td><code>[used_by:AcademicEnd]</code></td><td><code>LIST WHERE contains(used_by, "AcademicEnd")</code></td></tr>
+  <tr><td>3</td><td>помеченные дубликаты</td><td><code>[duplicate_of]</code></td><td><code>LIST WHERE duplicate_of</code></td></tr>
+  <tr><td>4</td><td>папка</td><td><code>path:Фильмы</code> — часть пути где угодно</td><td><code>FROM "Медиатека/Фильмы"</code> — путь от корня</td></tr>
+  <tr><td>5</td><td>тег с подтегами</td><td><code>tag:кино</code></td><td><code>FROM #кино</code></td></tr>
+  <tr><td>6</td><td>кто ссылается на заметку</td><td>панель Backlinks</td><td><code>FROM [[заметка]]</code></td></tr>
+  <tr><td>7</td><td>слово в тексте абзаца</td><td><strong>да</strong></td><td>нет — только проиндексированные поля</td></tr>
+  <tr><td>8</td><td>значения свойств столбцами, подсчёт, группы</td><td>нет</td><td><strong>да</strong></td></tr>
+</table>
+<p>Правило: <em>найти</em> — поиск; <em>свести в таблицу и посчитать</em> — Dataview.</p>
+
+<h2>Клавиши урока</h2>
+<table>
+  <tr><th>#</th><th>Клавиша</th><th>Что делает</th></tr>
+  <tr><td>1</td><td><kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>чтение ⇄ редактирование: в чтении вместо кода видна таблица (урок 0001)<span class="cite"><a href="https://obsidian.md/help/edit-and-read">[виды]</a></span></td></tr>
+  <tr><td>2</td><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Command palette (урок 0002)</td></tr>
+</table>
+<p>Своих клавиш по умолчанию у Dataview в этом уроке нет. Все клавиши курса — <a href="../reference/hotkeys.html">шпаргалка</a>.</p>
+
+<h2>10. Упражнение: разбери запросы Kolnatun</h2>
+<p>Это настоящие строки из <code>calculators/shared/INDEX.md</code> и страниц-контейнеров. Для каждой строки выбери, какая это часть запроса.</p>
+<div id="parts"></div>
+
+<h2>11. Упражнение: сработает или нет</h2>
+<p>Хранилище — practice-vault (фильмы лежат в <code>Медиатека/Фильмы</code>, у них есть свойство <code>where</code>). Сработает ли строка так, как задумано?</p>
+<div id="works"></div>
+
+<h2>12. Проверь себя</h2>
+<div id="quiz"></div>
+
+<h2>13. Теперь в настоящем Obsidian</h2>
+<p>Ожидаемые результаты посчитаны для версии <code>practice-vault</code> из курса. Если ты менял свойства в своих упражнениях, числа могут отличаться — вернуть версию курса: <code>git checkout -- practice-vault</code>.</p>
+<ol>
+  <li><strong>Установка.</strong> Открой <code>practice-vault</code>, поставь и включи Dataview (раздел 2). Ожидаемо: в Settings → Community plugins → Installed plugins Dataview с включённым переключателем.</li>
+  <li><strong>Заметка для запросов.</strong> Создай в корне хранилища заметку <code>Запросы</code>. Вставь блок <code>LIST FROM "Медиатека"</code> из раздела 3, переключись в чтение (<kbd>Ctrl</kbd>+<kbd>E</kbd>). Ожидаемо: 3 ссылки — Пикник на обочине, Солярис (1972), Сталкер (1979). Замени на <code>FROM "Фильмы"</code> — результатов нет (путь от корня). <code>FROM "Медиатека/Фильмы"</code> — 2.</li>
+  <li><strong>Таблица.</strong> <code>TABLE year, status FROM "Медиатека" SORT year DESC</code>. Ожидаемо: 3 строки, первая — Сталкер (1979), потом две заметки 1972 года.</li>
+  <li><strong>Фильтр по числу.</strong> <code>TABLE type, year WHERE year AND year &lt; 1975</code> (без FROM — всё хранилище). Ожидаемо: 2 — Солярис и Пикник. Проверь сам: убери <code>year AND</code> — появились ли заметки без <code>year</code>?</li>
+  <li><strong>Тег.</strong> <code>LIST FROM #кино</code>. Ожидаемо: 2 фильма — у них тег <code>кино/советское</code>, а FROM берёт подтеги.</li>
+  <li><strong>Свойство where.</strong> <code>LIST WHERE where = "HDD-2TB-01"</code> — Dataview покажет ошибку или ничего не найдёт. <code>LIST WHERE row.where = "HDD-2TB-01"</code> — 2 фильма.</li>
+  <li><strong>Свои заголовки.</strong> <code>TABLE WITHOUT ID file.link AS "Фильм", year AS "Год", row.where AS "Где" FROM "Медиатека/Фильмы" SORT year ASC</code>. Ожидаемо: столбцы Фильм / Год / Где; Солярис 1972 HDD-2TB-01, Сталкер 1979 HDD-2TB-01.</li>
+  <li><strong>Группы.</strong> Блок <code>GROUP BY type</code> из раздела 7. Ожидаемо: 4 строки — book 1, entity 2, film 2, person 1.</li>
+  <li><strong>Развёртка.</strong> <code>TABLE authors FROM "Медиатека/Книги" FLATTEN authors</code>. Ожидаемо: 2 строки Пикник на обочине — по одной на каждого автора.</li>
+  <li><strong>Ссылки.</strong> <code>LIST FROM [[Пикник на обочине]]</code> → 1, Сталкер (ссылается на книгу). <code>LIST FROM outgoing([[Тарковский]])</code> → 2 фильма (ссылки в тексте Тарковского). Проверь сам: <code>LIST FROM [[Тарковский]]</code> — на Тарковского ссылаются только <em>свойства</em> <code>director</code>; находит ли Dataview такие ссылки?</li>
+  <li><strong>Inline.</strong> Напиши в тексте заметки <code>`= this.file.name`</code> и <code>`= [[Солярис (1972)]].year`</code>. Ожидаемо в чтении: «Запросы» и 1972.</li>
+  <li><strong>Запрос Kolnatun.</strong> Открой <code>Kolnatun/mdlGeneral.bas</code> и вставь в конец:
+<pre>```dataview
+TABLE kind, line, used_by
+FROM "Kolnatun"
+WHERE (kind = "method" OR kind = "function") AND source = this.source
+SORT line ASC
+```</pre>
+  Ожидаемо: 1 строка — SetErrorObject, function, 234, AcademicEnd. Это тот же запрос, что в Kolnatun, только папка другая: <code>this.source</code> — исходник страницы-контейнера.</li>
+  <li><strong>Kolnatun, только чтение.</strong> Открой в рабочем хранилище <code>calculators/shared/INDEX.md</code> в режиме чтения. Теперь ты можешь прочитать три его таблицы: функции, которые использует больше одного калькулятора; сколько функций каждого файла уже разобрано; помеченные дубликаты. Ничего там не меняй.</li>
+</ol>
+<p>Вернуть хранилище к версии курса: удалить заметку <code>Запросы</code> и выполнить <code>git checkout -- practice-vault</code>.</p>
+
+<h2>14. Что это значит для Kolnatun и LLM-wiki</h2>
+<table>
+  <tr><th>#</th><th>Правило для схемы</th><th>Что даёт Dataview</th></tr>
+  <tr><td>1</td><td>данные — в YAML-свойствах, не в inline fields</td><td>одни и те же свойства читают поиск, граф, Dataview и Bases</td></tr>
+  <tr><td>2</td><td>не называть свойства как команды DQL (<code>where</code>, <code>from</code>, <code>sort</code>)</td><td>не нужен <code>row.where</code>; для медиатеки удобнее <code>location</code> — но переименование трогает все заметки (All properties → Rename, урок 0002)</td></tr>
+  <tr><td>3</td><td>одно значение — одного вида: <code>kind</code> всегда <code>method</code> / <code>function</code> / <code>module</code>, без вариантов написания</td><td><code>kind = "method"</code> учитывает точное значение — опечатка выпадет из таблицы</td></tr>
+  <tr><td>4</td><td>связи-списки — List (<code>used_by</code>)</td><td><code>contains()</code>, <code>length()</code>, <code>FLATTEN</code> работают со списками</td></tr>
+  <tr><td>5</td><td>сводные таблицы — в <code>INDEX.md</code> и страницах-контейнерах</td><td>Claude меняет свойства, а таблицы обновляются сами — не надо переписывать индекс руками</td></tr>
+</table>
+<p>Дальше: урок 0007 — Bases, встроенные таблицы по тем же свойствам, без кода и с правкой прямо в таблице.</p>
+
+<h2>Главный источник</h2>
+<p><a href="https://blacksmithgu.github.io/obsidian-dataview/queries/structure/"><strong>Dataview → Structure of a Query</strong></a> и соседние страницы Query Types и Data Commands. 15 минут.</p>
+
+<div class="box ask">Что-то непонятно — спроси меня в чате. Можно прислать запрос, который «ничего не показывает», вместе с тем, что Dataview пишет вместо таблицы.</div>
+
+<footer class="lesson-foot">
+  <a href="../index.html">Все уроки</a>
+  <a href="0005-graph-filters.html">Назад: 0005</a>
+  <span>Дальше: 0007 Bases (скоро)</span>
+  <a href="../reference/dataview.html">Шпаргалка: Dataview</a>
+  <a href="../reference/hotkeys.html">Клавиши</a>
+  <a href="../reference/glossary.html">Глоссарий</a>
+</footer>
+</main>
+<script>
+LineTagger.mount(document.getElementById('parts'), {
+  categories: ['тип запроса', 'источник', 'фильтр', 'порядок / группы'],
+  lines: [
+    { text: 'TABLE type, kind, source, used_by', cat: 'тип запроса', why: 'TABLE + столбцы через запятую: что показать.' },
+    { text: 'FROM "calculators/shared"', cat: 'источник', why: 'FROM "папка" — папка от корня хранилища со всеми подпапками.' },
+    { text: 'WHERE length(used_by) > 1', cat: 'фильтр', why: 'Только функции, у которых в used_by больше одного калькулятора — общий код.' },
+    { text: 'SORT length(used_by) DESC', cat: 'порядок / группы', why: 'Сначала те, кого используют больше всего.' },
+    { text: 'TABLE length(rows) AS members, rows.name AS routines', cat: 'тип запроса', why: 'TABLE со столбцами группы: сколько заметок в группе и их свойство name.' },
+    { text: 'WHERE kind = "method" OR kind = "function"', cat: 'фильтр', why: 'Только методы и функции, без модулей-контейнеров.' },
+    { text: 'GROUP BY source', cat: 'порядок / группы', why: 'Одна строка на каждый исходный файл; заметки файла — в rows.' },
+    { text: 'WHERE duplicate_of', cat: 'фильтр', why: 'Поле есть и не пустое — помеченные дубликаты.' },
+    { text: 'WHERE (kind = "method" OR kind = "function") AND source = this.source', cat: 'фильтр', why: 'this — страница, где стоит запрос: функции того же исходника, что у контейнера.' },
+    { text: 'SORT line ASC', cat: 'порядок / группы', why: 'По номеру строки в исходнике — в порядке файла.' },
+  ]
+});
+LineTagger.mount(document.getElementById('works'), {
+  categories: ['сработает', 'не сработает'],
+  lines: [
+    { text: 'LIST FROM "Медиатека/Фильмы"', cat: 'сработает', why: 'Путь от корня, через /, в кавычках.' },
+    { text: 'LIST FROM "Медиатека\\Фильмы"', cat: 'не сработает', why: 'Обратный слеш — привычка Windows. В Obsidian и Dataview разделитель /.' },
+    { text: 'LIST FROM "Медиатека/*"', cat: 'не сработает', why: '* — не шаблон. FROM "Медиатека" и так берёт все подпапки.' },
+    { text: 'LIST FROM "Фильмы"', cat: 'не сработает', why: 'FROM — путь от корня хранилища, а не часть пути, как path: в поиске. Нужно "Медиатека/Фильмы".' },
+    { text: 'LIST FROM Медиатека', cat: 'не сработает', why: 'Папка пишется в кавычках: кавычки отличают папку от тега #… и ссылки [[…]].' },
+    { text: 'TABLE year, status FROM #кино', cat: 'сработает', why: 'FROM #тег берёт и подтеги: кино/советское подходит.' },
+    { text: 'LIST WHERE where = "HDD-2TB-01"', cat: 'не сработает', why: 'where — команда DQL. Свойство с таким именем: row.where.' },
+    { text: 'LIST WHERE type = film', cat: 'не сработает', why: 'Без кавычек film — имя поля (его нет), а не текст. Нужно "film".' },
+    { text: 'TABLE year WHERE year < 1975 FROM "Медиатека"', cat: 'не сработает', why: 'FROM — только сразу после типа запроса, до остальных команд.' },
+    { text: 'WHERE type = "film"', cat: 'не сработает', why: 'Нет типа запроса. LIST / TABLE / TASK / CALENDAR — обязательная первая часть.' },
+    { text: 'TABLE WITHOUT ID file.link AS "Фильм" FROM "Медиатека/Фильмы"', cat: 'сработает', why: 'WITHOUT ID убирает столбец File, file.link AS "Фильм" возвращает его со своим именем.' },
+    { text: 'LIST FROM #кино and -"Медиатека/Книги"', cat: 'сработает', why: 'Источники сочетаются через and / or, минус — «кроме».' },
+  ]
+});
+Quiz.mount(document.getElementById('quiz'), [
+  { q: 'Какая часть запроса DQL обязательна?',
+    options: ['Только тип запроса: LIST, TABLE…', 'Тип запроса и FROM с папкой', 'Тип запроса, FROM и WHERE', 'FROM и хотя бы одна команда'],
+    answer: 0, why: 'Обязателен только тип запроса. Без FROM берётся всё хранилище, команды — по желанию.' },
+  { q: 'Фильмы лежат в Медиатека/Фильмы. Что даст LIST FROM "Фильмы"?',
+    options: ['Пустой результат: путь от корня', 'Оба фильма: часть пути подходит', 'Все заметки хранилища целиком', 'Ошибку: папку пишут без кавычек'],
+    answer: 0, why: 'FROM "папка" — путь от корня хранилища. Часть пути где угодно ищет path: в поиске, не FROM.' },
+  { q: 'Как отфильтровать по свойству с именем where?',
+    options: ['WHERE row.where = "HDD-2TB-01"', 'WHERE where = "HDD-2TB-01"', 'WHERE "where" = "HDD-2TB-01"', 'WHERE [where:HDD-2TB-01]'],
+    answer: 0, why: 'where — команда DQL; для полей с именами команд есть row. [where:…] — синтаксис поиска, не Dataview; "where" в кавычках — просто текст.' },
+  { q: 'Что сделает запрос: TABLE year LIMIT 1 SORT year DESC?',
+    options: ['Возьмёт одну любую, потом сортирует', 'Покажет одну самую новую заметку', 'Отсортирует всё, покажет первую', 'Покажет ошибку порядка команд'],
+    answer: 0, why: 'Команды выполняются сверху вниз: LIMIT отрезал одну заметку раньше, чем SORT упорядочил. Самая новая — SORT, потом LIMIT.' },
+  { q: 'used_by — список. Как найти страницы, где в нём есть AcademicEnd?',
+    options: ['contains(used_by, "AcademicEnd")', 'used_by = "AcademicEnd" OR used_by', 'used_by > "AcademicEnd" AND used_by', 'length(used_by) = "AcademicEnd"'],
+    answer: 0, why: 'contains() для списка проверяет, есть ли такой элемент. = сравнивает весь список с одним текстом.' },
+  { q: 'Что Dataview делает с файлами заметок?',
+    options: ['Только читает, кроме галочек TASK', 'Дописывает в них результаты запросов', 'Меняет свойства по запросу WHERE', 'Ничего не читает без DataviewJS'],
+    answer: 0, why: 'Dataview только показывает данные. Единственное исключение — отметка задачи в TASK меняет файл.' },
+]);
+</script>
+</body>
+</html>

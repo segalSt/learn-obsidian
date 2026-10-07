@@ -1,6 +1,6 @@
 # Handoff - learn-obsidian course (2026-10-06)
 
-Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: lesson 0006 "Dataview" (0001-0005 and 0008 are built).
+Next session focus: **continue the Obsidian course from the CLI (Claude Code)**: lesson 0007 "Bases" (0001-0006 and 0008 are built).
 
 ## Where things are
 - Repo (this folder): `C:\_repos\GitHub\segal.st\teach\learn-obsidian` -> https://github.com/segalSt/learn-obsidian (public, branch `main`).
@@ -23,8 +23,9 @@ Next session focus: **continue the Obsidian course from the CLI (Claude Code)**:
 | 3 | 0003 Links & backlinks | `lessons/0003-links.html` | ready (2026-10-06); verified: property links show in Backlinks; pending: based_on on rename, property text in unlinked mentions |
 | 4 | 0004 Search | `lessons/0004-search.html` | ready (2026-10-07); open checks in hands-on: does `[prop:value]` match part of a value, does a plain word match property text |
 | 5 | 0005 Graph | `lessons/0005-graph-filters.html` | rebuilt 2026-10-07 on top of 0002-0004: filter toggles, groups, local graph, display/forces, practice-vault hands-on with counts |
-| 6 | 0006 Dataview / 0007 Bases | - | **next to build** |
-| 7 | 0008 LLM-wiki (Karpathy pattern) + Obsidian | `lessons/0008-llm-wiki.html`, vault `practice-llm-wiki/` | ready (2026-10-06), overview, readable any time |
+| 6 | 0006 Dataview | `lessons/0006-dataview.html` | ready (2026-10-07): install, LIST/TABLE, FROM (path from root), WHERE, row.where, SORT/LIMIT order, GROUP BY/FLATTEN, inline DQL, Kolnatun INDEX queries; hands-on in a learner-created `Запросы` note (vault files unchanged). Open checks: FROM [[Тарковский]] (frontmatter links), missing-field comparison |
+| 7 | 0007 Bases | - | **next to build** |
+| 8 | 0008 LLM-wiki (Karpathy pattern) + Obsidian | `lessons/0008-llm-wiki.html`, vault `practice-llm-wiki/` | ready (2026-10-06), overview, readable any time |
 
 Components in `assets/` (reuse, don't inline): `style.css`, `quiz.js` (equal-length options, shuffled), `search-sim.js` (Obsidian search simulator with diagnostic feedback), `line-tagger.js` ("what is this line" exercise).
 `search-sim.js` (since 0004) also does `tag:` (nested only from the root), `content:`, body text via `file.text`, `showProps`, and explains a nested-only tag; without `file.text` it keeps the old path-only behaviour lesson 0005 relies on.

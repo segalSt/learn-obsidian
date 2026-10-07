@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Dataview</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<header class="lesson-head">
+  <div class="kicker">Шпаргалка</div>
+  <h1>Dataview (DQL)</h1>
+  <p class="lede">Блок <code>```dataview</code>. Тип запроса → FROM → команды. Выполняется сверху вниз.</p>
+</header>
+
+<h2>Каркас</h2>
+<pre>```dataview
+TABLE WITHOUT ID file.link AS "Фильм", year AS "Год", row.where AS "Где"
+FROM "Медиатека/Фильмы"
+WHERE year AND year &lt; 1980
+SORT year ASC
+LIMIT 10
+```</pre>
+
+<h2>Типы запросов</h2>
+<table>
+  <tr><th>#</th><th>Тип</th><th>Результат</th></tr>
+  <tr><td>1</td><td><code>LIST</code> [одно значение]</td><td>список ссылок</td></tr>
+  <tr><td>2</td><td><code>TABLE</code> поля через запятую</td><td>таблица; <code>AS "Имя"</code> — заголовок; <code>WITHOUT ID</code> — без столбца File</td></tr>
+  <tr><td>3</td><td><code>TASK</code></td><td>задачи; галочка меняет файл</td></tr>
+  <tr><td>4</td><td><code>CALENDAR</code> поле-дата</td><td>календарь</td></tr>
+</table>
+
+<h2>FROM</h2>
+<table>
+  <tr><th>#</th><th>Пример</th><th>Берёт</th></tr>
+  <tr><td>1</td><td><code>"calculators/shared"</code></td><td>папку от корня хранилища + подпапки</td></tr>
+  <tr><td>2</td><td><code>#кино</code></td><td>тег + подтеги</td></tr>
+  <tr><td>3</td><td><code>[[заметка]]</code></td><td>кто ссылается на заметку</td></tr>
+  <tr><td>4</td><td><code>outgoing([[заметка]])</code></td><td>на кого ссылается заметка</td></tr>
+  <tr><td>5</td><td><code>#a and -"папка"</code></td><td><code>and</code> / <code>or</code> / <code>-</code> кроме</td></tr>
+</table>
+
+<h2>Команды</h2>
+<table>
+  <tr><th>#</th><th>Команда</th><th>Пример</th></tr>
+  <tr><td>1</td><td><code>WHERE</code></td><td><code>kind = "method" OR kind = "function"</code>, <code>WHERE duplicate_of</code></td></tr>
+  <tr><td>2</td><td><code>SORT</code></td><td><code>SORT length(used_by) DESC, file.name ASC</code></td></tr>
+  <tr><td>3</td><td><code>GROUP BY</code></td><td><code>GROUP BY source</code> → столбцы <code>length(rows)</code>, <code>rows.name</code></td></tr>
+  <tr><td>4</td><td><code>FLATTEN</code></td><td><code>FLATTEN authors</code> — строка на элемент списка</td></tr>
+  <tr><td>5</td><td><code>LIMIT</code></td><td><code>LIMIT 5</code> — ставь после SORT</td></tr>
+</table>
+
+<h2>Выражения и функции</h2>
+<table>
+  <tr><th>#</th><th>Пишешь</th><th>Значит</th></tr>
+  <tr><td>1</td><td><code>= != &lt; &gt; &lt;= &gt;=</code>, <code>AND OR !</code></td><td>сравнение, логика; текст — в кавычках</td></tr>
+  <tr><td>2</td><td><code>contains(list, "x")</code> / <code>icontains</code></td><td>элемент списка или часть текста; с учётом / без учёта регистра</td></tr>
+  <tr><td>3</td><td><code>length(list)</code></td><td>сколько элементов</td></tr>
+  <tr><td>4</td><td><code>date(today)</code>, <code>dur(1 day)</code></td><td>дата, длительность</td></tr>
+  <tr><td>5</td><td><code>default(field, "—")</code></td><td>значение, если поле пустое</td></tr>
+  <tr><td>6</td><td><code>this.source</code></td><td>поле заметки, где стоит запрос</td></tr>
+  <tr><td>7</td><td><code>row.where</code>, <code>row["имя с пробелом"]</code></td><td>поле с именем команды или с пробелом</td></tr>
+  <tr><td>8</td><td><code>`= this.file.name`</code></td><td>inline DQL: одно значение в тексте</td></tr>
+</table>
+
+<h2>Поля file.*</h2>
+<p><code>file.name</code> · <code>file.link</code> · <code>file.folder</code> · <code>file.path</code> · <code>file.ctime</code> / <code>file.mtime</code> · <code>file.cday</code> / <code>file.mday</code> · <code>file.tags</code> · <code>file.inlinks</code> / <code>file.outlinks</code> · <code>file.aliases</code> · <code>file.tasks</code></p>
+
+<div class="box"><strong>Ловушки.</strong> Путь — от корня, через <code>/</code>, в кавычках, без <code>*</code>. Текст без кавычек — имя поля. <code>where</code>, <code>from</code> — команды: <code>row.where</code>. Перед сравнением проверь, что поле есть: <code>year AND year &lt; 1975</code>. Inline field — <code>ключ:: значение</code> (два двоеточия), но данные лучше держать в YAML.</div>
+
+<footer class="lesson-foot">
+  Источники: <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/structure/">Structure</a> <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/query-types/">Query Types</a> <a href="https://blacksmithgu.github.io/obsidian-dataview/queries/data-commands/">Data Commands</a> <a href="https://blacksmithgu.github.io/obsidian-dataview/reference/functions/">Functions</a> <a href="https://blacksmithgu.github.io/obsidian-dataview/annotation/metadata-pages/">file.*</a> <a href="https://blacksmithgu.github.io/obsidian-dataview/resources/faq/">FAQ</a> ·
+  <a href="../lessons/0006-dataview.html">Урок 0006</a> <a href="glossary.html">Глоссарий</a> <a href="../index.html">Все уроки</a>
+</footer>
+</main>
+</body>
+</html>
