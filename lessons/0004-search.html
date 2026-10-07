@@ -60,6 +60,7 @@
 Нужно именно «начинается с» — регулярное выражение (раздел 6): <code>file:/^Стал/</code>.</div>
 
 <h2>4. Теги: <code>tag:</code> ищет от корня</h2>
+<div class="box"><strong><code>tag</code> или <code>tags</code>?</strong> В поиске оператор пишется в единственном числе: <code>tag:</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> Во множественном числе, <code>tags</code>, называется свойство в YAML (урок 0002); старое имя <code>tag</code> там устарело с версии 1.9.<span class="cite"><a href="https://obsidian.md/help/properties">[свойства]</a></span> Запомнить так: в YAML у заметки <em>много</em> тегов, а запрос ищет <em>один</em> тег.</div>
 <p><code>tag:</code> точнее простого поиска: он не смотрит в блоки кода. Писать можно с <code>#</code> и без: <code>tag:#кино</code> = <code>tag:кино</code>.<span class="cite"><a href="https://obsidian.md/help/plugins/search">[поиск]</a></span> Для вложенных тегов (урок 0002) правило одно — <strong>от корня вниз</strong>:</p>
 <table>
   <tr><th>#</th><th>Запрос</th><th>Тег <code>кино/советское</code> найдётся?</th></tr>
